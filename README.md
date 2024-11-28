@@ -5,7 +5,7 @@
 
 ## Sobre o Projeto
 
-Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material de estudo, exercícios e implementações práticas para explorar os conceitos fundamentais da construção de compiladores, tradutores e interpretadores de linguagens de programação. Este repositório abrange todas as fases do processo de compilação, da análise léxica à otimização de código, proporcionando uma visão prática e teórica sobre o tema.  
+Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material de estudo, exercícios e implementações práticas para explorar os conceitos fundamentais da construção de compiladores, tradutores e interpretadores de linguagens de programação. Este repositório não abrange todas as fases do processo de compilação, vai apenas da análise léxica à análise sintática, proporcionando uma visão prática e teórica sobre quase todo o tema.  
 
 ## Objetivos 🎯  
 - Entender e implementar as principais etapas de um compilador.  
