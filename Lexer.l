@@ -24,8 +24,9 @@ unordered_map<string, int> symbolTable = {
 
 void inserir(int tipo, string palavra);
 int buscar(string palavra);
+string toLower(string str);
 
-int numClasses, numProperties, numIndividuals, numIndividuos, numSimbolos, numReservadas, numCardinalidades = 0;
+int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades = 0;
 %}
 
 %option noyywrap
@@ -33,14 +34,12 @@ delim [ \t\n]
 brancos {delim}+
 letra [a-zA-Z]
 maiuscula [A-Z]
-minuscula [a-z]
 digito [0-9]
 digitos {digito}+
 relop (<=|>=|<|>|!=|=)
 
 NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
-CLASSES {maiuscula}({letra})*(_{maiuscula}{letra}*)*
-RESERVADAS ({minuscula})+({letra})*    
+RESERVADAS ({letra})*    
 SIMBOLO [\[\]\{\}\(\),]
 INDIVIDUOS {maiuscula}({letra})*{NUM}
 TIPO (string|integer(\[{relop}{digitos}\])?)
@@ -53,18 +52,21 @@ Individuals":"      {cout << "Palavra reservada: Individuals:\n"; numReservadas+
 SubClassOf":"       {cout << "Palavra reservada: SubClassOf:\n"; numReservadas++; return SUBCLASSOF;}
 DisjointClasses":"  {cout << "Palavra reservada: DisjointClasses:\n"; numReservadas++; return DISJOINTCLASSES;}
 {RESERVADAS}        {
-    auto it = symbolTable.find(yytext); 
+    auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
-        numReservadas++;
         cout << "Palavra reservada: " << it->first << " -> " << it->second << "\n"; 
+        numReservadas++;
         return it->second;
-    } else {
+    } else if (islower(yytext[0])) {
         cout << "Propriedade: " << yytext << "\n";
         numProperties++;
         return PROPERTY;
+    } else if (isupper(yytext[0])) {
+        cout << "Classe: " << yytext << "\n";
+        numClasses++;
+        return CLASSE;
     }
 }
-{CLASSES}           {cout << "Identificador classe: " << yytext << "\n"; numClasses++; return ID;}
 {INDIVIDUOS}        {cout << "Identificador individuo: " << yytext << "\n"; numIndividuos++; return INDIVIDUOS;}
 {NUM}               {cout << "NUM\n"; numCardinalidades++; return NUM;}
 {SIMBOLO}           {cout << "Simbolo: " << yytext << "\n"; numSimbolos++; return yytext[0]; }
@@ -89,4 +91,12 @@ int buscar(string palavra) {
         return it->second;
     }
     return 0;
+}
+
+// Função que recebe yytext e retorna a string em tolower case
+string toLower(string str) {
+    for (int i = 0; i < str.size(); i++) {
+        str[i] = tolower(str[i]);
+    }
+    return str;
 }
