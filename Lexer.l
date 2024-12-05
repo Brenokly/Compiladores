@@ -35,12 +35,15 @@ letra [a-zA-Z]
 maiuscula [A-Z]
 minuscula [a-z]
 digito [0-9]
+digitos {digito}+
+relop (<=|>=|<|>|!=|=)
 
 NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
 CLASSES {maiuscula}({letra})*(_{maiuscula}{letra}*)*
 RESERVADAS ({minuscula})+({letra})*    
-SIMBOLO [\[\]\{\}\(\)<>,]
+SIMBOLO [\[\]\{\}\(\),]
 INDIVIDUOS {maiuscula}({letra})*{NUM}
+TIPO (string|integer(\[{relop}{digitos}\])?)
 
 %%
 {brancos}+          ;
@@ -65,6 +68,7 @@ DisjointClasses":"  {cout << "Palavra reservada: DisjointClasses:\n"; numReserva
 {INDIVIDUOS}        {cout << "Identificador individuo: " << yytext << "\n"; numIndividuos++; return INDIVIDUOS;}
 {NUM}               {cout << "NUM\n"; numCardinalidades++; return NUM;}
 {SIMBOLO}           {cout << "Simbolo: " << yytext << "\n"; numSimbolos++; return yytext[0]; }
+xsd":"{TIPO}        {cout << "Tipo: " << yytext << "\n"; return ID;}
 .|\n                {cout << "Unexpected token: " << yytext << "\n"; }
 %%
 
