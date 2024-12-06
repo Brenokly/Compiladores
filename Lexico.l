@@ -6,7 +6,7 @@
 using namespace std;
 
 enum {SOME = 256, ALL, VALUE, MIN, MAX, EXACTLY, THAT, NOT, AND, OR, CLASS, EQUIVALENTTO, INDIVIDUALS, 
-SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS};
+SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE};
 
 unordered_map<string, int> symbolTable = {
     {"some", SOME},
@@ -35,7 +35,7 @@ unsigned nFiles;
 unsigned currentFile = 0;
 bool openFile = false;
 ifstream fin;
-int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numTipos = 0;
+int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
 %}
 
 delim [ \t\n]
@@ -44,15 +44,16 @@ letra [a-zA-Z]
 maiuscula [A-Z]
 minuscula [a-z]
 digito [0-9]
-relop (<=|>=|<|>|!=|=)
+digitos {digito}+
 
 NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
 RESERVADAS {maiuscula}({letra})*
 PROPERTYS {minuscula}({letra})*
 CLASS {maiuscula}({letra})*(_({letra})+)*       
-SIMBOLO [\[\]\{\}\(\),]
+SIMBOLO [\[\]\{\}\(\),\"\"|<|>|=]
 INDIVIDUOS {maiuscula}({letra})*{NUM}
-TYPEOWL (rational|real)
+NAMESPACE (owl\:|rdf\:|rdfs\:|xsd\:)
+DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64Binary|boolean|byte|dateTime|dateTimeStamp|decimal|double|float|hexBinary|int|integer|language|long|Name|NCName|negativeInteger|NMTOKEN|nonNegativeInteger|nonPositiveInteger|normalizedString|positiveInteger|short|string|token|unsignedByte|unsignedInt|unsignedLong|unsignedShort)
 
 %%
 {brancos}+          ;
@@ -89,12 +90,11 @@ TYPEOWL (rational|real)
 
     cout << "Erro de sintaxe: " << yytext << "\n";
 }
+{DATATYPE}          {numTipos++; return DATATYPE;}
 {INDIVIDUOS}        {numIndividuos++; return INDIVIDUOS;}
 {NUM}               {numCardinalidades++; return NUM;}
 {SIMBOLO}           {numSimbolos++; return yytext[0];}
-{relop}             {numSimbolos++; return yytext[0];}
-xsd":"{TYPEOWL}     {numTipos++; return ID;}
-owl":"{TYPEOWL}     {numTipos++; return ID;}
+{NAMESPACE}         {numNamespace++; return NAMESPACEID;}
 .|\n                {cout << "Erro de sintaxe: " << yytext << "\n";}
 %%
 
