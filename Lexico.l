@@ -44,7 +44,6 @@ letra [a-zA-Z]
 maiuscula [A-Z]
 minuscula [a-z]
 digito [0-9]
-digitos {digito}+
 
 NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
 RESERVADAS {maiuscula}({letra})*
@@ -78,6 +77,7 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 
     cout << "Erro de sintaxe: " << yytext << "\n";
 }
+{DATATYPE}          {numTipos++; return DATATYPE;}
 {PROPERTYS}        {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
@@ -90,7 +90,6 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 
     cout << "Erro de sintaxe: " << yytext << "\n";
 }
-{DATATYPE}          {numTipos++; return DATATYPE;}
 {INDIVIDUOS}        {numIndividuos++; return INDIVIDUOS;}
 {NUM}               {numCardinalidades++; return NUM;}
 {SIMBOLO}           {numSimbolos++; return yytext[0];}
@@ -100,37 +99,61 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 
 int main(int argc, char ** argv)
 {	
-    fileList = argv + 1;        
-    nFiles = argc - 1;  	     
+    fileList = argv + 1;         // salta nome do programa
+    nFiles = argc - 1;  	     // desconsidera nome do programa
 	
-	yyFlexLexer lexer;	 		
-    lexer.switch_streams(&fin);  
-	lexer.yywrap();				 
+	yyFlexLexer lexer;	 		 // analisador léxico
+    lexer.switch_streams(&fin);  // altera entrada para arquivo
+	lexer.yywrap();				 // abre arquivo
 
-
+	// processa arquivo aberto
 	if (openFile)
 	{
+		// yylex chama yywrap ao final de cada arquivo
 		lexer.yylex();
 
+        // exibe as estatísticas para o arquivo processado 
     	cout << "Ocorrencia dos elementos presentes no texto\n";
         cout << "Classes: " << numClasses << "\n";
         cout << "Propriedades: " << numProperties << "\n";
         cout << "Individuos: " << numIndividuos << "\n";
         cout << "Cardinalidades: " << numCardinalidades << "\n";
         cout << "Tipos: " << numTipos << "\n";
+        cout << "Namespaces: " << numNamespace << "\n";
         cout << "Simbolos: " << numSimbolos << "\n";
-        cout << "Palavras reservadas: " << numReservadas << "\n";
+        cout << "Palavras reservadas: " << numReservadas << "\n";	
 	}
 }
 
+
+// a função yylex chama yywrap para tratar EOF, 
+// permitindo assim a abertura de outros aquivos
+
 int yyFlexLexer::yywrap()
 {
+	// se não for o primeiro nem o último arquivo de uma sequência válida
+	if ((currentFile != 0) && (nFiles > 1)) 
+    {
+		// exibe as estatísticas para o arquivo processado 
+    	cout << "Ocorrencia dos elementos presentes no texto\n";
+        cout << "Classes: " << numClasses << "\n";
+        cout << "Propriedades: " << numProperties << "\n";
+        cout << "Individuos: " << numIndividuos << "\n";
+        cout << "Cardinalidades: " << numCardinalidades << "\n";
+        cout << "Tipos: " << numTipos << "\n";
+        cout << "Namespaces: " << numNamespace << "\n";
+        cout << "Simbolos: " << numSimbolos << "\n";
+        cout << "Palavras reservadas: " << numReservadas << "\n";	
+	}
+
+	// fecha o arquivo processado
 	if (openFile)
 	{    
 		openFile = false;
 		fin.close();
 	}
 
+	// enquanto existir arquivos para processar, tentar abrir o próximo
 	while (!openFile && (fileList[currentFile] != nullptr)) 
     {
 		fin.open(fileList[currentFile++]);
@@ -140,12 +163,11 @@ int yyFlexLexer::yywrap()
 		}
 		else
 		{
-
-			cout << fileList[currentFile-1] << " = nao foi possivel abrir\n";
+			cout << fileList[currentFile-1] << " = não foi possível abrir\n";
 		}		
 	}
 
-	return (openFile ? 0 : 1);
+	return (openFile ? 0 : 1);	// 0 significa que tem mais entrada para processar
 }
 
 void inserir(int tipo, string palavra) {
