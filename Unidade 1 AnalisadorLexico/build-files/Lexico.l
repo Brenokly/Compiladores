@@ -1,13 +1,16 @@
 %{
+// Inclusões de bibliotecas
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <unordered_map>
 using namespace std;
 
+// Definição de constantes
 enum {SOME = 256, ALL, VALUE, MIN, MAX, EXACTLY, THAT, NOT, AND, OR, CLASS, EQUIVALENTTO, INDIVIDUALS, 
 SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE, BRANCA};
 
+// Definição da tabela de símbolos (Temporária)
 unordered_map<string, int> symbolTable = {
     {"some", SOME},
     {"all", ALL},
@@ -26,14 +29,17 @@ unordered_map<string, int> symbolTable = {
     {"DisjointClasses:", DISJOINTCLASSES},
 };
 
+// Definição de mapas para armazenar as ocorrências (classes, propriedades e indivíduos)
 unordered_map<string, int> classes;
 unordered_map<string, int> individuos;
 unordered_map<string, int> propriedades;
 
+// Definição de funções auxiliares
 void inserir(int tipo, string palavra);
 int buscar(string palavra);
 string toLower(string str); 
 
+// Definição de variáveis globais
 char **fileList;
 unsigned nFiles;
 unsigned currentFile = 0;
@@ -57,8 +63,8 @@ SIMBOLO [\[\]\{\}\(\),\"\"|<|>|=]
 INDIVIDUOS {maiuscula}({letra})*{NUM}
 NAMESPACE (owl\:|rdf\:|rdfs\:|xsd\:)
 DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64Binary|boolean|byte|dateTime|dateTimeStamp|decimal|double|float|hexBinary|int|integer|language|long|Name|NCName|negativeInteger|NMTOKEN|nonNegativeInteger|nonPositiveInteger|normalizedString|positiveInteger|short|string|token|unsignedByte|unsignedInt|unsignedLong|unsignedShort)
-
 %%
+
 {brancos}+         {}
 {RESERVADAS}":"    {
     auto it = symbolTable.find(yytext); 
@@ -111,16 +117,17 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 .|\n               {cout << "Erro de sintaxe: " << yytext << "\n";}
 %%
 
+// Função principal
 int main(int argc, char ** argv)
 {	
-    fileList = argv + 1;         
-    nFiles = argc - 1;  	     
+    fileList = argv + 1;                                                        // Lista de arquivos         
+    nFiles = argc - 1;                                                          // Número de arquivos
 	
-	yyFlexLexer lexer;	 		 
-    lexer.switch_streams(&fin);  
-	lexer.yywrap();				
+	yyFlexLexer lexer;	 		                                                // Instância do analisador léxico
+    lexer.switch_streams(&fin);                                                 // Alterando o fluxo de entrada
+	lexer.yywrap();				                                                // Inicializando o fluxo de entrada
 
-	if (openFile) {
+	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
         cout << "===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
@@ -166,6 +173,7 @@ int main(int argc, char ** argv)
     }
 }
 
+// Função de finalização
 int yyFlexLexer::yywrap()
 {
 	if (openFile)

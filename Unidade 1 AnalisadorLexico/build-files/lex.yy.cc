@@ -615,15 +615,18 @@ static const flex_int16_t yy_chk[628] =
 #define YY_RESTORE_YY_MORE_OFFSET
 #line 1 "Lexico.l"
 #line 2 "Lexico.l"
+// Inclusões de bibliotecas
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <unordered_map>
 using namespace std;
 
+// Definição de constantes
 enum {SOME = 256, ALL, VALUE, MIN, MAX, EXACTLY, THAT, NOT, AND, OR, CLASS, EQUIVALENTTO, INDIVIDUALS, 
 SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE, BRANCA};
 
+// Definição da tabela de símbolos (Temporária)
 unordered_map<string, int> symbolTable = {
     {"some", SOME},
     {"all", ALL},
@@ -642,22 +645,25 @@ unordered_map<string, int> symbolTable = {
     {"DisjointClasses:", DISJOINTCLASSES},
 };
 
+// Definição de mapas para armazenar as ocorrências (classes, propriedades e indivíduos)
 unordered_map<string, int> classes;
 unordered_map<string, int> individuos;
 unordered_map<string, int> propriedades;
 
+// Definição de funções auxiliares
 void inserir(int tipo, string palavra);
 int buscar(string palavra);
 string toLower(string str); 
 
+// Definição de variáveis globais
 char **fileList;
 unsigned nFiles;
 unsigned currentFile = 0;
 bool openFile = false;
 ifstream fin;
 int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
-#line 659 "lex.yy.cc"
-#line 660 "lex.yy.cc"
+#line 665 "lex.yy.cc"
+#line 666 "lex.yy.cc"
 
 #define INITIAL 0
 
@@ -789,9 +795,10 @@ YY_DECL
 		}
 
 	{
-#line 61 "Lexico.l"
+#line 66 "Lexico.l"
 
-#line 794 "lex.yy.cc"
+
+#line 801 "lex.yy.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -851,12 +858,12 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 62 "Lexico.l"
+#line 68 "Lexico.l"
 {}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 63 "Lexico.l"
+#line 69 "Lexico.l"
 {
     auto it = symbolTable.find(yytext); 
     if (it != symbolTable.end()) {
@@ -868,7 +875,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 71 "Lexico.l"
+#line 77 "Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
@@ -888,12 +895,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 87 "Lexico.l"
+#line 93 "Lexico.l"
 { numTipos++;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 88 "Lexico.l"
+#line 94 "Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
@@ -910,7 +917,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 101 "Lexico.l"
+#line 107 "Lexico.l"
 {
         numIndividuos++;        
         if (individuos.find(yytext) == individuos.end()) {
@@ -921,31 +928,31 @@ YY_RULE_SETUP
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 108 "Lexico.l"
+#line 114 "Lexico.l"
 {numCardinalidades++;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 109 "Lexico.l"
+#line 115 "Lexico.l"
 {numSimbolos++;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 110 "Lexico.l"
+#line 116 "Lexico.l"
 {numNamespace++; }
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 111 "Lexico.l"
+#line 117 "Lexico.l"
 {cout << "Erro de sintaxe: " << yytext << "\n";}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 112 "Lexico.l"
+#line 118 "Lexico.l"
 ECHO;
 	YY_BREAK
-#line 948 "lex.yy.cc"
+#line 955 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1908,19 +1915,20 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 112 "Lexico.l"
+#line 118 "Lexico.l"
 
 
+// Função principal
 int main(int argc, char ** argv)
 {	
-    fileList = argv + 1;         
-    nFiles = argc - 1;  	     
+    fileList = argv + 1;                                                        // Lista de arquivos         
+    nFiles = argc - 1;                                                          // Número de arquivos
 	
-	yyFlexLexer lexer;	 		 
-    lexer.switch_streams(&fin);  
-	lexer.yywrap();				
+	yyFlexLexer lexer;	 		                                                // Instância do analisador léxico
+    lexer.switch_streams(&fin);                                                 // Alterando o fluxo de entrada
+	lexer.yywrap();				                                                // Inicializando o fluxo de entrada
 
-	if (openFile) {
+	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
         cout << "===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
@@ -1966,6 +1974,7 @@ int main(int argc, char ** argv)
     }
 }
 
+// Função de finalização
 int yyFlexLexer::yywrap()
 {
 	if (openFile)
