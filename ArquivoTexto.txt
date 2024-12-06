@@ -1,8 +1,0 @@
-HasSome
-some
-all
-SomeIdentifier
-min
-CustomProperty
-value
-EquivalentTo:
