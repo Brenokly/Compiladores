@@ -51,20 +51,6 @@ Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material d
 
 ---
 
-## Competências e Habilidades 💡  
-Ao concluir a disciplina, o aluno será capaz de:  
-1. Reconhecer as etapas fundamentais do processo de compilação.  
-2. Implementar um compilador funcional para uma linguagem de programação simplificada.  
-3. Utilizar ferramentas e técnicas modernas na análise e geração de código.  
-
----
-
-## Metodologia 📖  
-- **Aulas Expositivas**: Para abordagem teórica e conceitos fundamentais.  
-- **Práticas de Laboratório**: Para implementação e experimentação.  
-
----
-
 ## Referências Bibliográficas 📚  
 
 ### Obrigatórias  
