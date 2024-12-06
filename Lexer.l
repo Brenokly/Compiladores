@@ -7,7 +7,7 @@ using std::string;
 using std::unordered_map;
 
 enum {SOME = 256, ALL, VALUE, MIN, MAX, EXACTLY, THAT, NOT, AND, OR, CLASS, EQUIVALENTTO, INDIVIDUALS, 
-SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS};
+SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE};
 
 unordered_map<string, int> symbolTable = {
     {"some", SOME},
@@ -26,7 +26,7 @@ void inserir(int tipo, string palavra);
 int buscar(string palavra);
 string toLower(string str);
 
-int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades = 0;
+int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
 %}
 
 %option noyywrap
@@ -36,13 +36,13 @@ letra [a-zA-Z]
 maiuscula [A-Z]
 digito [0-9]
 digitos {digito}+
-relop (<=|>=|<|>|!=|=)
 
 NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
-RESERVADAS ({letra})*    
-SIMBOLO [\[\]\{\}\(\),]
+RESERVADAS ({letra})*
+SIMBOLO [\[\]\{\}\(\),\"\"|<|>|=]
 INDIVIDUOS {maiuscula}({letra})*{NUM}
-TIPO (string|integer(\[{relop}{digitos}\])?)
+NAMESPACE (owl\:|rdf\:|rdfs\:|xsd\:)
+DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64Binary|boolean|byte|dateTime|dateTimeStamp|decimal|double|float|hexBinary|int|integer|language|long|Name|NCName|negativeInteger|NMTOKEN|nonNegativeInteger|nonPositiveInteger|normalizedString|positiveInteger|short|string|token|unsignedByte|unsignedInt|unsignedLong|unsignedShort)
 
 %%
 {brancos}+          ;
@@ -51,6 +51,7 @@ EquivalentTo":"     {cout << "Palavra reservada: EquivalentTo:\n"; numReservadas
 Individuals":"      {cout << "Palavra reservada: Individuals:\n"; numReservadas++; return INDIVIDUALS;}
 SubClassOf":"       {cout << "Palavra reservada: SubClassOf:\n"; numReservadas++; return SUBCLASSOF;}
 DisjointClasses":"  {cout << "Palavra reservada: DisjointClasses:\n"; numReservadas++; return DISJOINTCLASSES;}
+{DATATYPE}          {cout << "Tipo: " << yytext << "\n"; numTipos++; return DATATYPE;}
 {RESERVADAS}        {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
@@ -68,10 +69,10 @@ DisjointClasses":"  {cout << "Palavra reservada: DisjointClasses:\n"; numReserva
     }
 }
 {INDIVIDUOS}        {cout << "Identificador individuo: " << yytext << "\n"; numIndividuos++; return INDIVIDUOS;}
-{NUM}               {cout << "NUM\n"; numCardinalidades++; return NUM;}
-{SIMBOLO}           {cout << "Simbolo: " << yytext << "\n"; numSimbolos++; return yytext[0]; }
-xsd":"{TIPO}        {cout << "Tipo: " << yytext << "\n"; return ID;}
-.|\n                {cout << "Unexpected token: " << yytext << "\n"; }
+{NUM}               {cout << "Numero: " << yytext << "\n"; numCardinalidades++; return NUM;}
+{SIMBOLO}           {cout << "Simbolo: " << yytext << "\n"; numSimbolos++; return yytext[0];}
+{NAMESPACE}         {cout << "Namespace: " << yytext << "\n"; numNamespace++; return NAMESPACEID;}
+.|\n                {cout << "Unexpected token: " << yytext << "\n";}
 %%
 
 int main() {
