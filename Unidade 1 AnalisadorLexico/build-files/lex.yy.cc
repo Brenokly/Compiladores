@@ -321,7 +321,7 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[268] =
     {   0,
-        0,    0,   12,   10,    1,    8,    7,    3,    3,    3,
+        1,    1,   12,   10,    1,    8,    7,    3,    3,    3,
         3,    3,    5,    5,    5,    5,    5,    5,    5,    5,
         5,    5,    5,    5,    5,    5,    5,    5,    1,    0,
         7,    0,    6,    2,    3,    0,    3,    3,    3,    3,
@@ -622,7 +622,7 @@ static const flex_int16_t yy_chk[628] =
 using namespace std;
 
 enum {SOME = 256, ALL, VALUE, MIN, MAX, EXACTLY, THAT, NOT, AND, OR, CLASS, EQUIVALENTTO, INDIVIDUALS, 
-SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE};
+SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE, BRANCA};
 
 unordered_map<string, int> symbolTable = {
     {"some", SOME},
@@ -642,9 +642,13 @@ unordered_map<string, int> symbolTable = {
     {"DisjointClasses:", DISJOINTCLASSES},
 };
 
+unordered_map<string, int> classes;
+unordered_map<string, int> individuos;
+unordered_map<string, int> propriedades;
+
 void inserir(int tipo, string palavra);
 int buscar(string palavra);
-string toLower(string str);
+string toLower(string str); 
 
 char **fileList;
 unsigned nFiles;
@@ -652,8 +656,8 @@ unsigned currentFile = 0;
 bool openFile = false;
 ifstream fin;
 int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
-#line 655 "lex.yy.cc"
-#line 656 "lex.yy.cc"
+#line 659 "lex.yy.cc"
+#line 660 "lex.yy.cc"
 
 #define INITIAL 0
 
@@ -785,9 +789,9 @@ YY_DECL
 		}
 
 	{
-#line 57 "Lexico.l"
+#line 61 "Lexico.l"
 
-#line 790 "lex.yy.cc"
+#line 794 "lex.yy.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -847,91 +851,101 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 58 "Lexico.l"
-;
+#line 62 "Lexico.l"
+{}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 59 "Lexico.l"
+#line 63 "Lexico.l"
 {
     auto it = symbolTable.find(yytext); 
     if (it != symbolTable.end()) {
         numReservadas++;
-        return it->second;
+    } else {
+        cout << "Erro de sintaxe: " << yytext << "\n";
     }
-
-    cout << "Erro de sintaxe: " << yytext << "\n";
 }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 68 "Lexico.l"
+#line 71 "Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
         numReservadas++;
-        return it->second;
     } else if (isupper(yytext[0])) {
-        numClasses++;
-        return PROPERTY;
-    }
+        if (classes.find(yytext) == classes.end()) {
+            classes[yytext] = 1;
+        } else {
+            classes[yytext]++;
+        }
 
-    cout << "Erro de sintaxe: " << yytext << "\n";
+        numClasses++;
+    } else {
+        cout << "Erro de sintaxe: " << yytext << "\n";
+    }
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 80 "Lexico.l"
-{numTipos++; return DATATYPE;}
+#line 87 "Lexico.l"
+{ numTipos++;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 81 "Lexico.l"
+#line 88 "Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
         numReservadas++;
-        return it->second;
     } else {
+        if (propriedades.find(yytext) == propriedades.end()) {
+            propriedades[yytext] = 1;
+        } else {
+            propriedades[yytext]++;
+        }
         numProperties++;
-        return PROPERTY;
     }
-
-    cout << "Erro de sintaxe: " << yytext << "\n";
 }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 93 "Lexico.l"
-{numIndividuos++; return INDIVIDUOS;}
+#line 101 "Lexico.l"
+{
+        numIndividuos++;        
+        if (individuos.find(yytext) == individuos.end()) {
+            individuos[yytext] = 1;
+        } else {
+            individuos[yytext]++;
+        }}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 94 "Lexico.l"
-{numCardinalidades++; return NUM;}
+#line 108 "Lexico.l"
+{numCardinalidades++;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 95 "Lexico.l"
-{numSimbolos++; return yytext[0];}
+#line 109 "Lexico.l"
+{numSimbolos++;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 96 "Lexico.l"
-{numNamespace++; return NAMESPACEID;}
+#line 110 "Lexico.l"
+{numNamespace++; }
 	YY_BREAK
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 97 "Lexico.l"
+#line 111 "Lexico.l"
 {cout << "Erro de sintaxe: " << yytext << "\n";}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 98 "Lexico.l"
+#line 112 "Lexico.l"
 ECHO;
 	YY_BREAK
-#line 934 "lex.yy.cc"
+#line 948 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1894,66 +1908,72 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 98 "Lexico.l"
+#line 112 "Lexico.l"
 
 
 int main(int argc, char ** argv)
 {	
-    fileList = argv + 1;         // salta nome do programa
-    nFiles = argc - 1;  	     // desconsidera nome do programa
+    fileList = argv + 1;         
+    nFiles = argc - 1;  	     
 	
-	yyFlexLexer lexer;	 		 // analisador léxico
-    lexer.switch_streams(&fin);  // altera entrada para arquivo
-	lexer.yywrap();				 // abre arquivo
+	yyFlexLexer lexer;	 		 
+    lexer.switch_streams(&fin);  
+	lexer.yywrap();				
 
-	// processa arquivo aberto
-	if (openFile)
-	{
-		// yylex chama yywrap ao final de cada arquivo
-		lexer.yylex();
+	if (openFile) {
+        lexer.yylex();
+        cout << "===============================================" << endl;
+        cout << "     Ocorrencias dos Elementos Presentes      " << endl;
+        cout << "===============================================" << endl;
 
-        // exibe as estatísticas para o arquivo processado 
-    	cout << "Ocorrencia dos elementos presentes no texto\n";
-        cout << "Classes: " << numClasses << "\n";
-        cout << "Propriedades: " << numProperties << "\n";
-        cout << "Individuos: " << numIndividuos << "\n";
-        cout << "Cardinalidades: " << numCardinalidades << "\n";
-        cout << "Tipos: " << numTipos << "\n";
-        cout << "Namespaces: " << numNamespace << "\n";
-        cout << "Simbolos: " << numSimbolos << "\n";
-        cout << "Palavras reservadas: " << numReservadas << "\n";	
-	}
+        // Exibindo o resumo geral
+        cout << "Resumo Geral:" << endl;
+        cout << "-----------------------------------------------" << endl;
+        cout << "Classes        : " << numClasses << endl;
+        cout << "Propriedades   : " << numProperties << endl;
+        cout << "Individuos     : " << numIndividuos << endl;
+        cout << "Simbolos       : " << numSimbolos << endl;
+        cout << "Reservadas     : " << numReservadas << endl;
+        cout << "Cardinalidades : " << numCardinalidades << endl;
+        cout << "Namespace      : " << numNamespace << endl;
+        cout << "Tipos          : " << numTipos << endl;
+        cout << "-----------------------------------------------" << endl;
+
+        // Exibindo as classes
+        cout << "Classes Encontradas:" << endl;
+        cout << "-----------------------------------------------" << endl;
+        for (auto it = classes.begin(); it != classes.end(); it++) {
+            cout << it->first << ": " << it->second << endl;
+        }
+        cout << "-----------------------------------------------" << endl;
+
+        // Exibindo as propriedades
+        cout << "Propriedades Encontradas:" << endl;
+        cout << "-----------------------------------------------" << endl;
+        for (auto it = propriedades.begin(); it != propriedades.end(); it++) {
+            cout << it->first << ": " << it->second << endl;
+        }
+        cout << "-----------------------------------------------" << endl;
+
+        // Exibindo os indivíduos
+        cout << "Individuos Encontrados:" << endl;
+        cout << "-----------------------------------------------" << endl;
+        for (auto it = individuos.begin(); it != individuos.end(); it++) {
+            cout << it->first << ": " << it->second << endl;
+        }
+        cout << "===============================================" << endl;
+        cout << "\nApenas classes, propriedades e individuos foram exibidos por uma questao de estetica!\n" << endl;
+    }
 }
-
-
-// a função yylex chama yywrap para tratar EOF, 
-// permitindo assim a abertura de outros aquivos
 
 int yyFlexLexer::yywrap()
 {
-	// se não for o primeiro nem o último arquivo de uma sequência válida
-	if ((currentFile != 0) && (nFiles > 1)) 
-    {
-		// exibe as estatísticas para o arquivo processado 
-    	cout << "Ocorrencia dos elementos presentes no texto\n";
-        cout << "Classes: " << numClasses << "\n";
-        cout << "Propriedades: " << numProperties << "\n";
-        cout << "Individuos: " << numIndividuos << "\n";
-        cout << "Cardinalidades: " << numCardinalidades << "\n";
-        cout << "Tipos: " << numTipos << "\n";
-        cout << "Namespaces: " << numNamespace << "\n";
-        cout << "Simbolos: " << numSimbolos << "\n";
-        cout << "Palavras reservadas: " << numReservadas << "\n";	
-	}
-
-	// fecha o arquivo processado
 	if (openFile)
 	{    
 		openFile = false;
 		fin.close();
 	}
 
-	// enquanto existir arquivos para processar, tentar abrir o próximo
 	while (!openFile && (fileList[currentFile] != nullptr)) 
     {
 		fin.open(fileList[currentFile++]);
@@ -1967,7 +1987,7 @@ int yyFlexLexer::yywrap()
 		}		
 	}
 
-	return (openFile ? 0 : 1);	// 0 significa que tem mais entrada para processar
+	return (openFile ? 0 : 1);
 }
 
 void inserir(int tipo, string palavra) {
