@@ -1,38 +1,24 @@
 {
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "cmake debug",
+            "label": "build",
             "type": "shell",
-            "command": "cmake",
-            "args": [
-                "-DCMAKE_BUILD_TYPE=Debug",
-                "-G",
-                "MinGW Makefiles",
-                ".."
-            ],
-            "options": {
-                "cwd": "${workspaceFolder}/Debug",
-                "env": {
-                    "PATH": "${env:PATH};C:/MinGW/bin"
-                }
+            "command": "make",
+            "group": {
+                "kind": "build",
+                "isDefault": true
             },
-            "problemMatcher": []
-        },
-        {
-            "label": "make debug",
-            "type": "shell",
-            "command": "mingw32-make",
-            "args": [],
-            "options": {
-                "cwd": "${workspaceFolder}/Debug",
-                "env": {
-                    "PATH": "${env:PATH};C:/MinGW/bin"
-                }
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "new",
+                "showReuseMessage": true
             },
-            "problemMatcher": [
-                "$gcc"
-            ]
+            "problemMatcher": "$gcc"
         }
     ]
 }
