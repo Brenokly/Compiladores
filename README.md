@@ -66,7 +66,7 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 ### Linux:
 1. No **Terminal**, navegue até a pasta:
    ```bash
-   cd /caminho/para/Compiladores/Unidade\ 1\ AnalisadorLexico
+   cd "Compiladores/Unidade 1 AnalisadorLexico"
    ```
 2. Execute o comando:
    ```bash
@@ -99,4 +99,3 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 ---
 
 Explore, programe e aprenda! 🚀
-```
