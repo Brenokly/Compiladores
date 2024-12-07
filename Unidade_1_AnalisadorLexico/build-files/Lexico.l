@@ -56,9 +56,10 @@ maiuscula [A-Z]
 minuscula [a-z]
 digito [0-9]
 
-RESERVADAS {maiuscula}({letra})*
-PROPERTYS {minuscula}({letra})*
 NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
+RESERVADAS {maiuscula}({letra})*
+PROPINVALIDA {minuscula}({letra})*{digito}+
+PROPERTYS {minuscula}({letra})*
 CLASS {maiuscula}({letra})*(_({letra})+)*       
 SIMBOLO [\[\]\{\}\(\),\"\"|<|>|=]
 INDIVIDUOS {maiuscula}({letra})*{NUM}
@@ -93,24 +94,18 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
     }
 }
 {DATATYPE}         { numTipos++;}
+{PROPINVALIDA}     {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";}
 {PROPERTYS}        {
-    // TODO corrigir: verificar se começa com uma letra minúscula e tiver número no final
-    if (isdigit(yytext[strlen(yytext) - 1])) {      // aparentemente o flex separa a palavra do número, então não tem como verificar se o último caractere é um dígito porque não vai ter o dígito
-        cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
-    }
-    else 
-    {
-        auto it = symbolTable.find(toLower(yytext));
-        if (it != symbolTable.end()) {
-            numReservadas++;
+    auto it = symbolTable.find(toLower(yytext));
+    if (it != symbolTable.end()) {
+        numReservadas++;
+    } else {
+        if (propriedades.find(yytext) == propriedades.end()) {
+            propriedades[yytext] = 1;
         } else {
-            if (propriedades.find(yytext) == propriedades.end()) {
-                propriedades[yytext] = 1;
-            } else {
-                propriedades[yytext]++;
-            }
-            numProperties++;
+            propriedades[yytext]++;
         }
+        numProperties++;
     }
 }
 {INDIVIDUOS}       {
