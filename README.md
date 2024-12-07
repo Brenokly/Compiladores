@@ -5,7 +5,11 @@
 
 ## Sobre o Projeto
 
-Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material de estudo, exercícios e implementações práticas para explorar os conceitos fundamentais da construção de compiladores, tradutores e interpretadores de linguagens de programação. Este repositório não abrange todas as fases do processo de compilação, mas vai da análise léxica à análise sintática, proporcionando uma visão prática e teórica sobre quase todo o tema.  
+Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material de estudo, exercícios e implementações práticas para explorar os conceitos fundamentais da construção de compiladores, tradutores e interpretadores de linguagens de programação. Este repositório não abrange todas as fases do processo de compilação, mas vai da análise léxica à análise sintática, proporcionando uma visão prática e teórica sobre quase todo o tema.
+
+## Linguagem OWL2 - Manchester Syntax
+
+Este projeto foca no desenvolvimento de um analisador léxico para reconhecer tokens da linguagem **OWL2 (Web Ontology Language)** no formato **Manchester Syntax**. OWL é usada para descrever ontologias na web, conectando recursos e conceitos através de relações semânticas. O objetivo é identificar palavras reservadas, identificadores de classes e propriedades, símbolos especiais e tipos de dados dessa linguagem.
 
 ## Sumário
 
