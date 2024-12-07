@@ -5,67 +5,90 @@
 
 ## Sobre o Projeto
 
-Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material de estudo, exercícios e implementações práticas para explorar os conceitos fundamentais da construção de compiladores, tradutores e interpretadores de linguagens de programação. Este repositório não abrange todas as fases do processo de compilação, vai apenas da análise léxica à análise sintática, proporcionando uma visão prática e teórica sobre quase todo o tema.  
+Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material de estudo, exercícios e implementações práticas para explorar os conceitos fundamentais da construção de compiladores, tradutores e interpretadores de linguagens de programação. Este repositório não abrange todas as fases do processo de compilação, mas vai da análise léxica à análise sintática, proporcionando uma visão prática e teórica sobre quase todo o tema.
 
-## Objetivos 🎯  
+## Linguagem OWL2 - Manchester Syntax
+
+Este projeto foca no desenvolvimento de um analisador léxico para reconhecer tokens da linguagem **OWL2 (Web Ontology Language)** no formato **Manchester Syntax**. OWL é usada para descrever ontologias na web, conectando recursos e conceitos através de relações semânticas. O objetivo é identificar palavras reservadas, identificadores de classes e propriedades, símbolos especiais e tipos de dados dessa linguagem.
+
+## Sumário
+
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Objetivos](#objetivos)
+- [Conteúdo Programático](#conteúdo-programático)
+  - [Unidade I: Fundamentos da Compilação](#unidade-i-fundamentos-da-compilação)
+  - [Unidade II: Análise Léxica e Sintática](#unidade-ii-análise-léxica-e-sintática)
+  - [Unidade III: Análise Sintática e Geração de Código](#unidade-iii-análise-sintática-e-geração-de-código)
+- [Referências Bibliográficas](#referências-bibliográficas)
+  - [Obrigatórias](#obrigatórias)
+  - [Complementares](#complementares)
+
+---
+
+## Objetivos  
 - Entender e implementar as principais etapas de um compilador.  
 - Aprender a construir e utilizar ferramentas de análise léxica e sintática.  
 - Desenvolver a habilidade de gerar e otimizar código para linguagens simplificadas.  
 
 ---
 
-## Conteúdo Programático 📚  
+## Conteúdo Programático  
 
-### Unidade I: Fundamentos da Compilação 🛠️  
-- **Ambiente de Trabalho**: Configuração e ferramentas essenciais.  
-- **Introdução às Fases da Compilação**:  
-  - Análise léxica  
-  - Análise sintática  
-  - Tabela de símbolos  
-  - Análise semântica  
-  - Representação intermediária  
-- **Carga Horária**: 10 horas teóricas | 10 horas práticas  
+## Unidade I: Fundamentos da Compilação  
 
----
+Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise léxica**, onde o código fonte é transformado em uma sequência de tokens.
 
-### Unidade II: Análise Léxica e Sintática 🧐  
-- **Análise Léxica**:  
-  - Reconhecimento de tokens  
-  - Ferramentas como *Lex* e *Flex*  
-  - Autômatos Finitos  
-- **Gramáticas Livre de Contexto**:  
-  - Transformação de gramáticas  
-  - Análise sintática descendente (*Top-Down Parsing*)  
-- **Carga Horária**: 10 horas teóricas | 10 horas práticas  
+- **Arquivos envolvidos**:
+  - `Lexico.exe`: Executável para rodar o analisador léxico.
+  - `Lexico.l`: Arquivo fonte do analisador léxico, contendo as expressões regulares e a lógica de análise.
+  - Arquivo `Teste1`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
 
----
+**Como usar a Unidade I**:
 
-### Unidade III: Análise Sintática e Geração de Código ⚙️  
-- **Análise Sintática Ascendente** (*Bottom-Up Parsing*).  
-- **Ferramentas para Análise Sintática**: *Yacc*, *Bison*.  
-- **Esquemas de Tradução Dirigida por Sintaxe**.  
-- **Geração e Otimização de Código**:  
-  - Representação intermediária  
-  - Técnicas de otimização básica  
-- **Carga Horária**: 10 horas teóricas | 10 horas práticas  
+Para executar a análise léxica, siga os seguintes passos após clonar o repositório:
 
----
+1. Clone o repositório para o seu computador:
+   ```bash
+   git clone https://github.com/usuario/Compiladores.git
+   ```
 
-## Competências e Habilidades 💡  
-Ao concluir a disciplina, o aluno será capaz de:  
-1. Reconhecer as etapas fundamentais do processo de compilação.  
-2. Implementar um compilador funcional para uma linguagem de programação simplificada.  
-3. Utilizar ferramentas e técnicas modernas na análise e geração de código.  
+2. Abra o projeto na sua IDE de preferência na pasta do projeto que surgiu ("Compiladores") quando você clonou .
 
----
+3. Abra o **Terminal** e navegue até a pasta `Unidade 1 AnalisadorLexico`, conforme o sistema operacional:
 
-## Metodologia 📖  
-- **Aulas Expositivas**: Para abordagem teórica e conceitos fundamentais.  
-- **Práticas de Laboratório**: Para implementação e experimentação.  
+### Windows:
+1. No **Prompt de Comando**, dentro da pasta do projeto "Compiladores", navegue até a pasta:
+   ```bash
+   cd Unidade_1_AnalisadorLexico
+   ```
+2. Execute o analisador léxico passando o arquivo de teste como argumento:
+   ```bash
+   Lexico.exe Teste1
+   ```
+3. O resultado será mostrado no terminal, exibindo informações sobre **classes**, **propriedades**, **indivíduos** e **outros** elementos encontrados no arquivo.
+
+### Linux:
+1. No **Terminal**, navegue até a pasta:
+   ```bash
+   cd Compiladores/Unidade_1_AnalisadorLexico
+   ```
+2. Execute o comando:
+   ```bash
+   ./Lexico.exe Teste1
+   ```
+3. O resultado será exibido no terminal conforme o esperado.
 
 ---
 
-## Referências Bibliográficas 📚  
+### Unidade II: Análise Léxica e Sintática  
+
+---
+
+### Unidade III: Análise Sintática e Geração de Código  
+
+---
+
+## Referências Bibliográficas  
 
 ### Obrigatórias  
 - Aho, Alfred V. *Compiladores: Princípios, Técnicas e Ferramentas*. 2ª ed. Pearson Addison-Wesley, 2008. ISBN: 978-85-88639-84-9.  
