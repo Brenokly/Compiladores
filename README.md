@@ -53,9 +53,9 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 3. Abra o **Terminal** e navegue até a pasta `Unidade 1 AnalisadorLexico`, conforme o sistema operacional:
 
 ### Windows:
-1. No **Prompt de Comando**, navegue até a pasta:
+1. No **Prompt de Comando**, dentro da pasta do projeto "Compiladores", navegue até a pasta:
    ```bash
-   cd "C:\caminho\para\Compiladores\Unidade 1 AnalisadorLexico"
+   cd "Unidade 1 AnalisadorLexico"
    ```
 2. Execute o analisador léxico passando o arquivo de teste como argumento:
    ```bash
