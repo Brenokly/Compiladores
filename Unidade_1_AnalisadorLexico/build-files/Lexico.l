@@ -46,18 +46,19 @@ unsigned currentFile = 0;
 bool openFile = false;
 ifstream fin;
 int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
+int linha = 1;
 %}
 
-delim [ \t\n]
+delim [ \t]
 brancos {delim}*
 letra [a-zA-Z]
 maiuscula [A-Z]
 minuscula [a-z]
 digito [0-9]
 
-NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
 RESERVADAS {maiuscula}({letra})*
 PROPERTYS {minuscula}({letra})*
+NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
 CLASS {maiuscula}({letra})*(_({letra})+)*       
 SIMBOLO [\[\]\{\}\(\),\"\"|<|>|=]
 INDIVIDUOS {maiuscula}({letra})*{NUM}
@@ -65,13 +66,14 @@ NAMESPACE (owl\:|rdf\:|rdfs\:|xsd\:)
 DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64Binary|boolean|byte|dateTime|dateTimeStamp|decimal|double|float|hexBinary|int|integer|language|long|Name|NCName|negativeInteger|NMTOKEN|nonNegativeInteger|nonPositiveInteger|normalizedString|positiveInteger|short|string|token|unsignedByte|unsignedInt|unsignedLong|unsignedShort)
 %%
 
+\n                 {linha++;}
 {brancos}+         {}
 {RESERVADAS}":"    {
     auto it = symbolTable.find(yytext); 
     if (it != symbolTable.end()) {
         numReservadas++;
     } else {
-        cout << "Erro de sintaxe: " << yytext << "\n";
+        cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
     }
 }
 {CLASS}            {
@@ -87,21 +89,28 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 
         numClasses++;
     } else {
-        cout << "Erro de sintaxe: " << yytext << "\n";
+        cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
     }
 }
 {DATATYPE}         { numTipos++;}
 {PROPERTYS}        {
-    auto it = symbolTable.find(toLower(yytext)); 
-    if (it != symbolTable.end()) {
-        numReservadas++;
-    } else {
-        if (propriedades.find(yytext) == propriedades.end()) {
-            propriedades[yytext] = 1;
+    // TODO corrigir: verificar se começa com uma letra minúscula e tiver número no final
+    if (isdigit(yytext[strlen(yytext) - 1])) {      // aparentemente o flex separa a palavra do número, então não tem como verificar se o último caractere é um dígito porque não vai ter o dígito
+        cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
+    }
+    else 
+    {
+        auto it = symbolTable.find(toLower(yytext));
+        if (it != symbolTable.end()) {
+            numReservadas++;
         } else {
-            propriedades[yytext]++;
+            if (propriedades.find(yytext) == propriedades.end()) {
+                propriedades[yytext] = 1;
+            } else {
+                propriedades[yytext]++;
+            }
+            numProperties++;
         }
-        numProperties++;
     }
 }
 {INDIVIDUOS}       {
@@ -113,8 +122,8 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
         }}
 {NUM}              {numCardinalidades++;}
 {SIMBOLO}          {numSimbolos++;}
-{NAMESPACE}        {numNamespace++; }
-.|\n               {cout << "Erro de sintaxe: " << yytext << "\n";}
+{NAMESPACE}        {numNamespace++;}
+.                  {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";}
 %%
 
 // Função principal
