@@ -1,13 +1,16 @@
 %{
+// Inclusões de bibliotecas
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <unordered_map>
 using namespace std;
 
+// Definição de constantes
 enum {SOME = 256, ALL, VALUE, MIN, MAX, EXACTLY, THAT, NOT, AND, OR, CLASS, EQUIVALENTTO, INDIVIDUALS, 
 SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE, BRANCA};
 
+// Definição da tabela de símbolos (Temporária)
 unordered_map<string, int> symbolTable = {
     {"some", SOME},
     {"all", ALL},
@@ -26,23 +29,27 @@ unordered_map<string, int> symbolTable = {
     {"DisjointClasses:", DISJOINTCLASSES},
 };
 
+// Definição de mapas para armazenar as ocorrências (classes, propriedades e indivíduos)
 unordered_map<string, int> classes;
 unordered_map<string, int> individuos;
 unordered_map<string, int> propriedades;
 
+// Definição de funções auxiliares
 void inserir(int tipo, string palavra);
 int buscar(string palavra);
 string toLower(string str); 
 
+// Definição de variáveis globais
 char **fileList;
 unsigned nFiles;
 unsigned currentFile = 0;
-bool openFile = false;
+bool openFile, erro = false;
 ifstream fin;
 int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
+int linha = 1;
 %}
 
-delim [ \t\n]
+delim [ \t]
 brancos {delim}*
 letra [a-zA-Z]
 maiuscula [A-Z]
@@ -51,21 +58,24 @@ digito [0-9]
 
 NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
 RESERVADAS {maiuscula}({letra})*
+PROPINVALIDA {minuscula}({letra})*{digito}+
 PROPERTYS {minuscula}({letra})*
 CLASS {maiuscula}({letra})*(_({letra})+)*       
 SIMBOLO [\[\]\{\}\(\),\"\"|<|>|=]
 INDIVIDUOS {maiuscula}({letra})*{NUM}
 NAMESPACE (owl\:|rdf\:|rdfs\:|xsd\:)
 DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64Binary|boolean|byte|dateTime|dateTimeStamp|decimal|double|float|hexBinary|int|integer|language|long|Name|NCName|negativeInteger|NMTOKEN|nonNegativeInteger|nonPositiveInteger|normalizedString|positiveInteger|short|string|token|unsignedByte|unsignedInt|unsignedLong|unsignedShort)
-
 %%
+
+\n                 {linha++;}
 {brancos}+         {}
 {RESERVADAS}":"    {
     auto it = symbolTable.find(yytext); 
     if (it != symbolTable.end()) {
         numReservadas++;
     } else {
-        cout << "Erro de sintaxe: " << yytext << "\n";
+        cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
+        erro = true;
     }
 }
 {CLASS}            {
@@ -81,12 +91,14 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 
         numClasses++;
     } else {
-        cout << "Erro de sintaxe: " << yytext << "\n";
+        cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
+        erro = true;
     }
 }
 {DATATYPE}         { numTipos++;}
+{PROPINVALIDA}     {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 {PROPERTYS}        {
-    auto it = symbolTable.find(toLower(yytext)); 
+    auto it = symbolTable.find(toLower(yytext));
     if (it != symbolTable.end()) {
         numReservadas++;
     } else {
@@ -107,21 +119,25 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
         }}
 {NUM}              {numCardinalidades++;}
 {SIMBOLO}          {numSimbolos++;}
-{NAMESPACE}        {numNamespace++; }
-.|\n               {cout << "Erro de sintaxe: " << yytext << "\n";}
+{NAMESPACE}        {numNamespace++;}
+.                  {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 %%
 
+// Função principal
 int main(int argc, char ** argv)
 {	
-    fileList = argv + 1;         
-    nFiles = argc - 1;  	     
+    fileList = argv + 1;                                                        // Lista de arquivos         
+    nFiles = argc - 1;                                                          // Número de arquivos
 	
-	yyFlexLexer lexer;	 		 
-    lexer.switch_streams(&fin);  
-	lexer.yywrap();				
+	yyFlexLexer lexer;	 		                                                // Instância do analisador léxico
+    lexer.switch_streams(&fin);                                                 // Alterando o fluxo de entrada
+	lexer.yywrap();				                                                // Inicializando o fluxo de entrada
 
-	if (openFile) {
+	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
+
+        if (erro) { return 1; }                                                // Verificando se houve erro
+
         cout << "===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
         cout << "===============================================" << endl;
@@ -166,6 +182,7 @@ int main(int argc, char ** argv)
     }
 }
 
+// Função de finalização
 int yyFlexLexer::yywrap()
 {
 	if (openFile)

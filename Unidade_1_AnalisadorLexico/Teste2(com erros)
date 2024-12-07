@@ -1,29 +1,29 @@
-Class: Customer
+Clas: Customer
 
-    EquivalentTo:
+    Equivalento:
         Person
         and (purchasedPizza some Pizza)
         and (hasPhone some xsd:string)
 
-    Individuals:
+    individuals:
         Customer1,
         Customer10,
         Customer2,
         Customer3,
-        Customer4,
+        customer4,
         Customer5,
         Customer6,
         Customer7,
         Customer8,
         Customer9
 
-Class: Employee
+Class:Employee
 
     SubClassOf:
         Person
-        and (ssn min 1 xsd:string)
+        and (ssn min 1xsd:string)
 
-    Individuals:
+    Individuals;
         Chef1,
         Manager1,
         Waiter1,
@@ -31,12 +31,12 @@ Class: Employee
 
 Class: Pizza
 
-    SubClassOf:
+    Subclassof:
         hasBase some PizzaBase,
         hasCaloricContent some xsd:integer
     
     DisjointClasses:
-        Pizza, PizzaBase, PizzaTopping
+        Pizza, PizzaBase, PizzaTopping_
     
     Individuals:
         CustomPizza1,
