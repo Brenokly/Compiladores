@@ -12,7 +12,7 @@ Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material d
 - [Sobre o Projeto](#sobre-o-projeto)
 - [Objetivos 🎯](#objetivos)
 - [Conteúdo Programático 📚](#conteúdo-programático)
-  - [Unidade I: Fundamentos da Compilação 🛠️](##Unidade-I:-Fundamentos-da-Compilação-🛠️)
+  - [Unidade I: Fundamentos da Compilação 🛠️](##Unidade-I:-Fundamentos-da-Compilação-🛠)
   - [Unidade II: Análise Léxica e Sintática 🧐](#unidade-ii-análise-léxica-e-sintática)
   - [Unidade III: Análise Sintática e Geração de Código ⚙️](#unidade-iii-análise-sintática-e-geração-de-código)
 - [Referências Bibliográficas 📚](#referências-bibliográficas)
