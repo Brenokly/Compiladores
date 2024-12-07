@@ -1,4 +1,3 @@
-```markdown
 ## Disciplina: Compiladores 🛠️  
 ### Curso: Ciência da Computação 💻  
 ### Universidade: UFERSA - Universidade Federal Rural do Semi-Árido 🌱  
