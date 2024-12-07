@@ -55,7 +55,7 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 ### Windows:
 1. No **Prompt de Comando**, dentro da pasta do projeto "Compiladores", navegue até a pasta:
    ```bash
-   cd "Unidade 1 AnalisadorLexico"
+   cd Unidade_1_AnalisadorLexico
    ```
 2. Execute o analisador léxico passando o arquivo de teste como argumento:
    ```bash
@@ -66,7 +66,7 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 ### Linux:
 1. No **Terminal**, navegue até a pasta:
    ```bash
-   cd "Compiladores/Unidade 1 AnalisadorLexico"
+   cd Compiladores/Unidade_1_AnalisadorLexico
    ```
 2. Execute o comando:
    ```bash
