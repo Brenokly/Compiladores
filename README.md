@@ -10,27 +10,27 @@ Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material d
 ## Sumário
 
 - [Sobre o Projeto](#sobre-o-projeto)
-- [Objetivos 🎯](#objetivos)
-- [Conteúdo Programático 📚](#conteúdo-programático)
-  - [Unidade I: Fundamentos da Compilação 🛠️ ](#unidade-i-fundamentos-da-compilação)
-  - [Unidade II: Análise Léxica e Sintática 🧐](#unidade-ii-análise-léxica-e-sintática)
-  - [Unidade III: Análise Sintática e Geração de Código ⚙️](#unidade-iii-análise-sintática-e-geração-de-código)
-- [Referências Bibliográficas 📚](#referências-bibliográficas)
+- [Objetivos](#objetivos)
+- [Conteúdo Programático](#conteúdo-programático)
+  - [Unidade I: Fundamentos da Compilação](#unidade-i-fundamentos-da-compilação)
+  - [Unidade II: Análise Léxica e Sintática](#unidade-ii-análise-léxica-e-sintática)
+  - [Unidade III: Análise Sintática e Geração de Código](#unidade-iii-análise-sintática-e-geração-de-código)
+- [Referências Bibliográficas](#referências-bibliográficas)
   - [Obrigatórias](#obrigatórias)
   - [Complementares](#complementares)
 
 ---
 
-## Objetivos 🎯  
+## Objetivos  
 - Entender e implementar as principais etapas de um compilador.  
 - Aprender a construir e utilizar ferramentas de análise léxica e sintática.  
 - Desenvolver a habilidade de gerar e otimizar código para linguagens simplificadas.  
 
 ---
 
-## Conteúdo Programático 📚  
+## Conteúdo Programático  
 
-## Unidade I: Fundamentos da Compilação 🛠️  
+## Unidade I: Fundamentos da Compilação  
 
 Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise léxica**, onde o código fonte é transformado em uma sequência de tokens.
 
@@ -76,15 +76,15 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 
 ---
 
-### Unidade II: Análise Léxica e Sintática 🧐  
+### Unidade II: Análise Léxica e Sintática  
 
 ---
 
-### Unidade III: Análise Sintática e Geração de Código ⚙️  
+### Unidade III: Análise Sintática e Geração de Código  
 
 ---
 
-## Referências Bibliográficas 📚  
+## Referências Bibliográficas  
 
 ### Obrigatórias  
 - Aho, Alfred V. *Compiladores: Princípios, Técnicas e Ferramentas*. 2ª ed. Pearson Addison-Wesley, 2008. ISBN: 978-85-88639-84-9.  
