@@ -30,7 +30,7 @@ Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material d
 
 ## Conteúdo Programático 📚  
 
-### Unidade I: Fundamentos da Compilação 🛠️  
+## Unidade I: Fundamentos da Compilação 🛠️  
 
 Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise léxica**, onde o código fonte é transformado em uma sequência de tokens.
 
