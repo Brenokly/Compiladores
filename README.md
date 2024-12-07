@@ -48,7 +48,7 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
    git clone https://github.com/usuario/Compiladores.git
    ```
 
-2. Abra o projeto na sua IDE de preferência na pasta do projeto que surgiu quando você clonou ("Compiladores).
+2. Abra o projeto na sua IDE de preferência na pasta do projeto que surgiu ("Compiladores") quando você clonou .
 
 3. Abra o **Terminal** e navegue até a pasta `Unidade 1 AnalisadorLexico`, conforme o sistema operacional:
 
