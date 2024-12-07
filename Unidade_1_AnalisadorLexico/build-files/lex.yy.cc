@@ -841,7 +841,7 @@ string toLower(string str);
 char **fileList;
 unsigned nFiles;
 unsigned currentFile = 0;
-bool openFile = false;
+bool openFile, erro = false;
 ifstream fin;
 int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
 int linha = 1;
@@ -1058,12 +1058,13 @@ YY_RULE_SETUP
         numReservadas++;
     } else {
         cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
+        erro = true;
     }
 }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 80 ".\\Lexico.l"
+#line 81 ".\\Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
@@ -1078,22 +1079,23 @@ YY_RULE_SETUP
         numClasses++;
     } else {
         cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
+        erro = true;
     }
 }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 96 ".\\Lexico.l"
+#line 98 ".\\Lexico.l"
 { numTipos++;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 97 ".\\Lexico.l"
-{cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";}
+#line 99 ".\\Lexico.l"
+{cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 98 ".\\Lexico.l"
+#line 100 ".\\Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext));
     if (it != symbolTable.end()) {
@@ -1110,7 +1112,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 111 ".\\Lexico.l"
+#line 113 ".\\Lexico.l"
 {
         numIndividuos++;        
         if (individuos.find(yytext) == individuos.end()) {
@@ -1121,30 +1123,30 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 118 ".\\Lexico.l"
+#line 120 ".\\Lexico.l"
 {numCardinalidades++;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 119 ".\\Lexico.l"
+#line 121 ".\\Lexico.l"
 {numSimbolos++;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 120 ".\\Lexico.l"
+#line 122 ".\\Lexico.l"
 {numNamespace++;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 121 ".\\Lexico.l"
-{cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";}
+#line 123 ".\\Lexico.l"
+{cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 122 ".\\Lexico.l"
+#line 124 ".\\Lexico.l"
 ECHO;
 	YY_BREAK
-#line 1147 "lex.yy.cc"
+#line 1149 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2107,7 +2109,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 122 ".\\Lexico.l"
+#line 124 ".\\Lexico.l"
 
 
 // Função principal
@@ -2122,6 +2124,9 @@ int main(int argc, char ** argv)
 
 	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
+
+        if (erro) { return 1; }                                                // Verificando se houve erro
+
         cout << "===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
         cout << "===============================================" << endl;

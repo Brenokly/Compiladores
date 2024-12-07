@@ -43,7 +43,7 @@ string toLower(string str);
 char **fileList;
 unsigned nFiles;
 unsigned currentFile = 0;
-bool openFile = false;
+bool openFile, erro = false;
 ifstream fin;
 int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
 int linha = 1;
@@ -75,6 +75,7 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
         numReservadas++;
     } else {
         cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
+        erro = true;
     }
 }
 {CLASS}            {
@@ -91,10 +92,11 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
         numClasses++;
     } else {
         cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";
+        erro = true;
     }
 }
 {DATATYPE}         { numTipos++;}
-{PROPINVALIDA}     {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";}
+{PROPINVALIDA}     {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 {PROPERTYS}        {
     auto it = symbolTable.find(toLower(yytext));
     if (it != symbolTable.end()) {
@@ -118,7 +120,7 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 {NUM}              {numCardinalidades++;}
 {SIMBOLO}          {numSimbolos++;}
 {NAMESPACE}        {numNamespace++;}
-.                  {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n";}
+.                  {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 %%
 
 // Função principal
@@ -133,6 +135,9 @@ int main(int argc, char ** argv)
 
 	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
+
+        if (erro) { return 1; }                                                // Verificando se houve erro
+
         cout << "===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
         cout << "===============================================" << endl;
