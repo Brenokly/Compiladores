@@ -5,7 +5,21 @@
 
 ## Sobre o Projeto
 
-Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material de estudo, exercícios e implementações práticas para explorar os conceitos fundamentais da construção de compiladores, tradutores e interpretadores de linguagens de programação. Este repositório não abrange todas as fases do processo de compilação, vai apenas da análise léxica à análise sintática, proporcionando uma visão prática e teórica sobre quase todo o tema.  
+Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material de estudo, exercícios e implementações práticas para explorar os conceitos fundamentais da construção de compiladores, tradutores e interpretadores de linguagens de programação. Este repositório não abrange todas as fases do processo de compilação, mas vai da análise léxica à análise sintática, proporcionando uma visão prática e teórica sobre quase todo o tema.  
+
+## Sumário
+
+- [Sobre o Projeto](#sobre-o-projeto)
+- [Objetivos 🎯](#objetivos)
+- [Conteúdo Programático 📚](#conteúdo-programático)
+  - [Unidade I: Fundamentos da Compilação 🛠️](#unidade-i-fundamentos-da-compilação)
+  - [Unidade II: Análise Léxica e Sintática 🧐](#unidade-ii-análise-léxica-e-sintática)
+  - [Unidade III: Análise Sintática e Geração de Código ⚙️](#unidade-iii-análise-sintática-e-geração-de-código)
+- [Referências Bibliográficas 📚](#referências-bibliográficas)
+  - [Obrigatórias](#obrigatórias)
+  - [Complementares](#complementares)
+
+---
 
 ## Objetivos 🎯  
 - Entender e implementar as principais etapas de um compilador.  
@@ -17,37 +31,56 @@ Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material d
 ## Conteúdo Programático 📚  
 
 ### Unidade I: Fundamentos da Compilação 🛠️  
-- **Ambiente de Trabalho**: Configuração e ferramentas essenciais.  
-- **Introdução às Fases da Compilação**:  
-  - Análise léxica  
-  - Análise sintática  
-  - Tabela de símbolos  
-  - Análise semântica  
-  - Representação intermediária  
-- **Carga Horária**: 10 horas teóricas | 10 horas práticas  
+
+Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise léxica**, onde o código fonte é transformado em uma sequência de tokens.
+
+- **Arquivos envolvidos**:
+  - `Lexico.exe`: Executável para rodar o analisador léxico.
+  - `Lexico.l`: Arquivo fonte do analisador léxico, contendo as expressões regulares e a lógica de análise.
+  - Pasta `Teste1`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
+
+**Como usar a Unidade I**:
+
+Para executar a análise léxica, siga os seguintes passos após clonar o repositório:
+
+1. Clone o repositório para o seu computador:
+   ```bash
+   git clone https://github.com/usuario/Compiladores.git
+   ```
+
+2. Abra o projeto na sua IDE de preferência.
+
+3. Abra o **Terminal** e navegue até a pasta `Unidade 1 AnalisadorLexico`, conforme o sistema operacional:
+
+### Windows:
+1. No **Prompt de Comando**, navegue até a pasta:
+   ```bash
+   cd "C:\caminho\para\Compiladores\Unidade 1 AnalisadorLexico"
+   ```
+2. Execute o analisador léxico passando o arquivo de teste como argumento:
+   ```bash
+   Lexico.exe Teste1
+   ```
+3. O resultado será mostrado no terminal, exibindo informações sobre **classes**, **propriedades**, **indivíduos** e **outros** elementos encontrados no arquivo.
+
+### Linux:
+1. No **Terminal**, navegue até a pasta:
+   ```bash
+   cd /caminho/para/Compiladores/Unidade\ 1\ AnalisadorLexico
+   ```
+2. Execute o comando:
+   ```bash
+   ./Lexico.exe Teste1
+   ```
+3. O resultado será exibido no terminal conforme o esperado.
 
 ---
 
 ### Unidade II: Análise Léxica e Sintática 🧐  
-- **Análise Léxica**:  
-  - Reconhecimento de tokens  
-  - Ferramentas como *Lex* e *Flex*  
-  - Autômatos Finitos  
-- **Gramáticas Livre de Contexto**:  
-  - Transformação de gramáticas  
-  - Análise sintática descendente (*Top-Down Parsing*)  
-- **Carga Horária**: 10 horas teóricas | 10 horas práticas  
 
 ---
 
 ### Unidade III: Análise Sintática e Geração de Código ⚙️  
-- **Análise Sintática Ascendente** (*Bottom-Up Parsing*).  
-- **Ferramentas para Análise Sintática**: *Yacc*, *Bison*.  
-- **Esquemas de Tradução Dirigida por Sintaxe**.  
-- **Geração e Otimização de Código**:  
-  - Representação intermediária  
-  - Técnicas de otimização básica  
-- **Carga Horária**: 10 horas teóricas | 10 horas práticas  
 
 ---
 
@@ -66,3 +99,4 @@ Bem-vindo ao repositório **Compiladores**! Aqui, você encontrará o material d
 ---
 
 Explore, programe e aprenda! 🚀
+```
