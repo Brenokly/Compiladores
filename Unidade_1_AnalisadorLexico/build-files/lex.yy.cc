@@ -795,8 +795,8 @@ static const flex_int16_t yy_chk[1448] =
 #define yymore() yymore_used_but_not_detected
 #define YY_MORE_ADJ 0
 #define YY_RESTORE_YY_MORE_OFFSET
-#line 1 ".\\Lexico.l"
-#line 2 ".\\Lexico.l"
+#line 1 "Lexico.l"
+#line 2 "Lexico.l"
 // Inclusões de bibliotecas
 #include <iostream>
 #include <string>
@@ -978,7 +978,7 @@ YY_DECL
 		}
 
 	{
-#line 68 ".\\Lexico.l"
+#line 68 "Lexico.l"
 
 
 #line 984 "lex.yy.cc"
@@ -1041,17 +1041,17 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 70 ".\\Lexico.l"
+#line 70 "Lexico.l"
 {linha++;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 71 ".\\Lexico.l"
+#line 71 "Lexico.l"
 {}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 72 ".\\Lexico.l"
+#line 72 "Lexico.l"
 {
     auto it = symbolTable.find(yytext); 
     if (it != symbolTable.end()) {
@@ -1064,7 +1064,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 81 ".\\Lexico.l"
+#line 81 "Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
@@ -1085,17 +1085,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 98 ".\\Lexico.l"
+#line 98 "Lexico.l"
 { numTipos++;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 99 ".\\Lexico.l"
+#line 99 "Lexico.l"
 {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 100 ".\\Lexico.l"
+#line 100 "Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext));
     if (it != symbolTable.end()) {
@@ -1112,7 +1112,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 113 ".\\Lexico.l"
+#line 113 "Lexico.l"
 {
         numIndividuos++;        
         if (individuos.find(yytext) == individuos.end()) {
@@ -1123,27 +1123,27 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 120 ".\\Lexico.l"
+#line 120 "Lexico.l"
 {numCardinalidades++;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 121 ".\\Lexico.l"
+#line 121 "Lexico.l"
 {numSimbolos++;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 122 ".\\Lexico.l"
+#line 122 "Lexico.l"
 {numNamespace++;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 123 ".\\Lexico.l"
+#line 123 "Lexico.l"
 {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 124 ".\\Lexico.l"
+#line 124 "Lexico.l"
 ECHO;
 	YY_BREAK
 #line 1149 "lex.yy.cc"
@@ -2109,7 +2109,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 124 ".\\Lexico.l"
+#line 124 "Lexico.l"
 
 
 // Função principal
