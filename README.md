@@ -54,14 +54,14 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 
 2. Abra o projeto na sua IDE de preferência na pasta do projeto que surgiu ("Compiladores") quando você clonou .
 
-3. Abra o **Terminal** e navegue até a pasta `Unidade 1 AnalisadorLexico`, conforme o sistema operacional:
+3. Abra o **Terminal** da IDE e navegue até a pasta `Unidade_1_AnalisadorLexico`, conforme o sistema operacional:
 
 ### Windows:
-1. No **Prompt de Comando**, dentro da pasta do projeto "Compiladores", navegue até a pasta:
+1. No **Terminal**, dentro da pasta do projeto "Compiladores", navegue até a pasta:
    ```bash
    cd Unidade_1_AnalisadorLexico
    ```
-2. Execute o analisador léxico passando o arquivo de teste como argumento:
+2. Execute o analisador léxico, via terminal, passando o arquivo de teste como argumento:
    ```bash
    Lexico.exe Teste1
    ```

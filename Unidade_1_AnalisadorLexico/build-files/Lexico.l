@@ -8,7 +8,7 @@ using namespace std;
 
 // Definição de constantes
 enum {SOME = 256, ALL, VALUE, MIN, MAX, EXACTLY, THAT, NOT, AND, OR, CLASS, EQUIVALENTTO, INDIVIDUALS, 
-SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE, BRANCA};
+SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE, BRANCA};
 
 // Definição da tabela de símbolos (Temporária)
 unordered_map<string, int> symbolTable = {
@@ -27,6 +27,7 @@ unordered_map<string, int> symbolTable = {
     {"Individuals:", INDIVIDUALS},
     {"SubClassOf:", SUBCLASSOF},
     {"DisjointClasses:", DISJOINTCLASSES},
+    {"DisjointWith:", DISJOINTWITH}
 };
 
 // Definição de mapas para armazenar as ocorrências (classes, propriedades e indivíduos)
@@ -120,7 +121,7 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 {NUM}              {numCardinalidades++;}
 {SIMBOLO}          {numSimbolos++;}
 {NAMESPACE}        {numNamespace++;}
-.                  {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
+.                  {cout << "\nErro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 %%
 
 // Função principal
@@ -136,9 +137,7 @@ int main(int argc, char ** argv)
 	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
 
-        if (erro) { return 1; }                                                // Verificando se houve erro
-
-        cout << "===============================================" << endl;
+        cout << "\n===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
         cout << "===============================================" << endl;
 
