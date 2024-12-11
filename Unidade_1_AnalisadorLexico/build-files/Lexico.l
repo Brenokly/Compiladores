@@ -121,7 +121,7 @@ DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64
 {NUM}              {numCardinalidades++;}
 {SIMBOLO}          {numSimbolos++;}
 {NAMESPACE}        {numNamespace++;}
-.                  {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
+.                  {cout << "\nErro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 %%
 
 // Função principal
@@ -137,7 +137,7 @@ int main(int argc, char ** argv)
 	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
 
-        cout << "===============================================" << endl;
+        cout << "\n===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
         cout << "===============================================" << endl;
 
