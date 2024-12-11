@@ -50,7 +50,7 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 
 1. Clone o repositório para o seu computador:
    ```bash
-   git clone https://github.com/usuario/Compiladores.git
+   git clone https://github.com/Brenokly/Compiladores.git
    ```
 
 2. Abra o projeto na sua IDE de preferência na pasta do projeto que surgiu ("Compiladores") quando você clonou.
