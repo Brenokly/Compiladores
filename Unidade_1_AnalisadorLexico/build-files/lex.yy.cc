@@ -806,7 +806,7 @@ using namespace std;
 
 // Definição de constantes
 enum {SOME = 256, ALL, VALUE, MIN, MAX, EXACTLY, THAT, NOT, AND, OR, CLASS, EQUIVALENTTO, INDIVIDUALS, 
-SUBCLASSOF, DISJOINTCLASSES, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE, BRANCA};
+SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH, CLASSE, PROPERTY, ID, NUM, INDIVIDUOS, NAMESPACEID, DATATYPE, BRANCA};
 
 // Definição da tabela de símbolos (Temporária)
 unordered_map<string, int> symbolTable = {
@@ -825,6 +825,7 @@ unordered_map<string, int> symbolTable = {
     {"Individuals:", INDIVIDUALS},
     {"SubClassOf:", SUBCLASSOF},
     {"DisjointClasses:", DISJOINTCLASSES},
+    {"DisjointWith:", DISJOINTWITH}
 };
 
 // Definição de mapas para armazenar as ocorrências (classes, propriedades e indivíduos)
@@ -845,8 +846,8 @@ bool openFile, erro = false;
 ifstream fin;
 int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
 int linha = 1;
-#line 848 "lex.yy.cc"
 #line 849 "lex.yy.cc"
+#line 850 "lex.yy.cc"
 
 #define INITIAL 0
 
@@ -978,10 +979,10 @@ YY_DECL
 		}
 
 	{
-#line 68 "Lexico.l"
+#line 69 "Lexico.l"
 
 
-#line 984 "lex.yy.cc"
+#line 985 "lex.yy.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1041,17 +1042,17 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 70 "Lexico.l"
+#line 71 "Lexico.l"
 {linha++;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 71 "Lexico.l"
+#line 72 "Lexico.l"
 {}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 72 "Lexico.l"
+#line 73 "Lexico.l"
 {
     auto it = symbolTable.find(yytext); 
     if (it != symbolTable.end()) {
@@ -1064,7 +1065,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 81 "Lexico.l"
+#line 82 "Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext)); 
     if (it != symbolTable.end()) {
@@ -1085,17 +1086,17 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 98 "Lexico.l"
+#line 99 "Lexico.l"
 { numTipos++;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 99 "Lexico.l"
+#line 100 "Lexico.l"
 {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 100 "Lexico.l"
+#line 101 "Lexico.l"
 {
     auto it = symbolTable.find(toLower(yytext));
     if (it != symbolTable.end()) {
@@ -1112,7 +1113,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 113 "Lexico.l"
+#line 114 "Lexico.l"
 {
         numIndividuos++;        
         if (individuos.find(yytext) == individuos.end()) {
@@ -1123,30 +1124,30 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 120 "Lexico.l"
+#line 121 "Lexico.l"
 {numCardinalidades++;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 121 "Lexico.l"
+#line 122 "Lexico.l"
 {numSimbolos++;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 122 "Lexico.l"
+#line 123 "Lexico.l"
 {numNamespace++;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 123 "Lexico.l"
+#line 124 "Lexico.l"
 {cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 124 "Lexico.l"
+#line 125 "Lexico.l"
 ECHO;
 	YY_BREAK
-#line 1149 "lex.yy.cc"
+#line 1150 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2109,7 +2110,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 124 "Lexico.l"
+#line 125 "Lexico.l"
 
 
 // Função principal
@@ -2124,8 +2125,6 @@ int main(int argc, char ** argv)
 
 	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
-
-        if (erro) { return 1; }                                                // Verificando se houve erro
 
         cout << "===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
