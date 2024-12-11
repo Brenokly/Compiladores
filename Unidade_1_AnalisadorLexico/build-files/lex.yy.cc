@@ -1140,7 +1140,7 @@ YY_RULE_SETUP
 case 12:
 YY_RULE_SETUP
 #line 124 "Lexico.l"
-{cout << "Erro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
+{cout << "\nErro de sintaxe encontrado na linha " << linha << ": " << yytext << "\n"; erro = true;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
@@ -2126,7 +2126,7 @@ int main(int argc, char ** argv)
 	if (openFile) {                                                            // Verificando se o arquivo foi aberto
         lexer.yylex();
 
-        cout << "===============================================" << endl;
+        cout << "\n===============================================" << endl;
         cout << "     Ocorrencias dos Elementos Presentes      " << endl;
         cout << "===============================================" << endl;
 

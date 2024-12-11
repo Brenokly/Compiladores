@@ -19,6 +19,7 @@ Este projeto foca no desenvolvimento de um analisador léxico para reconhecer to
   - [Unidade I: Fundamentos da Compilação](#unidade-i-fundamentos-da-compilação)
   - [Unidade II: Análise Léxica e Sintática](#unidade-ii-análise-léxica-e-sintática)
   - [Unidade III: Análise Sintática e Geração de Código](#unidade-iii-análise-sintática-e-geração-de-código)
+- [Estrutura do Projeto](#estrutura-do-projeto)
 - [Referências Bibliográficas](#referências-bibliográficas)
   - [Obrigatórias](#obrigatórias)
   - [Complementares](#complementares)
@@ -34,14 +35,14 @@ Este projeto foca no desenvolvimento de um analisador léxico para reconhecer to
 
 ## Conteúdo Programático  
 
-## Unidade I: Fundamentos da Compilação  
+### Unidade I: Fundamentos da Compilação  
 
 Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise léxica**, onde o código fonte é transformado em uma sequência de tokens.
 
 - **Arquivos envolvidos**:
   - `Lexico.exe`: Executável para rodar o analisador léxico.
   - `Lexico.l`: Arquivo fonte do analisador léxico, contendo as expressões regulares e a lógica de análise.
-  - Arquivo `Teste1`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
+  - Arquivo `Teste1` & `Teste2`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
 
 **Como usar a Unidade I**:
 
@@ -49,10 +50,10 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 
 1. Clone o repositório para o seu computador:
    ```bash
-   git clone https://github.com/usuario/Compiladores.git
+   git clone https://github.com/Brenokly/Compiladores.git
    ```
 
-2. Abra o projeto na sua IDE de preferência na pasta do projeto que surgiu ("Compiladores") quando você clonou .
+2. Abra o projeto na sua IDE de preferência na pasta do projeto que surgiu ("Compiladores") quando você clonou.
 
 3. Abra o **Terminal** da IDE e navegue até a pasta `Unidade_1_AnalisadorLexico`, conforme o sistema operacional:
 
@@ -61,10 +62,12 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
    ```bash
    cd Unidade_1_AnalisadorLexico
    ```
+
 2. Execute o analisador léxico, via terminal, passando o arquivo de teste como argumento:
    ```bash
    Lexico.exe Teste1
    ```
+
 3. O resultado será mostrado no terminal, exibindo informações sobre **classes**, **propriedades**, **indivíduos** e **outros** elementos encontrados no arquivo.
 
 ### Linux:
@@ -72,10 +75,12 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
    ```bash
    cd Compiladores/Unidade_1_AnalisadorLexico
    ```
+
 2. Execute o comando:
    ```bash
    ./Lexico.exe Teste1
    ```
+
 3. O resultado será exibido no terminal conforme o esperado.
 
 ---
@@ -85,6 +90,25 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 ---
 
 ### Unidade III: Análise Sintática e Geração de Código  
+
+---
+
+## Estrutura do Projeto
+
+```plaintext
+.
+├── .vscode               # Configurações da IDE Visual Studio Code
+├── Compilador_BAGCompiler.pdf  # Documentação técnica do compilador
+├── README.md             # Documentação principal do projeto
+├── Unidade_1_AnalisadorLexico/
+│   ├── build_files/
+│   │   ├── lex.yy.c
+│   │   ├── Lexico.l
+│   │   └── makefile
+│   ├── Lexico.exe
+│   ├── Teste1             # Arquivo de entrada para testes
+│   └── Teste2
+```
 
 ---
 
