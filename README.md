@@ -42,7 +42,7 @@ Esta unidade abrange os conceitos iniciais relacionados à construção de compi
 - **Arquivos envolvidos**:
   - `Lexico.exe`: Executável para rodar o analisador léxico.
   - `Lexico.l`: Arquivo fonte do analisador léxico, contendo as expressões regulares e a lógica de análise.
-  - Arquivo `Teste1`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
+  - Arquivo `Teste1` & `Teste2`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
 
 **Como usar a Unidade I**:
 
