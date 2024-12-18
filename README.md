@@ -62,26 +62,31 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
    ```bash
    cd Unidade_1_AnalisadorLexico
    ```
-
-2. Execute o analisador léxico, via terminal, passando o arquivo de teste como argumento:
+2. Agora, entre dentro da pasta **Windows**:
+   ```bash
+   cd Windows
+   ``
+3. Execute o analisador léxico, via terminal, passando o arquivo de teste como argumento:
    ```bash
    Lexico.exe Teste1
    ```
 
-3. O resultado será mostrado no terminal, exibindo informações sobre **classes**, **propriedades**, **indivíduos** e **outros** elementos encontrados no arquivo.
+4. O resultado será mostrado no terminal, exibindo informações sobre **classes**, **propriedades**, **indivíduos** e **outros** elementos encontrados no arquivo.
 
 ### Linux:
 1. No **Terminal**, navegue até a pasta:
    ```bash
-   cd Compiladores/Unidade_1_AnalisadorLexico
+   cd Unidade_1_AnalisadorLexico/
    ```
-
-2. Execute o comando:
+2. Agora, entre dentro da pasta **Linux**:
+   ```bash
+   cd Linux/
+   ```
+3. Execute o comando:
    ```bash
    ./Lexico.exe Teste1
    ```
-
-3. O resultado será exibido no terminal conforme o esperado.
+4. O resultado será exibido no terminal conforme o esperado.
 
 ---
 
