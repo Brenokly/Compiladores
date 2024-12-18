@@ -1,5 +1,5 @@
 
-#line 2 "lex.yy.cc"
+#line 3 "lex.yy.cc"
 
 #define  YY_INT_ALIGNED short int
 
@@ -846,8 +846,8 @@ bool openFile, erro = false;
 ifstream fin;
 int numClasses, numProperties, numIndividuos, numSimbolos, numReservadas, numCardinalidades, numNamespace, numTipos = 0;
 int linha = 1;
-#line 849 "lex.yy.cc"
 #line 850 "lex.yy.cc"
+#line 851 "lex.yy.cc"
 
 #define INITIAL 0
 
@@ -982,7 +982,7 @@ YY_DECL
 #line 69 "Lexico.l"
 
 
-#line 985 "lex.yy.cc"
+#line 986 "lex.yy.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1147,7 +1147,7 @@ YY_RULE_SETUP
 #line 125 "Lexico.l"
 ECHO;
 	YY_BREAK
-#line 1150 "lex.yy.cc"
+#line 1151 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
