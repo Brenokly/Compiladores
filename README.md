@@ -81,7 +81,7 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 2. Agora, entre dentro da pasta **Linux**:
    ```bash
    cd Linux/
-   ``
+   ```
 3. Execute o comando:
    ```bash
    ./Lexico.exe Teste1
