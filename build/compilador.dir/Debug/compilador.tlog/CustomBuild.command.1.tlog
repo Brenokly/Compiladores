@@ -1,0 +1,24 @@
+^D:\USERS\BRENO MOURA\ONEDRIVE\DESKTOP\MEUS ARQUIVOS\MATERIAISFACULDADE\P6\COMPILADORES\COMPILADORES\BUILD\CMAKEFILES\194D9E74AFF1A74F7A8BC65E2578D6EC\LEX.YY.CC.RULE
+setlocal
+cd "D:\Users\Breno Moura\OneDrive\Desktop\Meus Arquivos\MateriaisFaculdade\P6\COMPILADORES\Compiladores"
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+C:\msys64\usr\bin\flex.exe "-oD:/Users/Breno Moura/OneDrive/Desktop/Meus Arquivos/MateriaisFaculdade/P6/COMPILADORES/Compiladores/build/lex.yy.cc" Lexico.l
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\USERS\BRENO MOURA\ONEDRIVE\DESKTOP\MEUS ARQUIVOS\MATERIAISFACULDADE\P6\COMPILADORES\COMPILADORES\CMAKELISTS.TXT
+setlocal
+"D:\Program Files\CMake\bin\cmake.exe" "-SD:/Users/Breno Moura/OneDrive/Desktop/Meus Arquivos/MateriaisFaculdade/P6/COMPILADORES/Compiladores" "-BD:/Users/Breno Moura/OneDrive/Desktop/Meus Arquivos/MateriaisFaculdade/P6/COMPILADORES/Compiladores/build" --check-stamp-file "D:/Users/Breno Moura/OneDrive/Desktop/Meus Arquivos/MateriaisFaculdade/P6/COMPILADORES/Compiladores/build/CMakeFiles/generate.stamp"
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
