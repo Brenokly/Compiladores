@@ -9,8 +9,23 @@ void Parser::Start()
   {
     switch (lookahead)
     {
-    case TAG_RESERVADAS:
-      cout << "RESERVADAS: " << scanner.YYText() << "\n";
+    case SOME:
+    case ALL:
+    case VALUE:
+    case MIN:
+    case MAX:
+    case EXACTLY:
+    case THAT:
+    case NOT:
+    case AND:
+    case OR:
+    case CLASS:
+    case EQUIVALENTTO:
+    case INDIVIDUALS:
+    case SUBCLASSOF:
+    case DISJOINTCLASSES:
+    case DISJOINTWITH:
+      cout << "RESERVADA: " << scanner.YYText() << "\n";
       break;
     case TAG_CLASS:
       cout << "CLASS: " << scanner.YYText() << "\n";
