@@ -13,13 +13,13 @@ class SymTable
 {
 private:
   unordered_map<string, Symblo> table;
-  SymTable *prev;
+  SymTable * prev;
 
 public:
   SymTable();
-  SymTable(SymTable *t);
+  SymTable(SymTable * t);
 
-  bool Insert(string &name, Symblo &symbol);
+  bool Insert(string & name, Symblo & symbol);
   Symblo *Find(const string name);
   bool exists(const string name);
 };

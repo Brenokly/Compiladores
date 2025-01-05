@@ -33,27 +33,24 @@ unordered_map<string, int> reservadas = {
     {"disjointwith:", DISJOINTWITH}
 };
 
-extern YYSTYPE yylval;
-
 // Definição de funções auxiliares
 string toLower(string str);
 
 // Definição de variáveis globais
 bool erro = false;
-
+int line_number = 1; // Variável para contar as linhas
 %}
 
 %option noyywrap
+%option yylineno
 
-delim [ \t\n]
+delim [ \t]
 BRANCOS {delim}*
 letra [a-zA-Z]
 maiuscula [A-Z]
 minuscula [a-z]
 digito [0-9]
 NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
-PROP_HAS has({letra})+
-PROP_IS is({letra})+Of
 CLASS {maiuscula}({letra})*(_({letra})+)*   
 INDIVIDUOS {maiuscula}({letra})*{NUM}
 RESERVADAS ({letra})+
@@ -62,19 +59,52 @@ PROPINVALIDA {minuscula}({letra})*{NUM}
 NAMESPACE (owl\:|rdf\:|rdfs\:|xsd\:)
 DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64Binary|boolean|byte|dateTime|dateTimeStamp|decimal|double|float|hexBinary|int|integer|language|long|Name|NCName|negativeInteger|NMTOKEN|nonNegativeInteger|nonPositiveInteger|normalizedString|positiveInteger|short|string|token|unsignedByte|unsignedInt|unsignedLong|unsignedShort)
 CARDILIDADE {NUM}
-SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,)
+SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,|:)
 
 %%
+
+\n                 { line_number++; }
 {BRANCOS}          {}
-{SIMBOLO}          { }
-{PROP_HAS}         { yylval.str = std::string(yytext); return TAG_HASPROPERTY; }
-{PROP_IS}          { yylval.str = std::string(yytext); return TAG_ISPROPERTY; }
-{NAMESPACE}        { yylval.str = std::string(yytext); return TAG_NAMESPACE; }
-{DATATYPE}         { yylval.str = std::string(yytext); return TAG_DATATYPE; }
+{SIMBOLO}          {
+    switch (yytext[0]) {
+        case '<':
+            if (yytext[1] == '=') {
+                return TAG_MENORIGUAL;  // '<='
+            } else {
+                return TAG_MENOR;       // '<'
+            }
+        case '>':
+            if (yytext[1] == '=') {
+                return TAG_MAIORIGUAL;  // '>='
+            } else {
+                return TAG_MAIOR;       // '>'
+            }
+        case '[':
+            return TAG_ABRECOLCHETE;  // '['
+        case ']':
+            return TAG_FECHACOLCHETE;  // ']'
+        case '{':
+            return TAG_ABRECHAVE;     // '{'
+        case '}':
+            return TAG_FECHACHAVE;    // '}'
+        case '(':
+            return TAG_ABREPARANTESIS;  // '('
+        case ')':
+            return TAG_FECHAPARANTESIS;  // ')'
+        case ',':
+            return TAG_VIRGULA;        // ','
+        case ':':
+            return TAG_DOISPONTOS;     // ':'
+        default:
+            return 0;  // caso de erro
+    }
+}
+{NAMESPACE}        { yylval.str = strdup(yytext); return TAG_NAMESPACE; }
+{DATATYPE}         { yylval.str = strdup(yytext); return TAG_DATATYPE; }
 {CARDILIDADE}      { yylval.num = atof(yytext); return TAG_NUM; }
-{INDIVIDUOS}       { yylval.str = std::string(yytext); return TAG_INDIVIDUOS; }
+{INDIVIDUOS}       { yylval.str = strdup(yytext); return TAG_INDIVIDUOS; }
 {CLASS}            {
-    yylval.str = std::string(yytext);
+    yylval.str = strdup(yytext);
     auto it = reservadas.find(toLower(yytext)); 
     if (it != reservadas.end()) {
         return it->second;
@@ -82,9 +112,9 @@ SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,)
         return TAG_CLASS;
     }
 }
-{PROPINVALIDA}     { cout << "Erro lexico encontrado na linha " << yyFlexLexer::lineno() << ": " << yytext << "\n"; erro = true; }
+{PROPINVALIDA}     { cout << "Erro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; erro = true; }
 {PROPERTYS}        {
-    yylval.str = std::string(yytext);
+    yylval.str = strdup(yytext);
     auto it = reservadas.find(toLower(yytext));
     if (it != reservadas.end()) {
         return it->second;
@@ -93,16 +123,16 @@ SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,)
     }
 }
 {RESERVADAS}":"    {
-    yylval.str = std::string(yytext);
+    yylval.str = strdup(yytext);
     auto it = reservadas.find(toLower(yytext)); 
     if (it != reservadas.end()) {
         return it->second; 
     } else {
-        cout << "Erro lexico encontrado na linha " << yyFlexLexer::lineno() << ": " << yytext << "\n";
+        cout << "Erro lexico encontrado na linha " << line_number << ": " << yytext << "\n";
         erro = true;
     }
 }
-.                  { cout << "\nErro lexico encontrado na linha " << yyFlexLexer::lineno() << ": " << yytext << "\n"; erro = true; }
+.                  { cout << "\nErro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; erro = true; }
 %%
 
 string toLower(string str) {

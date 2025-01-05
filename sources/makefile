@@ -1,43 +1,40 @@
-# Definições de variáveis
-CC=g++
-LEX=flex++
-BISON=bison
-INCLUDES=-IC:/msys64/usr/include
-SOURCES=../sources
-BUILDS=../builds
-EXE=..
+# Compilador e flags
+CXX = g++
+CXXFLAGS = -Wall -std=c++17
 
-# Alvo principal para gerar o arquivo compilador.exe
-all: $(EXE)/compilador.exe
+# Ferramentas Flex e Bison
+FLEX = flex
+BISON = bison
 
-# Regra para gerar o arquivo compilador.exe
-$(EXE)/compilador.exe: $(BUILDS)/compilador.o $(BUILDS)/parser.o $(BUILDS)/lex.yy.o $(BUILDS)/symtable.o
-	$(CC) $(INCLUDES) $(BUILDS)/compilador.o $(BUILDS)/parser.o $(BUILDS)/lex.yy.o $(BUILDS)/symtable.o -o $(EXE)/compilador.exe
+# Arquivos fonte
+LEXER = Lexico.l
+PARSER = Sintatico.y
+SYMTABLE = symtable.cpp
+MAIN = main.cpp
 
-# Regra para gerar lex.yy.cc com o Flex (arquivo ficará em sources)
-$(SOURCES)/lex.yy.cc: $(SOURCES)/Lexico.l $(SOURCES)/Sintatico.tab.h
-	$(LEX) $(SOURCES)/Lexico.l > $(SOURCES)/lex.yy.cc
+# Arquivos gerados
+LEXER_OUT = lex.yy.c
+PARSER_OUT = Sintatico.tab.c
+PARSER_HEADER = Sintatico.tab.h
 
-# Regra para gerar o arquivo de tokens com o Bison
-$(SOURCES)/Sintatico.tab.h: $(SOURCES)/Sintatico.y
-	$(BISON) -d $(SOURCES)/Sintatico.y
+# Nome do executável
+EXEC = owl_compiler
 
-# Regra para compilar o código do parser gerado pelo Bison
-$(BUILDS)/parser.o: $(SOURCES)/parser.cpp $(SOURCES)/Sintatico.tab.h
-	$(CC) $(INCLUDES) -c -o $(BUILDS)/parser.o $(SOURCES)/parser.cpp
+# Diretório de saída do executável
+EXE = ..
 
-# Regra para compilar o código do scanner gerado pelo Flex
-$(BUILDS)/lex.yy.o: $(SOURCES)/lex.yy.cc $(SOURCES)/Sintatico.tab.h
-	$(CC) $(INCLUDES) -c -o $(BUILDS)/lex.yy.o $(SOURCES)/lex.yy.cc
+# Regras padrão
+all: $(EXEC)
 
-# Regra para compilar o arquivo symtable.cpp
-$(BUILDS)/symtable.o: $(SOURCES)/symtable.cpp $(SOURCES)/Sintatico.tab.h
-	$(CC) $(INCLUDES) -c -o $(BUILDS)/symtable.o $(SOURCES)/symtable.cpp
+$(EXEC): $(LEXER_OUT) $(PARSER_OUT) $(SYMTABLE) $(MAIN)
+	$(CXX) $(CXXFLAGS) -o $(EXEC) $^ 
+	mv $(EXEC) $(EXE)/$(EXEC)           
 
-# Regra para compilar o código restante
-$(BUILDS)/compilador.o: $(SOURCES)/compilador.cpp $(SOURCES)/Sintatico.tab.h
-	$(CC) $(INCLUDES) -c -o $(BUILDS)/compilador.o $(SOURCES)/compilador.cpp
+$(LEXER_OUT): $(LEXER)
+	$(FLEX) -o $@ $<
 
-# Limpeza de arquivos temporários
+$(PARSER_OUT): $(PARSER)
+	$(BISON) -d -o $@ $<
+
 clean:
-	rm -f $(BUILDS)/*.o $(SOURCES)/lex.yy.* $(SOURCES)/Sintatico.tab.* $(EXE)/compilador.exe
+	rm -f $(LEXER_OUT) $(PARSER_OUT) $(PARSER_HEADER) $(EXE)/$(EXEC)
