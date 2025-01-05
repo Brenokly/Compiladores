@@ -1,0 +1,11 @@
+{
+  "files.associations": {
+    "*.ndjson": "jsonl",
+    "*.dbclient-js": "javascript",
+    "*.wmls": "javascriptlite",
+    "iostream": "cpp",
+    "istream": "cpp",
+    "unordered_map": "cpp",
+    "iosfwd": "cpp"
+  }
+}

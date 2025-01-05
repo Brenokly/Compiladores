@@ -324,34 +324,34 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[285] =
     {   0,
-        1,    1,   15,   13,    1,    1,    6,    7,    6,    6,
+        1,    1,   15,   13,    1,    1,    2,    7,    2,    2,
         9,    9,    9,    9,    9,   11,   11,   11,   11,   11,
        11,   11,   11,   11,   11,   11,   11,   11,   11,   11,
-       11,    1,    0,    7,    0,    6,    8,   12,    9,    0,
+       11,    1,    0,    7,    0,    2,    8,   12,    9,    0,
         9,    9,    9,    9,    9,    9,   10,   11,   11,   11,
        11,   11,   11,   11,   11,   11,   11,   11,   11,   11,
        11,   11,   11,   11,   11,   11,   11,   11,   11,   11,
        11,   11,   11,   11,    7,    0,    7,    0,    0,    9,
         9,    9,    9,    9,    9,    9,    0,    0,   11,   11,
-       11,   11,   11,   11,   11,   11,   11,   11,    5,   11,
+       11,   11,   11,   11,   11,   11,   11,   11,    6,   11,
 
        11,   11,   11,   11,   11,   11,   11,   11,   11,   11,
        11,   11,   11,   11,   11,    8,    0,    8,    9,    9,
-        9,    5,    9,    9,   10,    0,   10,   11,   11,   11,
-        5,   11,   11,   11,   11,    2,   11,   11,   11,   11,
-       11,   11,   11,   11,    4,   11,   11,   11,   11,   11,
+        9,    6,    9,    9,   10,    0,   10,   11,   11,   11,
+        6,   11,   11,   11,   11,    3,   11,   11,   11,   11,
+       11,   11,   11,   11,    5,   11,   11,   11,   11,   11,
        11,   11,    9,    9,    9,    9,    9,   11,   10,   11,
-       11,   11,   11,   11,   11,    3,   11,   11,   11,   11,
+       11,   11,   11,   11,   11,    4,   11,   11,   11,   11,
        11,   11,   11,   11,   11,   11,    9,    9,    9,    9,
        10,   11,   11,   11,   11,   11,   11,   11,   11,   11,
        11,   11,   11,   11,   11,    9,    9,    0,   11,   11,
 
        11,   11,   11,   11,   11,   11,   11,   11,   11,    9,
-        9,    0,    5,   11,   11,   11,   11,   11,   11,   11,
+        9,    0,    6,   11,   11,   11,   11,   11,   11,   11,
        11,    9,    9,    0,   11,   11,   11,   11,   11,   11,
        11,   11,   11,   11,   11,    9,    0,   11,   11,   11,
        11,   11,   11,   11,   11,   11,   11,    9,    0,   11,
-       11,   11,   11,   11,   11,   11,   11,   11,    5,   11,
+       11,   11,   11,   11,   11,   11,   11,   11,    6,   11,
        11,   11,   11,   11,   11,   11,   11,   11,   11,   11,
        11,   11,   11,   11,   11,   11,   11,   11,   11,   11,
        11,   11,   11,    0
@@ -900,14 +900,18 @@ static const flex_int16_t yy_chk[1873] =
 #line 1 "../sources/Lexico.l"
 #line 2 "../sources/Lexico.l"
 // Inclusões de bibliotecas
-#include "tokens.h"
 #include <iostream>
 #include <string>
 #include <unordered_map>
 #include <algorithm>
-#include <sstream>
 #include <vector>
-using namespace std;
+using std::cout;
+using std::string;
+using std::unordered_map;
+using std::transform;
+using std::vector;
+
+#include "Sintatico.tab.h" 
 
 // Definição da tabela de palavras reservadas
 unordered_map<string, int> reservadas = {
@@ -929,88 +933,16 @@ unordered_map<string, int> reservadas = {
     {"disjointwith:", DISJOINTWITH}
 };
 
-// Definição dos tokens
-// Em tokens podemos guardar info de tokens que são representados por eles mesmos, como: Simbolos '(', ')', ',', '{', '}', '[', ']', '"', '|', '<', '>', '='
-struct Token {
-	int tag;
-	Token() : tag(0) {}
-	Token(int t) : tag(t) {}
-	virtual string toString() { stringstream ss; ss << char(tag); return ss.str(); }
-};
-
-// Em Num podemos guardar info de tokens que são representados por números, como: Números
-struct Num : Token
-{
-	int value;
-	Num(): Token(TAG_NUM), value(0) {}
-	Num(int v) : Token(TAG_NUM), value(v) {}
-	virtual string toString() { stringstream ss; ss << value; return ss.str(); }
-};
-
-// Em Word podemos guardar info de tokens que são representados por palavras com uma tag, como: Palavras reservadas, propriedades
-// namespaces, datatypes.
-struct Word : Token {
-    string lexeme;
-    Word() : Token(TAG_CLASS), lexeme("") {}
-    Word(string s, int tag) : Token(tag), lexeme(s) {}
-    virtual string toString() { return lexeme; }
-};
-
-// Crie, Para armazenar: Classes e Individuos precisamos de uma estrutura mais completa, que tenha: Escopo, nome, tag...
-struct Classe : Token {
-    string nome;         // Nome da classe
-    string classePai;    // Classe pai, se existir
-    vector<string> relacoes; // Relacionamentos com outras classes
-
-    Classe() : Token(TAG_CLASS), nome(""), classePai("") {}
-
-    Classe(string n, string pai) : Token(TAG_CLASS), nome(n), classePai(pai) {}
-
-    virtual string toString() {
-        stringstream ss;
-        ss << "Classe: " << nome;
-        if (!classePai.empty()) {
-            ss << " (Classe Pai: " << classePai << ")";
-        }
-        if (!relacoes.empty()) {
-            ss << " Relacionamentos: ";
-            for (const auto& r : relacoes) {
-                ss << r << " ";
-            }
-        }
-        return ss.str();
-    }
-};
-
-struct Individuo : Token {
-    string nome;         // Nome do indivíduo
-    string classe;       // Classe a que o indivíduo pertence
-    unordered_map<string, string> propriedades; // Propriedades e seus valores
-
-    Individuo() : Token(TAG_INDIVIDUOS), nome(""), classe("") {}
-
-    Individuo(string n, string c) : Token(TAG_INDIVIDUOS), nome(n), classe(c) {}
-
-    virtual string toString() {
-        stringstream ss;
-        ss << "Indivíduo: " << nome << " (Classe: " << classe << ")";
-        if (!propriedades.empty()) {
-            ss << " Propriedades: ";
-            for (const auto& p : propriedades) {
-                ss << p.first << "=" << p.second << " ";
-            }
-        }
-        return ss.str();
-    }
-};
+extern YYSTYPE yylval;
 
 // Definição de funções auxiliares
 string toLower(string str);
 
 // Definição de variáveis globais
 bool erro = false;
-#line 1012 "lex.yy.cc"
-#line 1013 "lex.yy.cc"
+
+#line 944 "lex.yy.cc"
+#line 945 "lex.yy.cc"
 
 #define INITIAL 0
 
@@ -1142,9 +1074,9 @@ YY_DECL
 		}
 
 	{
-#line 135 "../sources/Lexico.l"
+#line 67 "../sources/Lexico.l"
 
-#line 1147 "lex.yy.cc"
+#line 1079 "lex.yy.cc"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1204,48 +1136,49 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 136 "../sources/Lexico.l"
+#line 68 "../sources/Lexico.l"
 {}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 137 "../sources/Lexico.l"
-{ return TAG_PROPERTY; }
+#line 69 "../sources/Lexico.l"
+{ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 138 "../sources/Lexico.l"
-{ return TAG_PROPERTY; }
+#line 70 "../sources/Lexico.l"
+{ yylval.str = std::string(yytext); return TAG_HASPROPERTY; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 139 "../sources/Lexico.l"
-{ return TAG_NAMESPACE; }
+#line 71 "../sources/Lexico.l"
+{ yylval.str = std::string(yytext); return TAG_ISPROPERTY; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 140 "../sources/Lexico.l"
-{ return TAG_DATATYPE; }
+#line 72 "../sources/Lexico.l"
+{ yylval.str = std::string(yytext); return TAG_NAMESPACE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 141 "../sources/Lexico.l"
-{ return TAG_SIMBOLO; }
+#line 73 "../sources/Lexico.l"
+{ yylval.str = std::string(yytext); return TAG_DATATYPE; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 142 "../sources/Lexico.l"
-{ return TAG_NUM; }
+#line 74 "../sources/Lexico.l"
+{ yylval.num = atof(yytext); return TAG_NUM; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 143 "../sources/Lexico.l"
-{ return TAG_INDIVIDUOS; }
+#line 75 "../sources/Lexico.l"
+{ yylval.str = std::string(yytext); return TAG_INDIVIDUOS; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 144 "../sources/Lexico.l"
+#line 76 "../sources/Lexico.l"
 {
+    yylval.str = std::string(yytext);
     auto it = reservadas.find(toLower(yytext)); 
     if (it != reservadas.end()) {
         return it->second;
@@ -1256,13 +1189,14 @@ YY_RULE_SETUP
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 152 "../sources/Lexico.l"
+#line 85 "../sources/Lexico.l"
 { cout << "Erro lexico encontrado na linha " << yyFlexLexer::lineno() << ": " << yytext << "\n"; erro = true; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 153 "../sources/Lexico.l"
+#line 86 "../sources/Lexico.l"
 {
+    yylval.str = std::string(yytext);
     auto it = reservadas.find(toLower(yytext));
     if (it != reservadas.end()) {
         return it->second;
@@ -1273,8 +1207,9 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 161 "../sources/Lexico.l"
+#line 95 "../sources/Lexico.l"
 {
+    yylval.str = std::string(yytext);
     auto it = reservadas.find(toLower(yytext)); 
     if (it != reservadas.end()) {
         return it->second; 
@@ -1286,15 +1221,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 170 "../sources/Lexico.l"
+#line 105 "../sources/Lexico.l"
 { cout << "\nErro lexico encontrado na linha " << yyFlexLexer::lineno() << ": " << yytext << "\n"; erro = true; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 172 "../sources/Lexico.l"
+#line 106 "../sources/Lexico.l"
 ECHO;
 	YY_BREAK
-#line 1297 "lex.yy.cc"
+#line 1232 "lex.yy.cc"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2257,7 +2192,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 172 "../sources/Lexico.l"
+#line 106 "../sources/Lexico.l"
 
 
 string toLower(string str) {

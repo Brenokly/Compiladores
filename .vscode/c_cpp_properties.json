@@ -3,11 +3,17 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
-                "C:/msys64/usr/include"
+                "C:/msys64/mingw64/include/c++/14.2.0",
+                "C:/msys64/mingw64/include/c++/14.2.0/x86_64-w64-mingw32",
+                "C:/msys64/mingw64/include",
+                "C:/msys64/usr/include",
+                "${workspaceFolder}/**"
             ],
+            "defines": [],
             "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
-            "intelliSenseMode": "windows-gcc-x64"
+            "intelliSenseMode": "gcc-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++17"
         }
     ],
     "version": 4
