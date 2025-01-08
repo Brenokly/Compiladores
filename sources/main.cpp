@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "symtable.h"
 #include "Sintatico.tab.h"
 using namespace std;
 
@@ -15,7 +16,10 @@ struct Error
   std::string suggestion;
 };
 
+// Variáveis globais
+
 vector<Error> errors;
+SymTable *currentTable = nullptr;
 
 int main(int argc, char *argv[])
 {
@@ -35,7 +39,7 @@ int main(int argc, char *argv[])
   std::cout << "Iniciando análise...\n";
   if (yyparse() == 0)
   {
-    std::cout << "Análise concluída com sucesso.\n";
+    std::cout << "Análise concluída com sucesso!\n";
   }
   else
   {

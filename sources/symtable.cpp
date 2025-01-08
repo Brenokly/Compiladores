@@ -2,6 +2,7 @@
 
 SymTable::SymTable() : prev(nullptr)
 {
+  // Cria uma tabela global que será pai de todas as outras tabela
 }
 
 SymTable::SymTable(SymTable *t) : prev(t)

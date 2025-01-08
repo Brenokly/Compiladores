@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <vector>
+#include "symtable.h"
 using std::cout;
 using std::string;
 using std::unordered_map;
@@ -38,7 +39,8 @@ string toLower(string str);
 
 // Definição de variáveis globais
 bool erro = false;
-int line_number = 1; // Variável para contar as linhas
+int line_number = 1;
+extern SymTable * currentTable;
 %}
 
 %option noyywrap
@@ -62,7 +64,6 @@ CARDILIDADE {NUM}
 SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,|:)
 
 %%
-
 \n                 { line_number++; }
 {BRANCOS}          {}
 {SIMBOLO}          {
@@ -102,30 +103,45 @@ SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,|:)
 {NAMESPACE}        { yylval.str = strdup(yytext); return TAG_NAMESPACE; }
 {DATATYPE}         { yylval.str = strdup(yytext); return TAG_DATATYPE; }
 {CARDILIDADE}      { yylval.num = atof(yytext); return TAG_NUM; }
-{INDIVIDUOS}       { yylval.str = strdup(yytext); return TAG_INDIVIDUOS; }
+{INDIVIDUOS}       { 
+    std::string className = yytext;
+    Symblo newSymblo = {currentTable->getClassName()};  
+    currentTable->Insert(className, newSymblo);  
+    yylval.str = strdup(yytext); 
+    return TAG_INDIVIDUOS; 
+}
 {CLASS}            {
-    yylval.str = strdup(yytext);
     auto it = reservadas.find(toLower(yytext)); 
     if (it != reservadas.end()) {
         return it->second;
     } else {
+        if (currentTable->getClassName().empty())
+        {
+            std::string className = yytext;
+            currentTable->setClassName(className);
+        }
+        yylval.str = strdup(yytext);
         return TAG_CLASS;
     }
 }
 {PROPINVALIDA}     { cout << "Erro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; erro = true; }
 {PROPERTYS}        {
-    yylval.str = strdup(yytext);
     auto it = reservadas.find(toLower(yytext));
     if (it != reservadas.end()) {
         return it->second;
     } else {
+        yylval.str = strdup(yytext);
         return TAG_PROPERTY;
     }
 }
 {RESERVADAS}":"    {
-    yylval.str = strdup(yytext);
     auto it = reservadas.find(toLower(yytext)); 
     if (it != reservadas.end()) {
+        if (it->second == CLASS) {
+            // Nova tabela de símbolos
+            SymTable * newScope = new SymTable(currentTable);
+            currentTable = newScope;
+        }
         return it->second; 
     } else {
         cout << "Erro lexico encontrado na linha " << line_number << ": " << yytext << "\n";
