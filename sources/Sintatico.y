@@ -77,6 +77,7 @@ class_type:
 primitive_class:
     SUBCLASSOF property_restriction_list
     | SUBCLASSOF expression_list
+    | SUBCLASSOF 
 ;
 
 defined_class:
@@ -93,7 +94,45 @@ subclass:
 ;
 
 expression_list:
-    TAG_PROPERTY   
+    TAG_CLASS
+    | TAG_CLASS expression_format
+    | expression_format2
+;
+
+expression_format:
+    TAG_VIRGULA expression expression_format
+    | TAG_VIRGULA TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+    | 
+;
+
+expression_format2:
+    expression virgula expression_format2
+    | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS virgula expression_format2
+    |
+;
+
+virgula:
+    TAG_VIRGULA
+    |
+;
+
+expression:
+    TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS
+    | TAG_PROPERTY op_quantifier type_expre
+    | TAG_PROPERTY op_cardinality
+    | TAG_PROPERTY VALUE 
+;
+
+type_expre:
+    class_op
+    |TAG_ABREPARANTESIS class_op TAG_FECHAPARANTESIS
+    | namespace_datatype
+    | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM TAG_FECHACOLCHETE
+;
+
+class_op:
+    TAG_CLASS op_logic class_op
+    | TAG_CLASS
 ;
 
 property_restriction_list:
@@ -244,11 +283,10 @@ bool is_valid_rdfs_type(const std::string& datatype) {
     return rdfs_types.count(datatype) > 0;
 }
 
-void yyerror(const char * msg, const char * sug) {
+void yyerror(const char * msg) {
     Error err;
     err.line = yylineno;
     err.message = string(msg);
-    err.
 
     errors.push_back(err);
 }
