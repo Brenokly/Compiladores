@@ -40,4 +40,4 @@ clean:
 	rm -f $(LEXER_OUT) $(PARSER_OUT) $(PARSER_HEADER) $(EXE)/$(EXEC)
 
 run:
-	../$(EXEC) ../teste.txt
+	../$(EXEC) ../testeteste.txt

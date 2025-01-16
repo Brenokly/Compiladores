@@ -1,39 +1,13 @@
-Class: Pizza
+
+Class: AmericanaHotPizza
+    EquivalentTo:
+        NamedPizza
+        and (hasTopping some JalapenoPepperTopping)
+        and (hasTopping some JalapenoPepperTopping)
+
+Class: AmericanaHotPizza
+    EquivalentTo:
+        {Hot1 , Medium1 , Mild1}
 
     SubClassOf:
-        NamedPizza,
-        hasTopping some MozzarellaTopping,
-        hasTopping some TomatoTopping
-
-    DisjointClasses:
-        Pizza, PizzaBase, PizzaTopping
-
-    Individuals:
-        CustomPizza1,
-        CustomPizza2
-
-Class: Pizza
-
-    SubClassOf:
-        hasTopping only (MozzarellaTopping or TomatoTopping),
-        hasTopping some (MozzarellaTopping or TomatoTopping)
-
-    DisjointClasses:
-        Pizza, PizzaBase, PizzaTopping
-
-    Individuals:
-        CustomPizza1,
-        CustomPizza2
-
-Class: RegulatoryActivity
-
-    EquivalentTo: ValueActivity
-        and ((bundles some (CnAObject or CoreObject or PoPObject)) or (consumes some CounterObject))
-        and ((grants some CnAObject) or (transfers some (CoreObject or PoPObject)))
-        and (isAuthorityOf some Regulator)
-        and (hasTransaction some ValueTransaction)
-        and (bundles only (CnAObject or CoreObject or PoPObject))
-        and (consumes only CounterObject)
-        and (grants only CnAObject)
-        and (isAuthorityOf only Regulator)
-        and (transfers only (CoreObject or PoPObject))
+        Pizza
