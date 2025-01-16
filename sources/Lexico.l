@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <algorithm>
 #include <vector>
+#include <cstring>
 #include "symtable.h"
 using std::cout;
 using std::string;
@@ -16,6 +17,7 @@ using std::vector;
 
 // Definição da tabela de palavras reservadas
 unordered_map<string, int> reservadas = {
+    {"only", ONLY},
     {"some", SOME},
     {"all", ALL},
     {"value", VALUE},

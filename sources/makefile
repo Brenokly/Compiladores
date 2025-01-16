@@ -1,6 +1,6 @@
 # Compilador e flags
 CXX = g++
-CXXFLAGS = -Wall -std=c++17
+CXXFLAGS = -Wall
 
 # Ferramentas Flex e Bison
 FLEX = flex
@@ -38,3 +38,6 @@ $(PARSER_OUT): $(PARSER)
 
 clean:
 	rm -f $(LEXER_OUT) $(PARSER_OUT) $(PARSER_HEADER) $(EXE)/$(EXEC)
+
+run:
+	../$(EXEC) ../teste.txt

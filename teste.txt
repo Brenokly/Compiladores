@@ -15,7 +15,7 @@ Individuals: Chef1, Manager1, Waiter1, Waiter2
 
 Class: Pizza
   SubClassOf:
-    hasBase some PizzaBase
+    hasBase some PizzaBase,
     hasCaloricContent some xsd:integer
 
 DisjointClasses:
