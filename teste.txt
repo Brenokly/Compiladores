@@ -48,10 +48,10 @@ Class: NamedPizza
 Class: AmericanaHotPizza
   SubClassOf:
     NamedPizza
-    and hasTopping some JalapenoPepperTopping
-    and hasTopping some MozzarellaTopping
-    and hasTopping some PepperoniTopping
-    and hasTopping some TomatoTopping
+    and (hasTopping some JalapenoPepperTopping)
+    and (hasTopping some MozzarellaTopping)
+    and (hasTopping some PepperoniTopping)
+    and (hasTopping some TomatoTopping)
 
 DisjointClasses:
   AmericanaPizza, MargheritaPizza, SohoPizza
@@ -61,9 +61,9 @@ Individuals: AmericanaHotPizza1, AmericanaHotPizza2, AmericanaHotPizza3, Chicago
 Class: AmericanaPizza
   SubClassOf:
     NamedPizza
-    and hasTopping some MozzarellaTopping
-    and hasTopping some PepperoniTopping
-    and hasTopping some TomatoTopping
+    and (hasTopping some MozzarellaTopping)
+    and (hasTopping some PepperoniTopping)
+    and (hasTopping some TomatoTopping)
 
 DisjointClasses:
   AmericanaHotPizza, MargheritaPizza, SohoPizza
@@ -73,9 +73,9 @@ Individuals: AmericanaPizza1, AmericanaPizza2
 Class: MargheritaPizza
   SubClassOf:
     NamedPizza
-    and hasTopping some MozzarellaTopping
-    and hasTopping some TomatoTopping
-    and hasTopping only (MozzarellaTopping or TomatoTopping)
+    and (hasTopping some MozzarellaTopping)
+    and (hasTopping some TomatoTopping)
+    and (hasTopping only (MozzarellaTopping or TomatoTopping))
 
 DisjointClasses:
   AmericanaHotPizza, AmericanaPizza, SohoPizza
@@ -85,24 +85,26 @@ Individuals: MargheritaPizza1, MargheritaPizza2
 Class: SohoPizza
   SubClassOf:
     NamedPizza
-    and hasTopping some MozzarellaTopping
-    and hasTopping some OliveTopping
-    and hasTopping some ParmesanTopping
-    and hasTopping some TomatoTopping
-    and hasTopping only (MozzarellaTopping or OliveTopping or ParmesanTopping or TomatoTopping)
+    and (hasTopping some MozzarellaTopping)
+    and (hasTopping some OliveTopping)
+    and (hasTopping some ParmesanTopping)
+    and (hasTopping some TomatoTopping)
+    and (hasTopping only (MozzarellaTopping or OliveTopping or ParmesanTopping or TomatoTopping))
 
 DisjointClasses:
   AmericanaHotPizza, AmericanaPizza, MargheritaPizza
 
 Individuals: SohoPizza1, SohoPizza2
 
-Class: SpicyPizza EquivalentTo:
-  Pizza
-  and (hasTopping some (hasSpiciness value Hot1))
+Class: SpicyPizza 
+  EquivalentTo:
+    Pizza
+    and (hasTopping some (hasSpiciness value Hot1))
 
-Class: VegetarianPizza EquivalentTo:
-  Pizza
-  and (hasTopping only (CheeseTopping or VegetableTopping))
+Class: VegetarianPizza 
+  EquivalentTo:
+    Pizza
+    and (hasTopping only (CheeseTopping or VegetableTopping))
 
 Class: PizzaBase
   DisjointClasses:

@@ -1,13 +1,9 @@
-
-Class: AmericanaHotPizza
-    EquivalentTo:
-        NamedPizza
-        and (hasTopping some JalapenoPepperTopping)
-        and (hasTopping some JalapenoPepperTopping)
-
-Class: AmericanaHotPizza
-    EquivalentTo:
-        {Hot1 , Medium1 , Mild1}
-
+Class: Pizza
     SubClassOf:
-        Pizza
+        hasBase some PizzaBase,
+        hasCaloricContent some xsd:integer
+    DisjointClasses:
+        Pizza, PizzaBase, PizzaTopping
+    Individuals:
+        CustomPizza1,
+        CustomPizza2

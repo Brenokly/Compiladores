@@ -3,11 +3,14 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <cstring>
 using std::cout;
 using std::cerr;
 using std::endl;
 using std::string;
 using std::vector;
+using std::set;
+using std::strcmp;
 
 // Definição da estrutura Error
 struct Error
@@ -19,22 +22,29 @@ struct Error
 
 extern int yylineno;
 extern vector<Error> errors;
+char * currentClass;
 
 int yylex(void);
 int yyparse(void);
 void yyerror(const char *msg);
-
+bool is_valid_xsd_type(const std::string& datatype);
+bool is_valid_owl_type(const std::string& datatype);
+bool is_valid_rdf_type(const std::string& datatype);
+bool is_valid_rdfs_type(const std::string& datatype);
 %}
 
 %union {
     double num;
-    char *str;
+    const char * str;
 }
 
 %token <str> TAG_CLASS TAG_INDIVIDUOS TAG_NAMESPACE TAG_PROPERTY TAG_DATATYPE
 %token <num> TAG_NUM
 %token <str> ONLY SOME ALL VALUE MIN MAX EXACTLY THAT NOT AND OR CLASS EQUIVALENTTO INDIVIDUALS SUBCLASSOF DISJOINTCLASSES DISJOINTWITH
 %token <str> TAG_MENORIGUAL TAG_MAIORIGUAL TAG_MENOR TAG_MAIOR TAG_ABRECOLCHETE TAG_FECHACOLCHETE TAG_ABRECHAVE TAG_FECHACHAVE TAG_ABREPARANTESIS TAG_FECHAPARANTESIS TAG_VIRGULA TAG_DOISPONTOS
+
+%left AND
+%left OR
 
 %start ontology
 
@@ -43,9 +53,9 @@ void yyerror(const char *msg);
 %type <str> op_cardinality
 %type <str> class_name_exp
 %type <str> type
+%type <str> namespace_datatype
 
 %%
-
 ontology:
     declarations
 ;
@@ -72,6 +82,8 @@ primitive_class:
 defined_class:
     EQUIVALENTTO property_restriction_list subclass
     | EQUIVALENTTO TAG_ABRECHAVE individuals_list TAG_FECHACHAVE subclass
+    | subclass EQUIVALENTTO property_restriction_list
+    | subclass EQUIVALENTTO TAG_ABRECHAVE individuals_list TAG_FECHACHAVE
 ;
 
 subclass:
@@ -81,15 +93,12 @@ subclass:
 ;
 
 expression_list:
-    property_restriction
-    | property_restriction TAG_VIRGULA expression_list
-    |
+    TAG_PROPERTY   
 ;
 
 property_restriction_list:
     property_restriction op_c
-    | TAG_ABREPARANTESIS property_restriction_list TAG_FECHAPARANTESIS
-    | TAG_ABREPARANTESIS property_restriction_list TAG_FECHAPARANTESIS op_logic property_restriction_list
+    | TAG_ABREPARANTESIS property_restriction_list TAG_FECHAPARANTESIS op_c
 ;
 
 op_c:
@@ -172,21 +181,32 @@ op_cardinality:
 namespace_datatype:
     TAG_NAMESPACE TAG_DATATYPE 
     { 
-        char *ns = $1;
-        if (strcmp(*ns, "xsd") == 0 && is_valid_xsd_type($2)) {
-            $$ = std::string("xsd:") + $2;
+        char * result = (char *)malloc(256); 
+        if (result == NULL) {
+            yyerror("Erro de memória ao processar namespace e datatype");
+            YYABORT;
         }
-        else if (strcmp(*ns, "owl") == 0 && is_valid_owl_type($2)) {
-            $$ = std::string("owl:") + $2;
+
+        if (strcmp($1, "xsd:") == 0 && is_valid_xsd_type(std::string($2))) {
+            snprintf(result, 256, "xsd:%s", $2);
+            $$ = result;
         }
-        else if (strcmp(*ns, "rdf") == 0 && is_valid_rdf_type($2)) {
-            $$ = std::string("rdf:") + $2;
+        else if (strcmp($1, "owl:") == 0 && is_valid_owl_type(std::string($2))) {
+            snprintf(result, 256, "owl:%s", $2);
+            $$ = result;
         }
-        else if (strcmp(*ns, "rdfs") == 0 && is_valid_rdfs_type($2)) {
-            $$ = std::string("rdfs:") + $2;
+        else if (strcmp($1, "rdf:") == 0 && is_valid_rdf_type(std::string($2))) {
+            snprintf(result, 256, "rdf:%s", $2);
+            $$ = result;
+        }
+        else if (strcmp($1, "rdfs:") == 0 && is_valid_rdfs_type(std::string($2))) {
+            snprintf(result, 256, "rdfs:%s", $2);
+            $$ = result;
         }
         else {
-            yyerror("Datatype incompatível com o namespace " << *ns << ". Verifique a linha " << yylineno);
+            free(result);
+            yyerror("Datatype incompatível com o namespace.");
+            $$ = NULL;
         }
     }
 ;
@@ -195,36 +215,40 @@ namespace_datatype:
 
 bool is_valid_xsd_type(const std::string& datatype) {
     static const std::set<std::string> xsd_types = {
-        "integer", "string", "boolean", "float", "double", "date", "time"
+        "anyURI", "base64Binary", "boolean", "byte", "dateTime", "dateTimeStamp", "decimal", "double", "float", "hexBinary", 
+        "int", "integer", "language", "long", "Name", "NCName", "negativeInteger", "NMTOKEN", "nonNegativeInteger", "nonPositiveInteger", 
+        "normalizedString", "positiveInteger", "short", "string", "token", "unsignedByte", "unsignedInt", "unsignedLong", "unsignedShort"
     };
+
     return xsd_types.count(datatype) > 0;
 }
 
 bool is_valid_owl_type(const std::string& datatype) {
     static const std::set<std::string> owl_types = {
-        "real", "rational"
+        "rational", "real"
     };
     return owl_types.count(datatype) > 0;
 }
 
 bool is_valid_rdf_type(const std::string& datatype) {
     static const std::set<std::string> rdf_types = {
-        "PlainLiteral", "XMLLiteral", "HTMLLiteral"
+        "langString", "PlainLiteral", "XMLLiteral"
     };
     return rdf_types.count(datatype) > 0;
 }
 
 bool is_valid_rdfs_type(const std::string& datatype) {
     static const std::set<std::string> rdfs_types = {
-        "Resource", "Literal"
+        "Literal"
     };
     return rdfs_types.count(datatype) > 0;
 }
 
-void yyerror(const char *msg) {
+void yyerror(const char * msg, const char * sug) {
     Error err;
     err.line = yylineno;
     err.message = string(msg);
+    err.
 
     errors.push_back(err);
 }
