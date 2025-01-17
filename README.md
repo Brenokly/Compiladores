@@ -155,16 +155,20 @@ Para executar a análise sintática, siga os seguintes passos após clonar o rep
 ```plaintext
 .
 ├── .vscode               # Configurações da IDE Visual Studio Code
-├── Compilador_BAGCompiler.pdf  # Documentação técnica do compilador
+├── Unidade_2_AnalisadorSintatico/
+│   ├── Linux/
+│   │   ├── owl_compiler
+│   │   ├── teste1.txt
+│   │   └── teste2.txt
+|   |   ├── sources/
+|   |   | .
+|   |   | .
+|   |   | .
+│   ├── Windows/
+│   │   ├── owl_compiler.exe
+│   │   ├── teste1.txt
+│   │   └── teste2.txt
 ├── README.md             # Documentação principal do projeto
-├── Unidade_1_AnalisadorLexico/
-│   ├── build_files/
-│   │   ├── lex.yy.c
-│   │   ├── Lexico.l
-│   │   └── makefile
-│   ├── Lexico.exe
-│   ├── Teste1             # Arquivo de entrada para testes
-│   └── Teste2
 ```
 
 ---
