@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <set>
 #include "symtable.h"
 #include "Sintatico.tab.h"
 using namespace std;
@@ -16,13 +17,22 @@ struct Error
   std::string suggestion;
 };
 
-// Variáveis globais
+struct Classes
+{
+  string name;
+  set<string> tipos;
+};
 
+void printClasses(const vector<Classes> &classes);
+
+// Variáveis globais
 vector<Error> errors;
+vector<Classes> classes;
 SymTable *currentTable = nullptr;
 
 int main(int argc, char *argv[])
 {
+  system("chcp 65001 > nul");
   if (argc < 2)
   {
     std::cerr << "Uso: " << argv[0] << " <arquivo.owl>\n";
@@ -43,21 +53,56 @@ int main(int argc, char *argv[])
   }
   else
   {
-    std::cerr << "Erros encontrados durante a análise.\n";
+    cout << "\n-------------------------------------------------------------------" << endl;
+    std::cerr << "Erros encontrados durante a análise." << endl;
   }
+
+  printClasses(classes);
 
   // Exibir os erros, se houver
   if (!errors.empty())
   {
-    cout << "-------------------------------------------------------------------" << endl;
     for (const auto &error : errors)
     {
-      std::cerr << "Erro na linha " << error.line << ": " << error.message << "\n";
-      std::cerr << error.suggestion;
-      cout << "-------------------------------------------------------------------" << endl;
+      if (error.message != "syntax error")
+      {
+        cout << "-------------------------------------------------------------------" << endl;
+        std::cerr << "Erro na linha " << error.line << ": " << error.message << "\n";
+        std::cerr << error.suggestion;
+        cout << "\n-------------------------------------------------------------------" << endl;
+      }
     }
   }
 
   fclose(yyin);
   return 0;
+}
+
+void printClasses(const vector<Classes> &classes)
+{
+  cout << "Lista de Classes:\n";
+  cout << "=================\n";
+
+  for (const auto &cls : classes)
+  {
+    cout << "Classe: " << cls.name << "\n";
+    cout << "Tipos: ";
+    if (cls.tipos.empty())
+    {
+      cout << "Nenhum tipo registrado.\n";
+    }
+    else
+    {
+      bool first = true;
+      for (const auto &tipo : cls.tipos)
+      {
+        if (!first)
+          cout << ", ";
+        cout << tipo;
+        first = false;
+      }
+      cout << "\n";
+    }
+    cout << "-----------------\n";
+  }
 }

@@ -97,7 +97,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 36 "Sintatico.y"
+#line 48 "Sintatico.y"
 
     double num;
     const char * str;
