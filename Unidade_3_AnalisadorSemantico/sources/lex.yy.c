@@ -1002,7 +1002,8 @@ bool erro = false;
 int line_number = 1;
 extern SymTable * currentTable;
 #line 1004 "lex.yy.c"
-#line 1005 "lex.yy.c"
+#define YY_NO_INPUT 1
+#line 1006 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -1062,8 +1063,6 @@ extern int yywrap ( void );
 #endif
 
 #ifndef YY_NO_UNPUT
-    
-    static void yyunput ( int c, char *buf_ptr  );
     
 #endif
 
@@ -1219,9 +1218,9 @@ YY_DECL
 		}
 
 	{
-#line 68 "Lexico.l"
+#line 69 "Lexico.l"
 
-#line 1224 "lex.yy.c"
+#line 1223 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1291,17 +1290,17 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 /* rule 1 can match eol */
 YY_RULE_SETUP
-#line 69 "Lexico.l"
+#line 70 "Lexico.l"
 { line_number++; }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 70 "Lexico.l"
+#line 71 "Lexico.l"
 {}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 71 "Lexico.l"
+#line 72 "Lexico.l"
 {
     switch (yytext[0]) {
         case '<':
@@ -1339,22 +1338,22 @@ YY_RULE_SETUP
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 105 "Lexico.l"
+#line 106 "Lexico.l"
 { yylval.str = strdup(yytext); return TAG_NAMESPACE; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 106 "Lexico.l"
+#line 107 "Lexico.l"
 { yylval.str = strdup(yytext); return TAG_DATATYPE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 107 "Lexico.l"
+#line 108 "Lexico.l"
 { yylval.num = atof(yytext); return TAG_NUM; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 108 "Lexico.l"
+#line 109 "Lexico.l"
 { 
     std::string className = yytext;
     Symblo newSymblo = {currentTable->getClassName()};  
@@ -1365,7 +1364,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 115 "Lexico.l"
+#line 116 "Lexico.l"
 {
     auto it = reservadas.find(toLower(yytext)); 
     if (it != reservadas.end()) {
@@ -1383,12 +1382,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 129 "Lexico.l"
+#line 130 "Lexico.l"
 { cout << "Erro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; erro = true; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 130 "Lexico.l"
+#line 131 "Lexico.l"
 {
     auto it = reservadas.find(toLower(yytext));
     if (it != reservadas.end()) {
@@ -1401,7 +1400,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 139 "Lexico.l"
+#line 140 "Lexico.l"
 {
     auto it = reservadas.find(toLower(yytext)); 
     if (it != reservadas.end()) {
@@ -1419,15 +1418,15 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 153 "Lexico.l"
+#line 154 "Lexico.l"
 { cout << "\nErro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; erro = true; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 154 "Lexico.l"
+#line 155 "Lexico.l"
 ECHO;
 	YY_BREAK
-#line 1430 "lex.yy.c"
+#line 1429 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1762,47 +1761,6 @@ static int yy_get_next_buffer (void)
 }
 
 #ifndef YY_NO_UNPUT
-
-    static void yyunput (int c, char * yy_bp )
-{
-	char *yy_cp;
-    
-    yy_cp = (yy_c_buf_p);
-
-	/* undo effects of setting up yytext */
-	*yy_cp = (yy_hold_char);
-
-	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-		{ /* need to shift things up to make room */
-		/* +2 for EOB chars. */
-		int number_to_move = (yy_n_chars) + 2;
-		char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
-					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
-		char *source =
-				&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move];
-
-		while ( source > YY_CURRENT_BUFFER_LVALUE->yy_ch_buf )
-			*--dest = *--source;
-
-		yy_cp += (int) (dest - source);
-		yy_bp += (int) (dest - source);
-		YY_CURRENT_BUFFER_LVALUE->yy_n_chars =
-			(yy_n_chars) = (int) YY_CURRENT_BUFFER_LVALUE->yy_buf_size;
-
-		if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
-		}
-
-	*--yy_cp = (char) c;
-
-    if ( c == '\n' ){
-        --yylineno;
-    }
-
-	(yytext_ptr) = yy_bp;
-	(yy_hold_char) = *yy_cp;
-	(yy_c_buf_p) = yy_cp;
-}
 
 #endif
 
@@ -2444,7 +2402,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 154 "Lexico.l"
+#line 155 "Lexico.l"
 
 
 string toLower(string str) {

@@ -16,14 +16,14 @@ using std::strcmp;
 struct Error
 {
     int line;
-    std::string message;
-    std::string suggestion;
+    string message;
+    string suggestion;
 };
 
 struct Classes
 {
   string name;
-  std::set<string> tipos;
+  set<string> tipos;
 };
 
 extern int yylineno;
@@ -54,8 +54,9 @@ void addClass(const string& className);
 %token <str> ONLY SOME ALL VALUE MIN MAX EXACTLY THAT NOT AND OR CLASS EQUIVALENTTO INDIVIDUALS SUBCLASSOF DISJOINTCLASSES DISJOINTWITH
 %token <str> TAG_MENORIGUAL TAG_MAIORIGUAL TAG_MENOR TAG_MAIOR TAG_ABRECOLCHETE TAG_FECHACOLCHETE TAG_ABRECHAVE TAG_FECHACHAVE TAG_ABREPARANTESIS TAG_FECHAPARANTESIS TAG_VIRGULA TAG_DOISPONTOS
 
-%left AND
-%left OR
+%left AND OR
+%left TAG_VIRGULA
+%left TAG_FECHAPARANTESIS
 
 %start ontology
 
@@ -79,107 +80,159 @@ declarations:
 
 // class_declaration: Defini a estrutura base de uma classe
 class_declaration:
-    CLASS TAG_CLASS class_type { classes.push_back({string($2),t}); t.clear(); }
-    | CLASS error { 
-        yyerror("Erro de sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'");
-    }
+    CLASS TAG_CLASS class_type class_body { classes.push_back({string($2),t}); t.clear(); }
+    | CLASS error { yyerror("Erro de sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); }
 ;
 
 // class_type: Define como é a estrutura dos dois tipos de classes existentes
 class_type:
-    primitive_class class_body  { t.insert("primitiva"); }
-    | defined_class class_body  { t.insert("definida"); }
-    | error {
-        yyerror("Erro de sintaxe.#Esperava uma classe primitiva ou definida");
+    primitive_class { t.insert("Primitiva"); }
+    | defined_class optional_subclass { t.insert("Definida"); }
+    | error { 
+    yyerror("Erro de sintaxe.#Esperava uma classe Primitiva ou Definida (SubClassOf ou EquivalentTo)"); 
     }
 ;
 
 // primitive_class: Define a estrutura obrigatória de uma classe primitiva
 primitive_class:
     SUBCLASSOF expression_list
-    | SUBCLASSOF 
 ;
 
 // primitive_class: Define a estrutura obrigatória de uma classe definida
 defined_class:
-    EQUIVALENTTO expression_list optional_subclass
-    | EQUIVALENTTO TAG_ABRECHAVE individuals_list TAG_FECHACHAVE optional_subclass { t.insert("enumerada"); }
-    | optional_subclass EQUIVALENTTO expression_list
-    | optional_subclass EQUIVALENTTO TAG_ABRECHAVE individuals_list TAG_FECHACHAVE { t.insert("enumerada"); }
-    | EQUIVALENTTO error { 
-        yyerror("Erro de sintaxe.#Esperava uma expressão após a palavra-chave 'equivalentto:'");
-    }
+    EQUIVALENTTO expression_list
+    | EQUIVALENTTO TAG_ABRECHAVE individuals_list TAG_FECHACHAVE { t.insert("Enumerada"); }
 ;
 
 // optional_subclass: Define a estrutura opcional de uma classe definida
 optional_subclass:
     SUBCLASSOF expression_list
-    | SUBCLASSOF 
     |
 ;
 
 // expression_list: Define a estrutura de uma expressão que pode ter vírgulas
 expression_list:
     TAG_CLASS
-    | pos_class { t.insert("coberta"); }
     | TAG_CLASS expression_format
-    | expression_format2
+    | expression
+    | list_expression
+    | pos_class { t.insert("coberta"); }
 ;
 
+list_expression:
+    expression simples_expression_no_parent
+;
+
+// Descreve a estrutura de uma classe coberta (CLASS OPERADOR CLASS ...)
 pos_class:
-    TAG_CLASS op_logic pos_class 
-    | TAG_CLASS
+    TAG_CLASS op_logic TAG_CLASS additional_classes
 ;
 
+// Completa a estrutura de uma classe coberta (CLASS OPERADOR CLASS ...)
+additional_classes:
+    op_logic TAG_CLASS additional_classes
+    |
+;
+
+// Expression_format: define a estrutura de possíveis
 expression_format:
-    separador expression expression_format
-    | separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
-    | separador expression TAG_FECHAPARANTESIS error { 
-        yyerror("Erro de sintaxe.#Esperava um abre parênteses"); 
-    }
-    | 
+    simple_expression
+    | complex_expression { t.insert("aninhada"); }
 ;
 
-expression_format2:
-    expression separador expression_format2
-    | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression_format2
-    |
-;
-
-expression:
-    TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos { t.insert("aninhada"); }
-    | TAG_PROPERTY op_quantifier TAG_CLASS
-    | TAG_PROPERTY op_quantifier type_expre
-    | TAG_PROPERTY op_quantifier expression
-    | TAG_PROPERTY op_cardinality TAG_NUM TAG_CLASS
-    | TAG_PROPERTY op_cardinality TAG_NUM type_expre
-    | TAG_PROPERTY VALUE pos_value
-    | TAG_ABREPARANTESIS expression error { 
-        yyerror("Erro de sintaxe.#Esperava um fechamento de parênteses"); 
-    }
-    | TAG_PROPERTY error { 
-        yyerror("Erro de sintaxe.#Propriedade inválida [Esperava = 'property' 'operador' 'expressão']"); 
-    }
-
-;
-
-pos_value:
-    TAG_NUM
-    | TAG_INDIVIDUOS
-    | error {
-        yyerror("Erro de sintaxe.#Esperava um número ou indivíduo após a palavra-chave 'value'");
+// Simple_expression: Define a estrutura de uma expressão simples
+simple_expression:
+    separador expression simples_expression_no_parent
+    | separador expression
+    | separador error { 
+        yyerror("Erro de sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); 
     }
 ;
 
-expre_pos:
+simples_expression_no_parent:
     separador expression
-    |
+    | separador expression simples_expression_no_parent
+    | separador error { 
+        yyerror("Erro de sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); 
+    }
 ;
 
+// Complex_expression: Define a estrutura de uma expressão complexa
+complex_expression:
+    separador TAG_ABREPARANTESIS elements additional_expressions TAG_FECHAPARANTESIS additional_expressions 
+    | separador TAG_ABREPARANTESIS elements additional_expressions TAG_FECHAPARANTESIS 
+    | separador TAG_ABREPARANTESIS element TAG_FECHAPARANTESIS additional_expressions 
+    | separador TAG_ABREPARANTESIS element TAG_FECHAPARANTESIS
+    | separador TAG_ABREPARANTESIS elements error { 
+        yyerror("Erro de sintaxe.#Esperava um fechamento de parênteses!"); 
+    }
+;
+
+additional_expressions:
+    additional_expressions_parent
+    | additional_expressions_no_parent
+;
+
+additional_expressions_parent:
+    separador TAG_ABREPARANTESIS elements TAG_FECHAPARANTESIS additional_expressions
+    | separador TAG_ABREPARANTESIS elements TAG_FECHAPARANTESIS
+    | separador error { 
+        yyerror("Erro de sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); 
+    }
+    | separador TAG_ABREPARANTESIS elements error { 
+        yyerror("Erro de sintaxe.#Esperava um fechamento de parênteses!"); 
+    }
+;
+
+additional_expressions_no_parent:
+    separador element additional_expressions
+    | separador element
+;
+
+element:
+    expression
+;
+
+elements:
+    expression
+    | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS
+    | TAG_ABREPARANTESIS expression error { 
+        yyerror("Erro de sintaxe.#Esperava um fechamento de parênteses!"); 
+    }
+;
+
+// Expression: Define a estrutura de uma expressão de como se monta expressões
+expression:
+    TAG_PROPERTY op_quantifier corp_expre1 
+    | TAG_PROPERTY op_cardinality TAG_NUM corp_expre2 
+    | TAG_PROPERTY VALUE pos_value
+    | TAG_PROPERTY error { 
+        yyerror("Erro de sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); 
+    }
+;
+
+corp_expre1:
+    TAG_CLASS 
+    | type_expre 
+    | separador expression
+    | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS
+;
+
+corp_expre2:
+    TAG_CLASS 
+    | type_expre 
+;
+
+// Separador: Define a estrutura de um separador que pode ser uma vírgula ou um operador lógico
 separador:
     TAG_VIRGULA
     | op_logic
-    | 
+;
+
+// Pos_value: Define a estrutura do que pode vim após a palavra-chave 'value'
+pos_value:
+    TAG_NUM
+    | TAG_INDIVIDUOS
 ;
 
 type_expre:
@@ -231,34 +284,47 @@ individuals_list:
     }
 ;
 
-// Class_list: Classes separadas por vírgula ou entre parênteses
+// Class_list: Classes separadas por vírgula ou entre parênteses e separadas por vírgula
 class_list:
-    TAG_CLASS TAG_VIRGULA class_list
+    class_v
+    | TAG_ABREPARANTESIS class_v TAG_FECHAPARANTESIS
+    | TAG_ABREPARANTESIS class_v error { 
+        yyerror("Erro de sintaxe.#Esperava um fechamento de parênteses"); 
+    }
+;
+
+// Class_v: Classes separadas por vírgula
+class_v:
+    TAG_CLASS TAG_VIRGULA class_v
     | TAG_CLASS
-    | TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA class_list TAG_FECHAPARANTESIS
     | TAG_CLASS TAG_VIRGULA error { 
         yyerror("Erro de sintaxe.#Esperava algo após a vírgula");
     }
-    | TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA class_list error {
-        yyerror("Erro de sintaxe.#Esperava um fechamento de parênteses");
-    } 
-    | TAG_CLASS TAG_VIRGULA class_list TAG_FECHAPARANTESIS error {
-        yyerror("Erro de sintaxe.#Esperava um abre parênteses");
+;
+
+// Class_op: Classes entre parênteses separadas por operadores lógicos
+class_op: 
+    TAG_ABREPARANTESIS class_l TAG_FECHAPARANTESIS  
+    | TAG_ABREPARANTESIS class_l error { 
+        yyerror("Erro de sintaxe.#Esperava um fechamento de parênteses"); 
     }
 ;
 
-class_op: 
-    TAG_ABREPARANTESIS class_l TAG_FECHAPARANTESIS 
-;
-
+// Class_l: Classes separadas por operadores lógicos
 class_l:
     TAG_CLASS op_logic class_l
     | TAG_CLASS
+    | TAG_CLASS op_logic error { 
+        yyerror("Erro de sintaxe.#Esperava algo após o operador lógico");
+    }
+    | TAG_CLASS TAG_CLASS error { 
+        yyerror("Erro de sintaxe.#Esperava um operador lógico entre as classes");
+    }
 ;
 
 // Op_quantifier: Quantificadores
 op_quantifier:
-    ONLY { t.insert("fechamento"); }
+    ONLY { t.insert("Fechamento"); }
     | SOME
     | ALL
 ;

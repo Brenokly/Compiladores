@@ -1,0 +1,2154 @@
+Terminais sem uso na gramática
+
+    THAT
+    NOT
+    TAG_DOISPONTOS
+
+
+Estado 11 conflitos: 5 de redução/redução
+Estado 15 conflitos: 12 de redução/redução
+Estado 30 conflitos: 5 de redução/redução
+Estado 85 conflitos: 3 de deslocamento/redução, 8 de redução/redução
+Estado 102 conflitos: 3 de deslocamento/redução, 2 de redução/redução
+Estado 106 conflitos: 1 de deslocamento/redução
+Estado 108 conflitos: 3 de deslocamento/redução, 8 de redução/redução
+Estado 120 conflitos: 3 de deslocamento/redução, 8 de redução/redução
+Estado 132 conflitos: 4 de deslocamento/redução, 8 de redução/redução
+
+
+Gramática
+
+    0 $accept: ontology $end
+
+    1 ontology: declarations
+
+    2 declarations: class_declaration
+    3             | class_declaration declarations
+
+    4 class_declaration: CLASS TAG_CLASS class_type class_body
+    5                  | CLASS error
+
+    6 class_type: primitive_class
+    7           | defined_class optional_subclass
+    8           | error
+
+    9 primitive_class: SUBCLASSOF expression_list
+   10                | SUBCLASSOF
+
+   11 defined_class: EQUIVALENTTO expression_list
+   12              | EQUIVALENTTO TAG_ABRECHAVE individuals_list TAG_FECHACHAVE
+
+   13 optional_subclass: SUBCLASSOF expression_list
+   14                  | SUBCLASSOF
+   15                  | ε
+
+   16 expression_list: TAG_CLASS
+   17                | pos_class
+   18                | TAG_CLASS expression_format
+   19                | expression_format2
+
+   20 pos_class: TAG_CLASS op_logic pos_class
+   21          | TAG_CLASS
+
+   22 expression_format: separador expression expression_format
+   23                  | separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+   24                  | separador expression TAG_FECHAPARANTESIS error
+   25                  | ε
+
+   26 expression_format2: expression separador expression_format2
+   27                   | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression_format2
+   28                   | ε
+
+   29 expression: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos
+   30           | TAG_PROPERTY op_quantifier TAG_CLASS
+   31           | TAG_PROPERTY op_quantifier type_expre
+   32           | TAG_PROPERTY op_quantifier expression
+   33           | TAG_PROPERTY op_cardinality TAG_NUM TAG_CLASS
+   34           | TAG_PROPERTY op_cardinality TAG_NUM type_expre
+   35           | TAG_PROPERTY VALUE pos_value
+   36           | TAG_ABREPARANTESIS expression error
+   37           | TAG_PROPERTY error
+
+   38 pos_value: TAG_NUM
+   39          | TAG_INDIVIDUOS
+   40          | error
+
+   41 expre_pos: separador expression
+   42          | ε
+
+   43 separador: TAG_VIRGULA
+   44          | op_logic
+   45          | ε
+
+   46 type_expre: class_op
+   47           | namespace_datatype
+   48           | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM TAG_FECHACOLCHETE
+   49           | namespace_datatype TAG_ABRECOLCHETE error
+   50           | namespace_datatype TAG_ABRECOLCHETE op_rel error
+   51           | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM error
+
+   52 class_body: disjointclasses_section
+   53           | individuals_section
+   54           | disjointclasses_section individuals_section
+   55           | individuals_section disjointclasses_section
+   56           | ε
+
+   57 disjointclasses_section: DISJOINTCLASSES class_list
+   58                        | DISJOINTWITH class_list
+   59                        | DISJOINTCLASSES error
+   60                        | DISJOINTWITH error
+
+   61 individuals_section: INDIVIDUALS individuals_list
+   62                    | INDIVIDUALS error
+
+   63 individuals_list: TAG_INDIVIDUOS TAG_VIRGULA individuals_list
+   64                 | TAG_INDIVIDUOS
+   65                 | TAG_INDIVIDUOS TAG_VIRGULA error
+
+   66 class_list: TAG_CLASS TAG_VIRGULA class_list
+   67           | TAG_CLASS
+   68           | TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA class_list TAG_FECHAPARANTESIS
+   69           | TAG_CLASS TAG_VIRGULA error
+   70           | TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA class_list error
+   71           | TAG_CLASS TAG_VIRGULA class_list TAG_FECHAPARANTESIS error
+
+   72 class_op: TAG_ABREPARANTESIS class_l TAG_FECHAPARANTESIS
+
+   73 class_l: TAG_CLASS op_logic class_l
+   74        | TAG_CLASS
+
+   75 op_quantifier: ONLY
+   76              | SOME
+   77              | ALL
+
+   78 op_logic: AND
+   79         | OR
+
+   80 op_rel: TAG_MAIOR
+   81       | TAG_MAIORIGUAL
+   82       | TAG_MENOR
+   83       | TAG_MENORIGUAL
+
+   84 op_cardinality: MIN
+   85               | MAX
+   86               | EXACTLY
+
+   87 namespace_datatype: TAG_NAMESPACE TAG_DATATYPE
+
+
+Terminais, com as regras onde eles aparecem
+
+    $end (0) 0
+    error (256) 5 8 24 36 37 40 49 50 51 59 60 62 65 69 70 71
+    TAG_CLASS <str> (258) 4 16 18 20 21 30 33 66 67 68 69 70 71 73 74
+    TAG_INDIVIDUOS <str> (259) 39 63 64 65
+    TAG_NAMESPACE <str> (260) 87
+    TAG_PROPERTY <str> (261) 30 31 32 33 34 35 37
+    TAG_DATATYPE <str> (262) 87
+    TAG_NUM <num> (263) 33 34 38 48 51
+    ONLY <str> (264) 75
+    SOME <str> (265) 76
+    ALL <str> (266) 77
+    VALUE <str> (267) 35
+    MIN <str> (268) 84
+    MAX <str> (269) 85
+    EXACTLY <str> (270) 86
+    THAT <str> (271)
+    NOT <str> (272)
+    AND <str> (273) 78
+    OR <str> (274) 79
+    CLASS <str> (275) 4 5
+    EQUIVALENTTO <str> (276) 11 12
+    INDIVIDUALS <str> (277) 61 62
+    SUBCLASSOF <str> (278) 9 10 13 14
+    DISJOINTCLASSES <str> (279) 57 59
+    DISJOINTWITH <str> (280) 58 60
+    TAG_MENORIGUAL <str> (281) 83
+    TAG_MAIORIGUAL <str> (282) 81
+    TAG_MENOR <str> (283) 82
+    TAG_MAIOR <str> (284) 80
+    TAG_ABRECOLCHETE <str> (285) 48 49 50 51
+    TAG_FECHACOLCHETE <str> (286) 48
+    TAG_ABRECHAVE <str> (287) 12
+    TAG_FECHACHAVE <str> (288) 12
+    TAG_ABREPARANTESIS <str> (289) 23 27 29 36 68 70 72
+    TAG_FECHAPARANTESIS <str> (290) 23 24 27 29 68 71 72
+    TAG_VIRGULA <str> (291) 43 63 65 66 68 69 70 71
+    TAG_DOISPONTOS <str> (292)
+
+
+Não terminais com as regras onde eles aparecem
+
+    $accept (38)
+        à esquerda: 0
+    ontology (39)
+        à esquerda: 1
+        à direita: 0
+    declarations (40)
+        à esquerda: 2 3
+        à direita: 1 3
+    class_declaration <str> (41)
+        à esquerda: 4 5
+        à direita: 2 3
+    class_type (42)
+        à esquerda: 6 7 8
+        à direita: 4
+    primitive_class (43)
+        à esquerda: 9 10
+        à direita: 6
+    defined_class (44)
+        à esquerda: 11 12
+        à direita: 7
+    optional_subclass (45)
+        à esquerda: 13 14 15
+        à direita: 7
+    expression_list (46)
+        à esquerda: 16 17 18 19
+        à direita: 9 11 13
+    pos_class (47)
+        à esquerda: 20 21
+        à direita: 17 20
+    expression_format (48)
+        à esquerda: 22 23 24 25
+        à direita: 18 22 23
+    expression_format2 (49)
+        à esquerda: 26 27 28
+        à direita: 19 26 27
+    expression (50)
+        à esquerda: 29 30 31 32 33 34 35 36 37
+        à direita: 22 23 24 26 27 29 32 36 41
+    pos_value (51)
+        à esquerda: 38 39 40
+        à direita: 35
+    expre_pos (52)
+        à esquerda: 41 42
+        à direita: 29
+    separador (53)
+        à esquerda: 43 44 45
+        à direita: 22 23 24 26 27 41
+    type_expre (54)
+        à esquerda: 46 47 48 49 50 51
+        à direita: 31 34
+    class_body (55)
+        à esquerda: 52 53 54 55 56
+        à direita: 4
+    disjointclasses_section (56)
+        à esquerda: 57 58 59 60
+        à direita: 52 54 55
+    individuals_section (57)
+        à esquerda: 61 62
+        à direita: 53 54 55
+    individuals_list (58)
+        à esquerda: 63 64 65
+        à direita: 12 61 63
+    class_list (59)
+        à esquerda: 66 67 68 69 70 71
+        à direita: 57 58 66 68 70 71
+    class_op <str> (60)
+        à esquerda: 72
+        à direita: 46
+    class_l (61)
+        à esquerda: 73 74
+        à direita: 72 73
+    op_quantifier (62)
+        à esquerda: 75 76 77
+        à direita: 30 31 32
+    op_logic (63)
+        à esquerda: 78 79
+        à direita: 20 44 73
+    op_rel <str> (64)
+        à esquerda: 80 81 82 83
+        à direita: 48 50 51
+    op_cardinality <str> (65)
+        à esquerda: 84 85 86
+        à direita: 33 34
+    namespace_datatype <str> (66)
+        à esquerda: 87
+        à direita: 47 48 49 50 51
+
+
+Estado 0
+
+    0 $accept: • ontology $end
+
+    CLASS  deslocar, e ir ao estado 1
+
+    ontology           ir ao estado 2
+    declarations       ir ao estado 3
+    class_declaration  ir ao estado 4
+
+
+Estado 1
+
+    4 class_declaration: CLASS • TAG_CLASS class_type class_body
+    5                  | CLASS • error
+
+    error      deslocar, e ir ao estado 5
+    TAG_CLASS  deslocar, e ir ao estado 6
+
+
+Estado 2
+
+    0 $accept: ontology • $end
+
+    $end  deslocar, e ir ao estado 7
+
+
+Estado 3
+
+    1 ontology: declarations •
+
+    $padrão  reduzir usando a regra 1 (ontology)
+
+
+Estado 4
+
+    2 declarations: class_declaration •
+    3             | class_declaration • declarations
+
+    CLASS  deslocar, e ir ao estado 1
+
+    $padrão  reduzir usando a regra 2 (declarations)
+
+    declarations       ir ao estado 8
+    class_declaration  ir ao estado 4
+
+
+Estado 5
+
+    5 class_declaration: CLASS error •
+
+    $padrão  reduzir usando a regra 5 (class_declaration)
+
+
+Estado 6
+
+    4 class_declaration: CLASS TAG_CLASS • class_type class_body
+
+    error         deslocar, e ir ao estado 9
+    EQUIVALENTTO  deslocar, e ir ao estado 10
+    SUBCLASSOF    deslocar, e ir ao estado 11
+
+    class_type       ir ao estado 12
+    primitive_class  ir ao estado 13
+    defined_class    ir ao estado 14
+
+
+Estado 7
+
+    0 $accept: ontology $end •
+
+    $padrão  aceitar
+
+
+Estado 8
+
+    3 declarations: class_declaration declarations •
+
+    $padrão  reduzir usando a regra 3 (declarations)
+
+
+Estado 9
+
+    8 class_type: error •
+
+    $padrão  reduzir usando a regra 8 (class_type)
+
+
+Estado 10
+
+   11 defined_class: EQUIVALENTTO • expression_list
+   12              | EQUIVALENTTO • TAG_ABRECHAVE individuals_list TAG_FECHACHAVE
+
+    TAG_CLASS           deslocar, e ir ao estado 15
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABRECHAVE       deslocar, e ir ao estado 17
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 18
+
+    $padrão  reduzir usando a regra 28 (expression_format2)
+
+    expression_list     ir ao estado 19
+    pos_class           ir ao estado 20
+    expression_format2  ir ao estado 21
+    expression          ir ao estado 22
+
+
+Estado 11
+
+    9 primitive_class: SUBCLASSOF • expression_list
+   10                | SUBCLASSOF •
+
+    TAG_CLASS           deslocar, e ir ao estado 15
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 18
+
+    $end             reduzir usando a regra 10 (primitive_class)
+    $end             [reduzir usando a regra 28 (expression_format2)]
+    CLASS            reduzir usando a regra 10 (primitive_class)
+    CLASS            [reduzir usando a regra 28 (expression_format2)]
+    INDIVIDUALS      reduzir usando a regra 10 (primitive_class)
+    INDIVIDUALS      [reduzir usando a regra 28 (expression_format2)]
+    DISJOINTCLASSES  reduzir usando a regra 10 (primitive_class)
+    DISJOINTCLASSES  [reduzir usando a regra 28 (expression_format2)]
+    DISJOINTWITH     reduzir usando a regra 10 (primitive_class)
+    DISJOINTWITH     [reduzir usando a regra 28 (expression_format2)]
+    $padrão          reduzir usando a regra 10 (primitive_class)
+
+    expression_list     ir ao estado 23
+    pos_class           ir ao estado 20
+    expression_format2  ir ao estado 21
+    expression          ir ao estado 22
+
+    conflito de redução/redução nos tokens $end, CLASS, INDIVIDUALS, DISJOINTCLASSES, DISJOINTWITH:
+       10 primitive_class: SUBCLASSOF •
+       28 expression_format2: ε •
+      Exemplo: SUBCLASSOF •
+      Primeira derivação de redução
+        primitive_class
+        ↳ 10: SUBCLASSOF •
+      Segunda derivação de redução
+        primitive_class
+        ↳ 9: SUBCLASSOF expression_list
+                        ↳ 19: expression_format2
+                              ↳ 28: ε •
+
+
+
+Estado 12
+
+    4 class_declaration: CLASS TAG_CLASS class_type • class_body
+
+    INDIVIDUALS      deslocar, e ir ao estado 24
+    DISJOINTCLASSES  deslocar, e ir ao estado 25
+    DISJOINTWITH     deslocar, e ir ao estado 26
+
+    $padrão  reduzir usando a regra 56 (class_body)
+
+    class_body               ir ao estado 27
+    disjointclasses_section  ir ao estado 28
+    individuals_section      ir ao estado 29
+
+
+Estado 13
+
+    6 class_type: primitive_class •
+
+    $padrão  reduzir usando a regra 6 (class_type)
+
+
+Estado 14
+
+    7 class_type: defined_class • optional_subclass
+
+    SUBCLASSOF  deslocar, e ir ao estado 30
+
+    $padrão  reduzir usando a regra 15 (optional_subclass)
+
+    optional_subclass  ir ao estado 31
+
+
+Estado 15
+
+   16 expression_list: TAG_CLASS •
+   18                | TAG_CLASS • expression_format
+   20 pos_class: TAG_CLASS • op_logic pos_class
+   21          | TAG_CLASS •
+
+    AND          deslocar, e ir ao estado 32
+    OR           deslocar, e ir ao estado 33
+    TAG_VIRGULA  deslocar, e ir ao estado 34
+
+    $end                reduzir usando a regra 16 (expression_list)
+    $end                [reduzir usando a regra 21 (pos_class)]
+    $end                [reduzir usando a regra 25 (expression_format)]
+    TAG_PROPERTY        reduzir usando a regra 45 (separador)
+    CLASS               reduzir usando a regra 16 (expression_list)
+    CLASS               [reduzir usando a regra 21 (pos_class)]
+    CLASS               [reduzir usando a regra 25 (expression_format)]
+    INDIVIDUALS         reduzir usando a regra 16 (expression_list)
+    INDIVIDUALS         [reduzir usando a regra 21 (pos_class)]
+    INDIVIDUALS         [reduzir usando a regra 25 (expression_format)]
+    SUBCLASSOF          reduzir usando a regra 16 (expression_list)
+    SUBCLASSOF          [reduzir usando a regra 21 (pos_class)]
+    SUBCLASSOF          [reduzir usando a regra 25 (expression_format)]
+    DISJOINTCLASSES     reduzir usando a regra 16 (expression_list)
+    DISJOINTCLASSES     [reduzir usando a regra 21 (pos_class)]
+    DISJOINTCLASSES     [reduzir usando a regra 25 (expression_format)]
+    DISJOINTWITH        reduzir usando a regra 16 (expression_list)
+    DISJOINTWITH        [reduzir usando a regra 21 (pos_class)]
+    DISJOINTWITH        [reduzir usando a regra 25 (expression_format)]
+    TAG_ABREPARANTESIS  reduzir usando a regra 45 (separador)
+    $padrão             reduzir usando a regra 16 (expression_list)
+
+    expression_format  ir ao estado 35
+    separador          ir ao estado 36
+    op_logic           ir ao estado 37
+
+    conflito de redução/redução nos tokens $end, CLASS, INDIVIDUALS, SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH:
+       16 expression_list: TAG_CLASS •
+       21 pos_class: TAG_CLASS •
+      Exemplo: TAG_CLASS •
+      Primeira derivação de redução
+        expression_list
+        ↳ 16: TAG_CLASS •
+      Segunda derivação de redução
+        expression_list
+        ↳ 17: pos_class
+              ↳ 21: TAG_CLASS •
+
+    conflito de redução/redução nos tokens $end, CLASS, INDIVIDUALS, SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH:
+       16 expression_list: TAG_CLASS •
+       25 expression_format: ε •
+      Exemplo: TAG_CLASS •
+      Primeira derivação de redução
+        expression_list
+        ↳ 16: TAG_CLASS •
+      Segunda derivação de redução
+        expression_list
+        ↳ 18: TAG_CLASS expression_format
+                        ↳ 25: ε •
+
+    conflito de redução/redução nos tokens $end, CLASS, INDIVIDUALS, SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH:
+       21 pos_class: TAG_CLASS •
+       25 expression_format: ε •
+      Exemplo: TAG_CLASS •
+      Primeira derivação de redução
+        expression_list
+        ↳ 17: pos_class
+              ↳ 21: TAG_CLASS •
+      Segunda derivação de redução
+        expression_list
+        ↳ 18: TAG_CLASS expression_format
+                        ↳ 25: ε •
+
+
+
+Estado 16
+
+   30 expression: TAG_PROPERTY • op_quantifier TAG_CLASS
+   31           | TAG_PROPERTY • op_quantifier type_expre
+   32           | TAG_PROPERTY • op_quantifier expression
+   33           | TAG_PROPERTY • op_cardinality TAG_NUM TAG_CLASS
+   34           | TAG_PROPERTY • op_cardinality TAG_NUM type_expre
+   35           | TAG_PROPERTY • VALUE pos_value
+   37           | TAG_PROPERTY • error
+
+    error    deslocar, e ir ao estado 38
+    ONLY     deslocar, e ir ao estado 39
+    SOME     deslocar, e ir ao estado 40
+    ALL      deslocar, e ir ao estado 41
+    VALUE    deslocar, e ir ao estado 42
+    MIN      deslocar, e ir ao estado 43
+    MAX      deslocar, e ir ao estado 44
+    EXACTLY  deslocar, e ir ao estado 45
+
+    op_quantifier   ir ao estado 46
+    op_cardinality  ir ao estado 47
+
+
+Estado 17
+
+   12 defined_class: EQUIVALENTTO TAG_ABRECHAVE • individuals_list TAG_FECHACHAVE
+
+    TAG_INDIVIDUOS  deslocar, e ir ao estado 48
+
+    individuals_list  ir ao estado 49
+
+
+Estado 18
+
+   27 expression_format2: TAG_ABREPARANTESIS • expression TAG_FECHAPARANTESIS separador expression_format2
+   29 expression: TAG_ABREPARANTESIS • expression TAG_FECHAPARANTESIS expre_pos
+   36           | TAG_ABREPARANTESIS • expression error
+
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 50
+
+    expression  ir ao estado 51
+
+
+Estado 19
+
+   11 defined_class: EQUIVALENTTO expression_list •
+
+    $padrão  reduzir usando a regra 11 (defined_class)
+
+
+Estado 20
+
+   17 expression_list: pos_class •
+
+    $padrão  reduzir usando a regra 17 (expression_list)
+
+
+Estado 21
+
+   19 expression_list: expression_format2 •
+
+    $padrão  reduzir usando a regra 19 (expression_list)
+
+
+Estado 22
+
+   26 expression_format2: expression • separador expression_format2
+
+    AND          deslocar, e ir ao estado 32
+    OR           deslocar, e ir ao estado 33
+    TAG_VIRGULA  deslocar, e ir ao estado 34
+
+    $padrão  reduzir usando a regra 45 (separador)
+
+    separador  ir ao estado 52
+    op_logic   ir ao estado 53
+
+
+Estado 23
+
+    9 primitive_class: SUBCLASSOF expression_list •
+
+    $padrão  reduzir usando a regra 9 (primitive_class)
+
+
+Estado 24
+
+   61 individuals_section: INDIVIDUALS • individuals_list
+   62                    | INDIVIDUALS • error
+
+    error           deslocar, e ir ao estado 54
+    TAG_INDIVIDUOS  deslocar, e ir ao estado 48
+
+    individuals_list  ir ao estado 55
+
+
+Estado 25
+
+   57 disjointclasses_section: DISJOINTCLASSES • class_list
+   59                        | DISJOINTCLASSES • error
+
+    error               deslocar, e ir ao estado 56
+    TAG_CLASS           deslocar, e ir ao estado 57
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 58
+
+    class_list  ir ao estado 59
+
+
+Estado 26
+
+   58 disjointclasses_section: DISJOINTWITH • class_list
+   60                        | DISJOINTWITH • error
+
+    error               deslocar, e ir ao estado 60
+    TAG_CLASS           deslocar, e ir ao estado 57
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 58
+
+    class_list  ir ao estado 61
+
+
+Estado 27
+
+    4 class_declaration: CLASS TAG_CLASS class_type class_body •
+
+    $padrão  reduzir usando a regra 4 (class_declaration)
+
+
+Estado 28
+
+   52 class_body: disjointclasses_section •
+   54           | disjointclasses_section • individuals_section
+
+    INDIVIDUALS  deslocar, e ir ao estado 24
+
+    $padrão  reduzir usando a regra 52 (class_body)
+
+    individuals_section  ir ao estado 62
+
+
+Estado 29
+
+   53 class_body: individuals_section •
+   55           | individuals_section • disjointclasses_section
+
+    DISJOINTCLASSES  deslocar, e ir ao estado 25
+    DISJOINTWITH     deslocar, e ir ao estado 26
+
+    $padrão  reduzir usando a regra 53 (class_body)
+
+    disjointclasses_section  ir ao estado 63
+
+
+Estado 30
+
+   13 optional_subclass: SUBCLASSOF • expression_list
+   14                  | SUBCLASSOF •
+
+    TAG_CLASS           deslocar, e ir ao estado 15
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 18
+
+    $end             reduzir usando a regra 14 (optional_subclass)
+    $end             [reduzir usando a regra 28 (expression_format2)]
+    CLASS            reduzir usando a regra 14 (optional_subclass)
+    CLASS            [reduzir usando a regra 28 (expression_format2)]
+    INDIVIDUALS      reduzir usando a regra 14 (optional_subclass)
+    INDIVIDUALS      [reduzir usando a regra 28 (expression_format2)]
+    DISJOINTCLASSES  reduzir usando a regra 14 (optional_subclass)
+    DISJOINTCLASSES  [reduzir usando a regra 28 (expression_format2)]
+    DISJOINTWITH     reduzir usando a regra 14 (optional_subclass)
+    DISJOINTWITH     [reduzir usando a regra 28 (expression_format2)]
+    $padrão          reduzir usando a regra 14 (optional_subclass)
+
+    expression_list     ir ao estado 64
+    pos_class           ir ao estado 20
+    expression_format2  ir ao estado 21
+    expression          ir ao estado 22
+
+    conflito de redução/redução nos tokens $end, CLASS, INDIVIDUALS, DISJOINTCLASSES, DISJOINTWITH:
+       14 optional_subclass: SUBCLASSOF •
+       28 expression_format2: ε •
+      Exemplo: SUBCLASSOF •
+      Primeira derivação de redução
+        optional_subclass
+        ↳ 14: SUBCLASSOF •
+      Segunda derivação de redução
+        optional_subclass
+        ↳ 13: SUBCLASSOF expression_list
+                         ↳ 19: expression_format2
+                               ↳ 28: ε •
+
+
+
+Estado 31
+
+    7 class_type: defined_class optional_subclass •
+
+    $padrão  reduzir usando a regra 7 (class_type)
+
+
+Estado 32
+
+   78 op_logic: AND •
+
+    $padrão  reduzir usando a regra 78 (op_logic)
+
+
+Estado 33
+
+   79 op_logic: OR •
+
+    $padrão  reduzir usando a regra 79 (op_logic)
+
+
+Estado 34
+
+   43 separador: TAG_VIRGULA •
+
+    $padrão  reduzir usando a regra 43 (separador)
+
+
+Estado 35
+
+   18 expression_list: TAG_CLASS expression_format •
+
+    $padrão  reduzir usando a regra 18 (expression_list)
+
+
+Estado 36
+
+   22 expression_format: separador • expression expression_format
+   23                  | separador • TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+   24                  | separador • expression TAG_FECHAPARANTESIS error
+
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 65
+
+    expression  ir ao estado 66
+
+
+Estado 37
+
+   20 pos_class: TAG_CLASS op_logic • pos_class
+   44 separador: op_logic •
+
+    TAG_CLASS  deslocar, e ir ao estado 67
+
+    $padrão  reduzir usando a regra 44 (separador)
+
+    pos_class  ir ao estado 68
+
+
+Estado 38
+
+   37 expression: TAG_PROPERTY error •
+
+    $padrão  reduzir usando a regra 37 (expression)
+
+
+Estado 39
+
+   75 op_quantifier: ONLY •
+
+    $padrão  reduzir usando a regra 75 (op_quantifier)
+
+
+Estado 40
+
+   76 op_quantifier: SOME •
+
+    $padrão  reduzir usando a regra 76 (op_quantifier)
+
+
+Estado 41
+
+   77 op_quantifier: ALL •
+
+    $padrão  reduzir usando a regra 77 (op_quantifier)
+
+
+Estado 42
+
+   35 expression: TAG_PROPERTY VALUE • pos_value
+
+    error           deslocar, e ir ao estado 69
+    TAG_INDIVIDUOS  deslocar, e ir ao estado 70
+    TAG_NUM         deslocar, e ir ao estado 71
+
+    pos_value  ir ao estado 72
+
+
+Estado 43
+
+   84 op_cardinality: MIN •
+
+    $padrão  reduzir usando a regra 84 (op_cardinality)
+
+
+Estado 44
+
+   85 op_cardinality: MAX •
+
+    $padrão  reduzir usando a regra 85 (op_cardinality)
+
+
+Estado 45
+
+   86 op_cardinality: EXACTLY •
+
+    $padrão  reduzir usando a regra 86 (op_cardinality)
+
+
+Estado 46
+
+   30 expression: TAG_PROPERTY op_quantifier • TAG_CLASS
+   31           | TAG_PROPERTY op_quantifier • type_expre
+   32           | TAG_PROPERTY op_quantifier • expression
+
+    TAG_CLASS           deslocar, e ir ao estado 73
+    TAG_NAMESPACE       deslocar, e ir ao estado 74
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 75
+
+    expression          ir ao estado 76
+    type_expre          ir ao estado 77
+    class_op            ir ao estado 78
+    namespace_datatype  ir ao estado 79
+
+
+Estado 47
+
+   33 expression: TAG_PROPERTY op_cardinality • TAG_NUM TAG_CLASS
+   34           | TAG_PROPERTY op_cardinality • TAG_NUM type_expre
+
+    TAG_NUM  deslocar, e ir ao estado 80
+
+
+Estado 48
+
+   63 individuals_list: TAG_INDIVIDUOS • TAG_VIRGULA individuals_list
+   64                 | TAG_INDIVIDUOS •
+   65                 | TAG_INDIVIDUOS • TAG_VIRGULA error
+
+    TAG_VIRGULA  deslocar, e ir ao estado 81
+
+    $padrão  reduzir usando a regra 64 (individuals_list)
+
+
+Estado 49
+
+   12 defined_class: EQUIVALENTTO TAG_ABRECHAVE individuals_list • TAG_FECHACHAVE
+
+    TAG_FECHACHAVE  deslocar, e ir ao estado 82
+
+
+Estado 50
+
+   29 expression: TAG_ABREPARANTESIS • expression TAG_FECHAPARANTESIS expre_pos
+   36           | TAG_ABREPARANTESIS • expression error
+
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 50
+
+    expression  ir ao estado 83
+
+
+Estado 51
+
+   27 expression_format2: TAG_ABREPARANTESIS expression • TAG_FECHAPARANTESIS separador expression_format2
+   29 expression: TAG_ABREPARANTESIS expression • TAG_FECHAPARANTESIS expre_pos
+   36           | TAG_ABREPARANTESIS expression • error
+
+    error                deslocar, e ir ao estado 84
+    TAG_FECHAPARANTESIS  deslocar, e ir ao estado 85
+
+
+Estado 52
+
+   26 expression_format2: expression separador • expression_format2
+
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 18
+
+    $padrão  reduzir usando a regra 28 (expression_format2)
+
+    expression_format2  ir ao estado 86
+    expression          ir ao estado 22
+
+
+Estado 53
+
+   44 separador: op_logic •
+
+    $padrão  reduzir usando a regra 44 (separador)
+
+
+Estado 54
+
+   62 individuals_section: INDIVIDUALS error •
+
+    $padrão  reduzir usando a regra 62 (individuals_section)
+
+
+Estado 55
+
+   61 individuals_section: INDIVIDUALS individuals_list •
+
+    $padrão  reduzir usando a regra 61 (individuals_section)
+
+
+Estado 56
+
+   59 disjointclasses_section: DISJOINTCLASSES error •
+
+    $padrão  reduzir usando a regra 59 (disjointclasses_section)
+
+
+Estado 57
+
+   66 class_list: TAG_CLASS • TAG_VIRGULA class_list
+   67           | TAG_CLASS •
+   69           | TAG_CLASS • TAG_VIRGULA error
+   71           | TAG_CLASS • TAG_VIRGULA class_list TAG_FECHAPARANTESIS error
+
+    TAG_VIRGULA  deslocar, e ir ao estado 87
+
+    $padrão  reduzir usando a regra 67 (class_list)
+
+
+Estado 58
+
+   68 class_list: TAG_ABREPARANTESIS • TAG_CLASS TAG_VIRGULA class_list TAG_FECHAPARANTESIS
+   70           | TAG_ABREPARANTESIS • TAG_CLASS TAG_VIRGULA class_list error
+
+    TAG_CLASS  deslocar, e ir ao estado 88
+
+
+Estado 59
+
+   57 disjointclasses_section: DISJOINTCLASSES class_list •
+
+    $padrão  reduzir usando a regra 57 (disjointclasses_section)
+
+
+Estado 60
+
+   60 disjointclasses_section: DISJOINTWITH error •
+
+    $padrão  reduzir usando a regra 60 (disjointclasses_section)
+
+
+Estado 61
+
+   58 disjointclasses_section: DISJOINTWITH class_list •
+
+    $padrão  reduzir usando a regra 58 (disjointclasses_section)
+
+
+Estado 62
+
+   54 class_body: disjointclasses_section individuals_section •
+
+    $padrão  reduzir usando a regra 54 (class_body)
+
+
+Estado 63
+
+   55 class_body: individuals_section disjointclasses_section •
+
+    $padrão  reduzir usando a regra 55 (class_body)
+
+
+Estado 64
+
+   13 optional_subclass: SUBCLASSOF expression_list •
+
+    $padrão  reduzir usando a regra 13 (optional_subclass)
+
+
+Estado 65
+
+   23 expression_format: separador TAG_ABREPARANTESIS • expression TAG_FECHAPARANTESIS expression_format
+   29 expression: TAG_ABREPARANTESIS • expression TAG_FECHAPARANTESIS expre_pos
+   36           | TAG_ABREPARANTESIS • expression error
+
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 50
+
+    expression  ir ao estado 89
+
+
+Estado 66
+
+   22 expression_format: separador expression • expression_format
+   24                  | separador expression • TAG_FECHAPARANTESIS error
+
+    AND                  deslocar, e ir ao estado 32
+    OR                   deslocar, e ir ao estado 33
+    TAG_FECHAPARANTESIS  deslocar, e ir ao estado 90
+    TAG_VIRGULA          deslocar, e ir ao estado 34
+
+    TAG_PROPERTY        reduzir usando a regra 45 (separador)
+    TAG_ABREPARANTESIS  reduzir usando a regra 45 (separador)
+    $padrão             reduzir usando a regra 25 (expression_format)
+
+    expression_format  ir ao estado 91
+    separador          ir ao estado 36
+    op_logic           ir ao estado 53
+
+
+Estado 67
+
+   20 pos_class: TAG_CLASS • op_logic pos_class
+   21          | TAG_CLASS •
+
+    AND  deslocar, e ir ao estado 32
+    OR   deslocar, e ir ao estado 33
+
+    $padrão  reduzir usando a regra 21 (pos_class)
+
+    op_logic  ir ao estado 92
+
+
+Estado 68
+
+   20 pos_class: TAG_CLASS op_logic pos_class •
+
+    $padrão  reduzir usando a regra 20 (pos_class)
+
+
+Estado 69
+
+   40 pos_value: error •
+
+    $padrão  reduzir usando a regra 40 (pos_value)
+
+
+Estado 70
+
+   39 pos_value: TAG_INDIVIDUOS •
+
+    $padrão  reduzir usando a regra 39 (pos_value)
+
+
+Estado 71
+
+   38 pos_value: TAG_NUM •
+
+    $padrão  reduzir usando a regra 38 (pos_value)
+
+
+Estado 72
+
+   35 expression: TAG_PROPERTY VALUE pos_value •
+
+    $padrão  reduzir usando a regra 35 (expression)
+
+
+Estado 73
+
+   30 expression: TAG_PROPERTY op_quantifier TAG_CLASS •
+
+    $padrão  reduzir usando a regra 30 (expression)
+
+
+Estado 74
+
+   87 namespace_datatype: TAG_NAMESPACE • TAG_DATATYPE
+
+    TAG_DATATYPE  deslocar, e ir ao estado 93
+
+
+Estado 75
+
+   29 expression: TAG_ABREPARANTESIS • expression TAG_FECHAPARANTESIS expre_pos
+   36           | TAG_ABREPARANTESIS • expression error
+   72 class_op: TAG_ABREPARANTESIS • class_l TAG_FECHAPARANTESIS
+
+    TAG_CLASS           deslocar, e ir ao estado 94
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 50
+
+    expression  ir ao estado 83
+    class_l     ir ao estado 95
+
+
+Estado 76
+
+   32 expression: TAG_PROPERTY op_quantifier expression •
+
+    $padrão  reduzir usando a regra 32 (expression)
+
+
+Estado 77
+
+   31 expression: TAG_PROPERTY op_quantifier type_expre •
+
+    $padrão  reduzir usando a regra 31 (expression)
+
+
+Estado 78
+
+   46 type_expre: class_op •
+
+    $padrão  reduzir usando a regra 46 (type_expre)
+
+
+Estado 79
+
+   47 type_expre: namespace_datatype •
+   48           | namespace_datatype • TAG_ABRECOLCHETE op_rel TAG_NUM TAG_FECHACOLCHETE
+   49           | namespace_datatype • TAG_ABRECOLCHETE error
+   50           | namespace_datatype • TAG_ABRECOLCHETE op_rel error
+   51           | namespace_datatype • TAG_ABRECOLCHETE op_rel TAG_NUM error
+
+    TAG_ABRECOLCHETE  deslocar, e ir ao estado 96
+
+    $padrão  reduzir usando a regra 47 (type_expre)
+
+
+Estado 80
+
+   33 expression: TAG_PROPERTY op_cardinality TAG_NUM • TAG_CLASS
+   34           | TAG_PROPERTY op_cardinality TAG_NUM • type_expre
+
+    TAG_CLASS           deslocar, e ir ao estado 97
+    TAG_NAMESPACE       deslocar, e ir ao estado 74
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 98
+
+    type_expre          ir ao estado 99
+    class_op            ir ao estado 78
+    namespace_datatype  ir ao estado 79
+
+
+Estado 81
+
+   63 individuals_list: TAG_INDIVIDUOS TAG_VIRGULA • individuals_list
+   65                 | TAG_INDIVIDUOS TAG_VIRGULA • error
+
+    error           deslocar, e ir ao estado 100
+    TAG_INDIVIDUOS  deslocar, e ir ao estado 48
+
+    individuals_list  ir ao estado 101
+
+
+Estado 82
+
+   12 defined_class: EQUIVALENTTO TAG_ABRECHAVE individuals_list TAG_FECHACHAVE •
+
+    $padrão  reduzir usando a regra 12 (defined_class)
+
+
+Estado 83
+
+   29 expression: TAG_ABREPARANTESIS expression • TAG_FECHAPARANTESIS expre_pos
+   36           | TAG_ABREPARANTESIS expression • error
+
+    error                deslocar, e ir ao estado 84
+    TAG_FECHAPARANTESIS  deslocar, e ir ao estado 102
+
+
+Estado 84
+
+   36 expression: TAG_ABREPARANTESIS expression error •
+
+    $padrão  reduzir usando a regra 36 (expression)
+
+
+Estado 85
+
+   27 expression_format2: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • separador expression_format2
+   29 expression: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • expre_pos
+
+    AND          deslocar, e ir ao estado 32
+    OR           deslocar, e ir ao estado 33
+    TAG_VIRGULA  deslocar, e ir ao estado 34
+
+    $end                reduzir usando a regra 42 (expre_pos)
+    $end                [reduzir usando a regra 45 (separador)]
+    TAG_PROPERTY        reduzir usando a regra 42 (expre_pos)
+    TAG_PROPERTY        [reduzir usando a regra 45 (separador)]
+    AND                 [reduzir usando a regra 42 (expre_pos)]
+    OR                  [reduzir usando a regra 42 (expre_pos)]
+    CLASS               reduzir usando a regra 42 (expre_pos)
+    CLASS               [reduzir usando a regra 45 (separador)]
+    INDIVIDUALS         reduzir usando a regra 42 (expre_pos)
+    INDIVIDUALS         [reduzir usando a regra 45 (separador)]
+    SUBCLASSOF          reduzir usando a regra 42 (expre_pos)
+    SUBCLASSOF          [reduzir usando a regra 45 (separador)]
+    DISJOINTCLASSES     reduzir usando a regra 42 (expre_pos)
+    DISJOINTCLASSES     [reduzir usando a regra 45 (separador)]
+    DISJOINTWITH        reduzir usando a regra 42 (expre_pos)
+    DISJOINTWITH        [reduzir usando a regra 45 (separador)]
+    TAG_ABREPARANTESIS  reduzir usando a regra 42 (expre_pos)
+    TAG_ABREPARANTESIS  [reduzir usando a regra 45 (separador)]
+    TAG_VIRGULA         [reduzir usando a regra 42 (expre_pos)]
+    $padrão             reduzir usando a regra 42 (expre_pos)
+
+    expre_pos  ir ao estado 103
+    separador  ir ao estado 104
+    op_logic   ir ao estado 53
+
+    conflito de deslocamento/redução no token TAG_VIRGULA:
+       42 expre_pos: ε •
+       43 separador: • TAG_VIRGULA
+      Exemplo: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • TAG_VIRGULA expression_format2
+      Derivação do deslocamento
+        expression_format2
+        ↳ 27: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador           expression_format2
+                                                                ↳ 43: • TAG_VIRGULA
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                        separador         expression_format2
+              ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos ↳ 43: TAG_VIRGULA
+                                                                      ↳ 42: ε •
+
+    conflito de deslocamento/redução no token AND:
+       42 expre_pos: ε •
+       78 op_logic: • AND
+      Exemplo: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • AND expression_format2
+      Derivação do deslocamento
+        expression_format2
+        ↳ 27: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador         expression_format2
+                                                                ↳ 44: op_logic
+                                                                      ↳ 78: • AND
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                        separador       expression_format2
+              ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos ↳ 44: op_logic
+                                                                      ↳ 42: ε •       ↳ 78: AND
+
+    conflito de deslocamento/redução no token OR:
+       42 expre_pos: ε •
+       79 op_logic: • OR
+      Exemplo: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • OR expression_format2
+      Derivação do deslocamento
+        expression_format2
+        ↳ 27: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador        expression_format2
+                                                                ↳ 44: op_logic
+                                                                      ↳ 79: • OR
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                        separador      expression_format2
+              ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos ↳ 44: op_logic
+                                                                      ↳ 42: ε •       ↳ 79: OR
+
+    conflito de redução/redução nos tokens $end, TAG_PROPERTY, CLASS, INDIVIDUALS, SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH, TAG_ABREPARANTESIS:
+       42 expre_pos: ε •
+       45 separador: ε •
+      Exemplo: •
+      Primeira derivação de redução
+        expre_pos
+        ↳ 42: ε •
+      Segunda derivação de redução
+        separador
+        ↳ 45: ε •
+
+
+
+Estado 86
+
+   26 expression_format2: expression separador expression_format2 •
+
+    $padrão  reduzir usando a regra 26 (expression_format2)
+
+
+Estado 87
+
+   66 class_list: TAG_CLASS TAG_VIRGULA • class_list
+   69           | TAG_CLASS TAG_VIRGULA • error
+   71           | TAG_CLASS TAG_VIRGULA • class_list TAG_FECHAPARANTESIS error
+
+    error               deslocar, e ir ao estado 105
+    TAG_CLASS           deslocar, e ir ao estado 57
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 58
+
+    class_list  ir ao estado 106
+
+
+Estado 88
+
+   68 class_list: TAG_ABREPARANTESIS TAG_CLASS • TAG_VIRGULA class_list TAG_FECHAPARANTESIS
+   70           | TAG_ABREPARANTESIS TAG_CLASS • TAG_VIRGULA class_list error
+
+    TAG_VIRGULA  deslocar, e ir ao estado 107
+
+
+Estado 89
+
+   23 expression_format: separador TAG_ABREPARANTESIS expression • TAG_FECHAPARANTESIS expression_format
+   29 expression: TAG_ABREPARANTESIS expression • TAG_FECHAPARANTESIS expre_pos
+   36           | TAG_ABREPARANTESIS expression • error
+
+    error                deslocar, e ir ao estado 84
+    TAG_FECHAPARANTESIS  deslocar, e ir ao estado 108
+
+
+Estado 90
+
+   24 expression_format: separador expression TAG_FECHAPARANTESIS • error
+
+    error  deslocar, e ir ao estado 109
+
+
+Estado 91
+
+   22 expression_format: separador expression expression_format •
+
+    $padrão  reduzir usando a regra 22 (expression_format)
+
+
+Estado 92
+
+   20 pos_class: TAG_CLASS op_logic • pos_class
+
+    TAG_CLASS  deslocar, e ir ao estado 67
+
+    pos_class  ir ao estado 68
+
+
+Estado 93
+
+   87 namespace_datatype: TAG_NAMESPACE TAG_DATATYPE •
+
+    $padrão  reduzir usando a regra 87 (namespace_datatype)
+
+
+Estado 94
+
+   73 class_l: TAG_CLASS • op_logic class_l
+   74        | TAG_CLASS •
+
+    AND  deslocar, e ir ao estado 32
+    OR   deslocar, e ir ao estado 33
+
+    $padrão  reduzir usando a regra 74 (class_l)
+
+    op_logic  ir ao estado 110
+
+
+Estado 95
+
+   72 class_op: TAG_ABREPARANTESIS class_l • TAG_FECHAPARANTESIS
+
+    TAG_FECHAPARANTESIS  deslocar, e ir ao estado 111
+
+
+Estado 96
+
+   48 type_expre: namespace_datatype TAG_ABRECOLCHETE • op_rel TAG_NUM TAG_FECHACOLCHETE
+   49           | namespace_datatype TAG_ABRECOLCHETE • error
+   50           | namespace_datatype TAG_ABRECOLCHETE • op_rel error
+   51           | namespace_datatype TAG_ABRECOLCHETE • op_rel TAG_NUM error
+
+    error           deslocar, e ir ao estado 112
+    TAG_MENORIGUAL  deslocar, e ir ao estado 113
+    TAG_MAIORIGUAL  deslocar, e ir ao estado 114
+    TAG_MENOR       deslocar, e ir ao estado 115
+    TAG_MAIOR       deslocar, e ir ao estado 116
+
+    op_rel  ir ao estado 117
+
+
+Estado 97
+
+   33 expression: TAG_PROPERTY op_cardinality TAG_NUM TAG_CLASS •
+
+    $padrão  reduzir usando a regra 33 (expression)
+
+
+Estado 98
+
+   72 class_op: TAG_ABREPARANTESIS • class_l TAG_FECHAPARANTESIS
+
+    TAG_CLASS  deslocar, e ir ao estado 94
+
+    class_l  ir ao estado 95
+
+
+Estado 99
+
+   34 expression: TAG_PROPERTY op_cardinality TAG_NUM type_expre •
+
+    $padrão  reduzir usando a regra 34 (expression)
+
+
+Estado 100
+
+   65 individuals_list: TAG_INDIVIDUOS TAG_VIRGULA error •
+
+    $padrão  reduzir usando a regra 65 (individuals_list)
+
+
+Estado 101
+
+   63 individuals_list: TAG_INDIVIDUOS TAG_VIRGULA individuals_list •
+
+    $padrão  reduzir usando a regra 63 (individuals_list)
+
+
+Estado 102
+
+   29 expression: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • expre_pos
+
+    AND          deslocar, e ir ao estado 32
+    OR           deslocar, e ir ao estado 33
+    TAG_VIRGULA  deslocar, e ir ao estado 34
+
+    TAG_PROPERTY        reduzir usando a regra 42 (expre_pos)
+    TAG_PROPERTY        [reduzir usando a regra 45 (separador)]
+    AND                 [reduzir usando a regra 42 (expre_pos)]
+    OR                  [reduzir usando a regra 42 (expre_pos)]
+    TAG_ABREPARANTESIS  reduzir usando a regra 42 (expre_pos)
+    TAG_ABREPARANTESIS  [reduzir usando a regra 45 (separador)]
+    TAG_VIRGULA         [reduzir usando a regra 42 (expre_pos)]
+    $padrão             reduzir usando a regra 42 (expre_pos)
+
+    expre_pos  ir ao estado 103
+    separador  ir ao estado 118
+    op_logic   ir ao estado 53
+
+    conflito de deslocamento/redução no token TAG_VIRGULA:
+       42 expre_pos: ε •
+       43 separador: • TAG_VIRGULA
+      Exemplo: TAG_PROPERTY op_quantifier TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • TAG_VIRGULA expression
+      Derivação do deslocamento
+        expression_format2
+        ↳ 26: expression                                                                                                                    separador expression_format2
+              ↳ 32: TAG_PROPERTY op_quantifier expression                                                                                   ↳ 26: ε   ↳ 26: ε
+                                               ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos
+                                                                                                       ↳ 41: separador           expression
+                                                                                                             ↳ 43: • TAG_VIRGULA
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                                                         separador         expression_format2
+              ↳ 32: TAG_PROPERTY op_quantifier expression                                                        ↳ 43: TAG_VIRGULA ↳ 26: expression separador expression_format2
+                                               ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                                    ↳ 26: ε   ↳ 26: ε
+                                                                                                       ↳ 42: ε •
+
+    conflito de deslocamento/redução no token AND:
+       42 expre_pos: ε •
+       78 op_logic: • AND
+      Exemplo: TAG_PROPERTY op_quantifier TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • AND expression
+      Derivação do deslocamento
+        expression_format2
+        ↳ 26: expression                                                                                                                  separador expression_format2
+              ↳ 32: TAG_PROPERTY op_quantifier expression                                                                                 ↳ 26: ε   ↳ 26: ε
+                                               ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos
+                                                                                                       ↳ 41: separador         expression
+                                                                                                             ↳ 44: op_logic
+                                                                                                                   ↳ 78: • AND
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                                                         separador       expression_format2
+              ↳ 32: TAG_PROPERTY op_quantifier expression                                                        ↳ 44: op_logic  ↳ 26: expression separador expression_format2
+                                               ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos       ↳ 78: AND                  ↳ 26: ε   ↳ 26: ε
+                                                                                                       ↳ 42: ε •
+
+    conflito de deslocamento/redução no token OR:
+       42 expre_pos: ε •
+       79 op_logic: • OR
+      Exemplo: TAG_PROPERTY op_quantifier TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • OR expression
+      Derivação do deslocamento
+        expression_format2
+        ↳ 26: expression                                                                                                                 separador expression_format2
+              ↳ 32: TAG_PROPERTY op_quantifier expression                                                                                ↳ 26: ε   ↳ 26: ε
+                                               ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos
+                                                                                                       ↳ 41: separador        expression
+                                                                                                             ↳ 44: op_logic
+                                                                                                                   ↳ 79: • OR
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                                                         separador      expression_format2
+              ↳ 32: TAG_PROPERTY op_quantifier expression                                                        ↳ 44: op_logic ↳ 26: expression separador expression_format2
+                                               ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos       ↳ 79: OR                  ↳ 26: ε   ↳ 26: ε
+                                                                                                       ↳ 42: ε •
+
+    conflito de redução/redução nos tokens TAG_PROPERTY, TAG_ABREPARANTESIS:
+       42 expre_pos: ε •
+       45 separador: ε •
+      Exemplo: •
+      Primeira derivação de redução
+        expre_pos
+        ↳ 42: ε •
+      Segunda derivação de redução
+        separador
+        ↳ 45: ε •
+
+
+
+Estado 103
+
+   29 expression: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos •
+
+    $padrão  reduzir usando a regra 29 (expression)
+
+
+Estado 104
+
+   27 expression_format2: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador • expression_format2
+   41 expre_pos: separador • expression
+
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 18
+
+    $padrão  reduzir usando a regra 28 (expression_format2)
+
+    expression_format2  ir ao estado 119
+    expression          ir ao estado 120
+
+
+Estado 105
+
+   69 class_list: TAG_CLASS TAG_VIRGULA error •
+
+    $padrão  reduzir usando a regra 69 (class_list)
+
+
+Estado 106
+
+   66 class_list: TAG_CLASS TAG_VIRGULA class_list •
+   71           | TAG_CLASS TAG_VIRGULA class_list • TAG_FECHAPARANTESIS error
+
+    TAG_FECHAPARANTESIS  deslocar, e ir ao estado 121
+
+    TAG_FECHAPARANTESIS  [reduzir usando a regra 66 (class_list)]
+    $padrão              reduzir usando a regra 66 (class_list)
+
+    conflito de deslocamento/redução no token TAG_FECHAPARANTESIS:
+       66 class_list: TAG_CLASS TAG_VIRGULA class_list •
+       71 class_list: TAG_CLASS TAG_VIRGULA class_list • TAG_FECHAPARANTESIS error
+      Exemplo: TAG_CLASS TAG_VIRGULA TAG_CLASS TAG_VIRGULA class_list • TAG_FECHAPARANTESIS error
+      Derivação do deslocamento
+        class_list
+        ↳ 66: TAG_CLASS TAG_VIRGULA class_list
+                                    ↳ 71: TAG_CLASS TAG_VIRGULA class_list • TAG_FECHAPARANTESIS error
+      Derivação de redução
+        class_list
+        ↳ 71: TAG_CLASS TAG_VIRGULA class_list                               TAG_FECHAPARANTESIS error
+                                    ↳ 66: TAG_CLASS TAG_VIRGULA class_list •
+
+
+
+Estado 107
+
+   68 class_list: TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA • class_list TAG_FECHAPARANTESIS
+   70           | TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA • class_list error
+
+    TAG_CLASS           deslocar, e ir ao estado 57
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 58
+
+    class_list  ir ao estado 122
+
+
+Estado 108
+
+   23 expression_format: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • expression_format
+   29 expression: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • expre_pos
+
+    AND          deslocar, e ir ao estado 32
+    OR           deslocar, e ir ao estado 33
+    TAG_VIRGULA  deslocar, e ir ao estado 34
+
+    $end                 reduzir usando a regra 25 (expression_format)
+    $end                 [reduzir usando a regra 42 (expre_pos)]
+    TAG_PROPERTY         reduzir usando a regra 42 (expre_pos)
+    TAG_PROPERTY         [reduzir usando a regra 45 (separador)]
+    AND                  [reduzir usando a regra 42 (expre_pos)]
+    OR                   [reduzir usando a regra 42 (expre_pos)]
+    CLASS                reduzir usando a regra 25 (expression_format)
+    CLASS                [reduzir usando a regra 42 (expre_pos)]
+    INDIVIDUALS          reduzir usando a regra 25 (expression_format)
+    INDIVIDUALS          [reduzir usando a regra 42 (expre_pos)]
+    SUBCLASSOF           reduzir usando a regra 25 (expression_format)
+    SUBCLASSOF           [reduzir usando a regra 42 (expre_pos)]
+    DISJOINTCLASSES      reduzir usando a regra 25 (expression_format)
+    DISJOINTCLASSES      [reduzir usando a regra 42 (expre_pos)]
+    DISJOINTWITH         reduzir usando a regra 25 (expression_format)
+    DISJOINTWITH         [reduzir usando a regra 42 (expre_pos)]
+    TAG_ABREPARANTESIS   reduzir usando a regra 42 (expre_pos)
+    TAG_ABREPARANTESIS   [reduzir usando a regra 45 (separador)]
+    TAG_FECHAPARANTESIS  reduzir usando a regra 42 (expre_pos)
+    TAG_VIRGULA          [reduzir usando a regra 42 (expre_pos)]
+    $padrão              reduzir usando a regra 25 (expression_format)
+
+    expression_format  ir ao estado 123
+    expre_pos          ir ao estado 103
+    separador          ir ao estado 124
+    op_logic           ir ao estado 53
+
+    conflito de redução/redução nos tokens $end, CLASS, INDIVIDUALS, SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH:
+       25 expression_format: ε •
+       42 expre_pos: ε •
+      Exemplo: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS •
+      Primeira derivação de redução
+        expression_format
+        ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                          ↳ 25: ε •
+      Segunda derivação de redução
+        expression_format
+        ↳ 22: separador expression                                                        expression_format
+                        ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos ↳ 22: ε
+                                                                                ↳ 42: ε •
+
+    conflito de deslocamento/redução no token TAG_VIRGULA:
+       42 expre_pos: ε •
+       43 separador: • TAG_VIRGULA
+      Primeiro exemplo: CLASS TAG_CLASS TAG_CLASS separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • TAG_VIRGULA expression expression_format expression_list class_body $end
+      Derivação do deslocamento
+        $accept
+        ↳ 0: ontology                                                                                                                                                                                                     $end
+             ↳ 1: declarations
+                  ↳ 2: class_declaration
+                       ↳ 4: CLASS TAG_CLASS class_type                                                                                                                                                         class_body
+                                            ↳ 6: primitive_class
+                                                 ↳ 9: expression_list                                                                                                                          expression_list
+                                                      ↳ 18: TAG_CLASS expression_format
+                                                                      ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                                                                                        ↳ 22: separador           expression expression_format
+                                                                                                                                              ↳ 43: • TAG_VIRGULA
+      Segundo exemplo: CLASS TAG_CLASS SUBCLASSOF TAG_CLASS separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • TAG_VIRGULA expression expression_format class_body $end
+      Derivação de redução
+        $accept
+        ↳ 0: ontology                                                                                                                                                                                                              $end
+             ↳ 1: declarations
+                  ↳ 2: class_declaration
+                       ↳ 4: CLASS TAG_CLASS class_type                                                                                                                                                                  class_body
+                                            ↳ 6: primitive_class
+                                                 ↳ 9: SUBCLASSOF expression_list
+                                                                 ↳ 18: TAG_CLASS expression_format
+                                                                                 ↳ 22: separador expression                                                        expression_format
+                                                                                                 ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos ↳ 22: separador         expression expression_format
+                                                                                                                                                         ↳ 42: ε •       ↳ 43: TAG_VIRGULA
+
+    conflito de deslocamento/redução no token AND:
+       42 expre_pos: ε •
+       78 op_logic: • AND
+      Primeiro exemplo: CLASS TAG_CLASS TAG_CLASS separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • AND expression expression_format expression_list class_body $end
+      Derivação do deslocamento
+        $accept
+        ↳ 0: ontology                                                                                                                                                                                                   $end
+             ↳ 1: declarations
+                  ↳ 2: class_declaration
+                       ↳ 4: CLASS TAG_CLASS class_type                                                                                                                                                       class_body
+                                            ↳ 6: primitive_class
+                                                 ↳ 9: expression_list                                                                                                                        expression_list
+                                                      ↳ 18: TAG_CLASS expression_format
+                                                                      ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                                                                                        ↳ 22: separador         expression expression_format
+                                                                                                                                              ↳ 44: op_logic
+                                                                                                                                                    ↳ 78: • AND
+      Segundo exemplo: CLASS TAG_CLASS SUBCLASSOF TAG_CLASS separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • AND expression expression_format class_body $end
+      Derivação de redução
+        $accept
+        ↳ 0: ontology                                                                                                                                                                                                            $end
+             ↳ 1: declarations
+                  ↳ 2: class_declaration
+                       ↳ 4: CLASS TAG_CLASS class_type                                                                                                                                                                class_body
+                                            ↳ 6: primitive_class
+                                                 ↳ 9: SUBCLASSOF expression_list
+                                                                 ↳ 18: TAG_CLASS expression_format
+                                                                                 ↳ 22: separador expression                                                        expression_format
+                                                                                                 ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos ↳ 22: separador       expression expression_format
+                                                                                                                                                         ↳ 42: ε •       ↳ 44: op_logic
+                                                                                                                                                                               ↳ 78: AND
+
+    conflito de deslocamento/redução no token OR:
+       42 expre_pos: ε •
+       79 op_logic: • OR
+      Primeiro exemplo: CLASS TAG_CLASS TAG_CLASS separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • OR expression expression_format expression_list class_body $end
+      Derivação do deslocamento
+        $accept
+        ↳ 0: ontology                                                                                                                                                                                                  $end
+             ↳ 1: declarations
+                  ↳ 2: class_declaration
+                       ↳ 4: CLASS TAG_CLASS class_type                                                                                                                                                      class_body
+                                            ↳ 6: primitive_class
+                                                 ↳ 9: expression_list                                                                                                                       expression_list
+                                                      ↳ 18: TAG_CLASS expression_format
+                                                                      ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                                                                                        ↳ 22: separador        expression expression_format
+                                                                                                                                              ↳ 44: op_logic
+                                                                                                                                                    ↳ 79: • OR
+      Segundo exemplo: CLASS TAG_CLASS SUBCLASSOF TAG_CLASS separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS • OR expression expression_format class_body $end
+      Derivação de redução
+        $accept
+        ↳ 0: ontology                                                                                                                                                                                                           $end
+             ↳ 1: declarations
+                  ↳ 2: class_declaration
+                       ↳ 4: CLASS TAG_CLASS class_type                                                                                                                                                               class_body
+                                            ↳ 6: primitive_class
+                                                 ↳ 9: SUBCLASSOF expression_list
+                                                                 ↳ 18: TAG_CLASS expression_format
+                                                                                 ↳ 22: separador expression                                                        expression_format
+                                                                                                 ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos ↳ 22: separador      expression expression_format
+                                                                                                                                                         ↳ 42: ε •       ↳ 44: op_logic
+                                                                                                                                                                               ↳ 79: OR
+
+    conflito de redução/redução nos tokens TAG_PROPERTY, TAG_ABREPARANTESIS:
+       42 expre_pos: ε •
+       45 separador: ε •
+      Exemplo: •
+      Primeira derivação de redução
+        expre_pos
+        ↳ 42: ε •
+      Segunda derivação de redução
+        separador
+        ↳ 45: ε •
+
+
+
+Estado 109
+
+   24 expression_format: separador expression TAG_FECHAPARANTESIS error •
+
+    $padrão  reduzir usando a regra 24 (expression_format)
+
+
+Estado 110
+
+   73 class_l: TAG_CLASS op_logic • class_l
+
+    TAG_CLASS  deslocar, e ir ao estado 94
+
+    class_l  ir ao estado 125
+
+
+Estado 111
+
+   72 class_op: TAG_ABREPARANTESIS class_l TAG_FECHAPARANTESIS •
+
+    $padrão  reduzir usando a regra 72 (class_op)
+
+
+Estado 112
+
+   49 type_expre: namespace_datatype TAG_ABRECOLCHETE error •
+
+    $padrão  reduzir usando a regra 49 (type_expre)
+
+
+Estado 113
+
+   83 op_rel: TAG_MENORIGUAL •
+
+    $padrão  reduzir usando a regra 83 (op_rel)
+
+
+Estado 114
+
+   81 op_rel: TAG_MAIORIGUAL •
+
+    $padrão  reduzir usando a regra 81 (op_rel)
+
+
+Estado 115
+
+   82 op_rel: TAG_MENOR •
+
+    $padrão  reduzir usando a regra 82 (op_rel)
+
+
+Estado 116
+
+   80 op_rel: TAG_MAIOR •
+
+    $padrão  reduzir usando a regra 80 (op_rel)
+
+
+Estado 117
+
+   48 type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel • TAG_NUM TAG_FECHACOLCHETE
+   50           | namespace_datatype TAG_ABRECOLCHETE op_rel • error
+   51           | namespace_datatype TAG_ABRECOLCHETE op_rel • TAG_NUM error
+
+    error    deslocar, e ir ao estado 126
+    TAG_NUM  deslocar, e ir ao estado 127
+
+
+Estado 118
+
+   41 expre_pos: separador • expression
+
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 50
+
+    expression  ir ao estado 128
+
+
+Estado 119
+
+   27 expression_format2: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression_format2 •
+
+    $padrão  reduzir usando a regra 27 (expression_format2)
+
+
+Estado 120
+
+   26 expression_format2: expression • separador expression_format2
+   41 expre_pos: separador expression •
+
+    AND          deslocar, e ir ao estado 32
+    OR           deslocar, e ir ao estado 33
+    TAG_VIRGULA  deslocar, e ir ao estado 34
+
+    $end                reduzir usando a regra 41 (expre_pos)
+    $end                [reduzir usando a regra 45 (separador)]
+    TAG_PROPERTY        reduzir usando a regra 41 (expre_pos)
+    TAG_PROPERTY        [reduzir usando a regra 45 (separador)]
+    AND                 [reduzir usando a regra 41 (expre_pos)]
+    OR                  [reduzir usando a regra 41 (expre_pos)]
+    CLASS               reduzir usando a regra 41 (expre_pos)
+    CLASS               [reduzir usando a regra 45 (separador)]
+    INDIVIDUALS         reduzir usando a regra 41 (expre_pos)
+    INDIVIDUALS         [reduzir usando a regra 45 (separador)]
+    SUBCLASSOF          reduzir usando a regra 41 (expre_pos)
+    SUBCLASSOF          [reduzir usando a regra 45 (separador)]
+    DISJOINTCLASSES     reduzir usando a regra 41 (expre_pos)
+    DISJOINTCLASSES     [reduzir usando a regra 45 (separador)]
+    DISJOINTWITH        reduzir usando a regra 41 (expre_pos)
+    DISJOINTWITH        [reduzir usando a regra 45 (separador)]
+    TAG_ABREPARANTESIS  reduzir usando a regra 41 (expre_pos)
+    TAG_ABREPARANTESIS  [reduzir usando a regra 45 (separador)]
+    TAG_VIRGULA         [reduzir usando a regra 41 (expre_pos)]
+    $padrão             reduzir usando a regra 41 (expre_pos)
+
+    separador  ir ao estado 52
+    op_logic   ir ao estado 53
+
+    conflito de deslocamento/redução no token TAG_VIRGULA:
+       41 expre_pos: separador expression •
+       43 separador: • TAG_VIRGULA
+      Exemplo: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression • TAG_VIRGULA expression_format2
+      Derivação do deslocamento
+        expression_format2
+        ↳ 27: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression_format2
+                                                                          ↳ 26: expression separador           expression_format2
+                                                                                           ↳ 43: • TAG_VIRGULA
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                                           separador         expression_format2
+              ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                    ↳ 43: TAG_VIRGULA
+                                                                      ↳ 41: separador expression •
+
+    conflito de deslocamento/redução no token AND:
+       41 expre_pos: separador expression •
+       78 op_logic: • AND
+      Exemplo: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression • AND expression_format2
+      Derivação do deslocamento
+        expression_format2
+        ↳ 27: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression_format2
+                                                                          ↳ 26: expression separador         expression_format2
+                                                                                           ↳ 44: op_logic
+                                                                                                 ↳ 78: • AND
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                                           separador       expression_format2
+              ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                    ↳ 44: op_logic
+                                                                      ↳ 41: separador expression •       ↳ 78: AND
+
+    conflito de deslocamento/redução no token OR:
+       41 expre_pos: separador expression •
+       79 op_logic: • OR
+      Exemplo: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression • OR expression_format2
+      Derivação do deslocamento
+        expression_format2
+        ↳ 27: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression_format2
+                                                                          ↳ 26: expression separador        expression_format2
+                                                                                           ↳ 44: op_logic
+                                                                                                 ↳ 79: • OR
+      Derivação de redução
+        expression_format2
+        ↳ 26: expression                                                                           separador      expression_format2
+              ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                    ↳ 44: op_logic
+                                                                      ↳ 41: separador expression •       ↳ 79: OR
+
+    conflito de redução/redução nos tokens $end, TAG_PROPERTY, CLASS, INDIVIDUALS, SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH, TAG_ABREPARANTESIS:
+       41 expre_pos: separador expression •
+       45 separador: ε •
+      Exemplo: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression •
+      Primeira derivação de redução
+        expression
+        ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos
+                                                                ↳ 41: separador expression •
+      Segunda derivação de redução
+        expression_format2
+        ↳ 27: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression_format2
+                                                                          ↳ 26: expression separador expression_format2
+                                                                                           ↳ 45: ε • ↳ 26: ε
+
+
+
+Estado 121
+
+   71 class_list: TAG_CLASS TAG_VIRGULA class_list TAG_FECHAPARANTESIS • error
+
+    error  deslocar, e ir ao estado 129
+
+
+Estado 122
+
+   68 class_list: TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA class_list • TAG_FECHAPARANTESIS
+   70           | TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA class_list • error
+
+    error                deslocar, e ir ao estado 130
+    TAG_FECHAPARANTESIS  deslocar, e ir ao estado 131
+
+
+Estado 123
+
+   23 expression_format: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format •
+
+    $padrão  reduzir usando a regra 23 (expression_format)
+
+
+Estado 124
+
+   22 expression_format: separador • expression expression_format
+   23                  | separador • TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+   24                  | separador • expression TAG_FECHAPARANTESIS error
+   41 expre_pos: separador • expression
+
+    TAG_PROPERTY        deslocar, e ir ao estado 16
+    TAG_ABREPARANTESIS  deslocar, e ir ao estado 65
+
+    expression  ir ao estado 132
+
+
+Estado 125
+
+   73 class_l: TAG_CLASS op_logic class_l •
+
+    $padrão  reduzir usando a regra 73 (class_l)
+
+
+Estado 126
+
+   50 type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel error •
+
+    $padrão  reduzir usando a regra 50 (type_expre)
+
+
+Estado 127
+
+   48 type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM • TAG_FECHACOLCHETE
+   51           | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM • error
+
+    error              deslocar, e ir ao estado 133
+    TAG_FECHACOLCHETE  deslocar, e ir ao estado 134
+
+
+Estado 128
+
+   41 expre_pos: separador expression •
+
+    $padrão  reduzir usando a regra 41 (expre_pos)
+
+
+Estado 129
+
+   71 class_list: TAG_CLASS TAG_VIRGULA class_list TAG_FECHAPARANTESIS error •
+
+    $padrão  reduzir usando a regra 71 (class_list)
+
+
+Estado 130
+
+   70 class_list: TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA class_list error •
+
+    $padrão  reduzir usando a regra 70 (class_list)
+
+
+Estado 131
+
+   68 class_list: TAG_ABREPARANTESIS TAG_CLASS TAG_VIRGULA class_list TAG_FECHAPARANTESIS •
+
+    $padrão  reduzir usando a regra 68 (class_list)
+
+
+Estado 132
+
+   22 expression_format: separador expression • expression_format
+   24                  | separador expression • TAG_FECHAPARANTESIS error
+   41 expre_pos: separador expression •
+
+    AND                  deslocar, e ir ao estado 32
+    OR                   deslocar, e ir ao estado 33
+    TAG_FECHAPARANTESIS  deslocar, e ir ao estado 90
+    TAG_VIRGULA          deslocar, e ir ao estado 34
+
+    $end                 reduzir usando a regra 25 (expression_format)
+    $end                 [reduzir usando a regra 41 (expre_pos)]
+    TAG_PROPERTY         reduzir usando a regra 41 (expre_pos)
+    TAG_PROPERTY         [reduzir usando a regra 45 (separador)]
+    AND                  [reduzir usando a regra 41 (expre_pos)]
+    OR                   [reduzir usando a regra 41 (expre_pos)]
+    CLASS                reduzir usando a regra 25 (expression_format)
+    CLASS                [reduzir usando a regra 41 (expre_pos)]
+    INDIVIDUALS          reduzir usando a regra 25 (expression_format)
+    INDIVIDUALS          [reduzir usando a regra 41 (expre_pos)]
+    SUBCLASSOF           reduzir usando a regra 25 (expression_format)
+    SUBCLASSOF           [reduzir usando a regra 41 (expre_pos)]
+    DISJOINTCLASSES      reduzir usando a regra 25 (expression_format)
+    DISJOINTCLASSES      [reduzir usando a regra 41 (expre_pos)]
+    DISJOINTWITH         reduzir usando a regra 25 (expression_format)
+    DISJOINTWITH         [reduzir usando a regra 41 (expre_pos)]
+    TAG_ABREPARANTESIS   reduzir usando a regra 41 (expre_pos)
+    TAG_ABREPARANTESIS   [reduzir usando a regra 45 (separador)]
+    TAG_FECHAPARANTESIS  [reduzir usando a regra 41 (expre_pos)]
+    TAG_VIRGULA          [reduzir usando a regra 41 (expre_pos)]
+    $padrão              reduzir usando a regra 25 (expression_format)
+
+    expression_format  ir ao estado 91
+    separador          ir ao estado 36
+    op_logic           ir ao estado 53
+
+    conflito de redução/redução nos tokens $end, CLASS, INDIVIDUALS, SUBCLASSOF, DISJOINTCLASSES, DISJOINTWITH:
+       25 expression_format: ε •
+       41 expre_pos: separador expression •
+      Exemplo: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression •
+      Primeira derivação de redução
+        expression_format
+        ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                          ↳ 22: separador expression expression_format
+                                                                                                     ↳ 25: ε •
+      Segunda derivação de redução
+        expression_format
+        ↳ 22: separador expression                                                                           expression_format
+                        ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                    ↳ 22: ε
+                                                                                ↳ 41: separador expression •
+
+    conflito de deslocamento/redução no token TAG_FECHAPARANTESIS:
+       41 expre_pos: separador expression •
+       24 expression_format: separador expression • TAG_FECHAPARANTESIS error
+      Exemplo: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression • TAG_FECHAPARANTESIS error
+      Derivação do deslocamento
+        expression_format
+        ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                          ↳ 24: separador expression • TAG_FECHAPARANTESIS error
+      Derivação de redução
+        expression_format
+        ↳ 24: separador expression                                                                           TAG_FECHAPARANTESIS error
+                        ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos
+                                                                                ↳ 41: separador expression •
+
+    conflito de deslocamento/redução no token TAG_VIRGULA:
+       41 expre_pos: separador expression •
+       43 separador: • TAG_VIRGULA
+      Exemplo: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression • TAG_VIRGULA expression
+      Derivação do deslocamento
+        expression_format
+        ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                          ↳ 22: separador expression expression_format
+                                                                                                     ↳ 22: separador           expression expression_format
+                                                                                                           ↳ 43: • TAG_VIRGULA            ↳ 22: ε
+      Derivação de redução
+        expression_format
+        ↳ 22: separador expression                                                                           expression_format
+                        ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                    ↳ 22: separador         expression expression_format
+                                                                                ↳ 41: separador expression •       ↳ 43: TAG_VIRGULA            ↳ 22: ε
+
+    conflito de deslocamento/redução no token AND:
+       41 expre_pos: separador expression •
+       78 op_logic: • AND
+      Exemplo: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression • AND expression
+      Derivação do deslocamento
+        expression_format
+        ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                          ↳ 22: separador expression expression_format
+                                                                                                     ↳ 22: separador         expression expression_format
+                                                                                                           ↳ 44: op_logic               ↳ 22: ε
+                                                                                                                 ↳ 78: • AND
+      Derivação de redução
+        expression_format
+        ↳ 22: separador expression                                                                           expression_format
+                        ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                    ↳ 22: separador       expression expression_format
+                                                                                ↳ 41: separador expression •       ↳ 44: op_logic             ↳ 22: ε
+                                                                                                                         ↳ 78: AND
+
+    conflito de deslocamento/redução no token OR:
+       41 expre_pos: separador expression •
+       79 op_logic: • OR
+      Exemplo: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression • OR expression
+      Derivação do deslocamento
+        expression_format
+        ↳ 23: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expression_format
+                                                                          ↳ 22: separador expression expression_format
+                                                                                                     ↳ 22: separador        expression expression_format
+                                                                                                           ↳ 44: op_logic              ↳ 22: ε
+                                                                                                                 ↳ 79: • OR
+      Derivação de redução
+        expression_format
+        ↳ 22: separador expression                                                                           expression_format
+                        ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                    ↳ 22: separador      expression expression_format
+                                                                                ↳ 41: separador expression •       ↳ 44: op_logic            ↳ 22: ε
+                                                                                                                         ↳ 79: OR
+
+    conflito de redução/redução nos tokens TAG_PROPERTY, TAG_ABREPARANTESIS:
+       41 expre_pos: separador expression •
+       45 separador: ε •
+      Primeiro exemplo: separador TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS separador expression •
+      Primeira derivação de redução
+        expression_list
+        ↳ 18: expression_format
+              ↳ 22: separador expression                                                                           expression_format
+                              ↳ 29: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS expre_pos                    ↳ 22: ε
+                                                                                      ↳ 41: separador expression •
+      Segundo exemplo: expression TAG_FECHAPARANTESIS separador expression • expression expression_format
+      Segunda derivação de redução
+        expression_list
+        ↳ 18: expression expression_format
+                         ↳ 23: TAG_FECHAPARANTESIS separador expression separador expression_format
+                                                                        ↳ 45: ε • ↳ 22: expression expression_format
+
+
+
+Estado 133
+
+   51 type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM error •
+
+    $padrão  reduzir usando a regra 51 (type_expre)
+
+
+Estado 134
+
+   48 type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM TAG_FECHACOLCHETE •
+
+    $padrão  reduzir usando a regra 48 (type_expre)

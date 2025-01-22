@@ -255,7 +255,7 @@ Class: EconomicOffering
     
 Class: Evaluated
 
-    EquivalentTo:
+    EquivalentTo: 
         BrokerServiceProvider or Connector or CoreParticipant
     
     SubClassOf: 

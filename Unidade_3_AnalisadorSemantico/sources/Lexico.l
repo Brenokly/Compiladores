@@ -47,6 +47,7 @@ extern SymTable * currentTable;
 
 %option noyywrap
 %option yylineno
+%option noinput nounput
 
 delim [ \t]
 BRANCOS {delim}*
