@@ -238,7 +238,13 @@ pos_value:
 type_expre:
     class_op
     | namespace_datatype
-    | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM TAG_FECHACOLCHETE
+    | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUM TAG_FECHACOLCHETE {
+        if (strcmp($1,"xsd:integer") != 0) {
+            char error_message[512];
+            snprintf(error_message, 512, "Erro de semântica.#O tipo de dado [%s] não é compatível com o operador de restrição", $1);
+            yyerror(error_message);
+        }
+    }
     | namespace_datatype TAG_ABRECOLCHETE error { 
         yyerror("Erro de sintaxe.#Esperava um operador de relação após o tipo de dado"); 
     }

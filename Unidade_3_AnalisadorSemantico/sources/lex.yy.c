@@ -1,6 +1,6 @@
-#line 1 "lex.yy.c"
+#line 2 "lex.yy.c"
 
-#line 3 "lex.yy.c"
+#line 4 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -1001,9 +1001,9 @@ string toLower(string str);
 bool erro = false;
 int line_number = 1;
 extern SymTable * currentTable;
-#line 1004 "lex.yy.c"
+#line 1005 "lex.yy.c"
 #define YY_NO_INPUT 1
-#line 1006 "lex.yy.c"
+#line 1007 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -1220,7 +1220,7 @@ YY_DECL
 	{
 #line 69 "Lexico.l"
 
-#line 1223 "lex.yy.c"
+#line 1224 "lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -1426,7 +1426,7 @@ YY_RULE_SETUP
 #line 155 "Lexico.l"
 ECHO;
 	YY_BREAK
-#line 1429 "lex.yy.c"
+#line 1430 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
