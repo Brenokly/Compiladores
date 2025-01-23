@@ -5,6 +5,11 @@ SymTable::SymTable() : prev(nullptr)
   // Cria uma tabela global que será pai de todas as outras tabela
 }
 
+SymTable::SymTable(const string & name) : prev(nullptr), className(name)
+{
+  className = name;
+}
+
 SymTable::SymTable(SymTable *t) : prev(t)
 {
 }

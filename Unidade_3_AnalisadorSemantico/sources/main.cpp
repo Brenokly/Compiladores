@@ -33,13 +33,16 @@ void printErrors(const vector<Error> &errors);
 // Variáveis globais
 vector<Error> errors;
 vector<Classes> classes;
-SymTable *currentTable = nullptr;
+SymTable *globalTable = new SymTable(std::string("Escopo Global"));
+SymTable *currentTable = globalTable;
 
 //--------------------------------------------------------------------------
 
 int main(int argc, char *argv[])
 {
+#if defined(_WIN32) || defined(_WIN64)
   system("chcp 65001 > nul"); // Configura o terminal para UTF-8
+#endif
 
   if (argc < 2)
   {
@@ -53,7 +56,7 @@ int main(int argc, char *argv[])
     cerr << "Erro ao abrir o arquivo: " << argv[1] << "\n";
     return 1;
   }
-  cout << "\n------------------------------------" << endl;
+  cout << "------------------------------------" << endl;
   cout << "Iniciando análise...\n";
   if (yyparse() == 0 && errors.empty())
   {

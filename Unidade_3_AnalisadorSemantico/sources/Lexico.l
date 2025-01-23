@@ -33,7 +33,13 @@ unordered_map<string, int> reservadas = {
     {"individuals:", INDIVIDUALS},
     {"subclassof:", SUBCLASSOF},
     {"disjointclasses:", DISJOINTCLASSES},
-    {"disjointwith:", DISJOINTWITH}
+    {"disjointwith:", DISJOINTWITH},
+    {"class", ERROR},
+    {"equivalentto", ERROR},
+    {"individuals", ERROR},
+    {"subclassof", ERROR},
+    {"disjointclasses", ERROR},
+    {"disjointwith", ERROR}
 };
 
 // Definição de funções auxiliares
@@ -43,6 +49,7 @@ string toLower(string str);
 bool erro = false;
 int line_number = 1;
 extern SymTable * currentTable;
+extern SymTable * globalTable;
 %}
 
 %option noyywrap
@@ -55,15 +62,16 @@ letra [a-zA-Z]
 maiuscula [A-Z]
 minuscula [a-z]
 digito [0-9]
-NUM {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
+NUMD {digito}+(\.{digito}+)?([eE][+-]?{digito}+)?
+NUMI {digito}+
+NUM {NUMD}|{NUMI}
 CLASS {maiuscula}({letra})*(_({letra})+)*   
-INDIVIDUOS {maiuscula}({letra})*{NUM}
+INDIVIDUOS {maiuscula}({letra})*{NUMI}
 RESERVADAS ({letra})+
 PROPERTYS {minuscula}{letra}*
 PROPINVALIDA {minuscula}({letra})*{NUM}
 NAMESPACE (owl\:|rdf\:|rdfs\:|xsd\:)
 DATATYPE (rational|real|langString|PlainLiteral|XMLLiteral|Literal|anyURL|base64Binary|boolean|byte|dateTime|dateTimeStamp|decimal|double|float|hexBinary|int|integer|language|long|Name|NCName|negativeInteger|NMTOKEN|nonNegativeInteger|nonPositiveInteger|normalizedString|positiveInteger|short|string|token|unsignedByte|unsignedInt|unsignedLong|unsignedShort)
-CARDILIDADE {NUM}
 SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,|:)
 
 %%
@@ -105,7 +113,8 @@ SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,|:)
 }
 {NAMESPACE}        { yylval.str = strdup(yytext); return TAG_NAMESPACE; }
 {DATATYPE}         { yylval.str = strdup(yytext); return TAG_DATATYPE; }
-{CARDILIDADE}      { yylval.num = atof(yytext); return TAG_NUM; }
+{NUMI}             { yylval.numI = atoi(yytext); return TAG_NUMI; }
+{NUMD}             { yylval.numD = atof(yytext); return TAG_NUMD; }
 {INDIVIDUOS}       { 
     std::string className = yytext;
     Symblo newSymblo = {currentTable->getClassName()};  
@@ -115,7 +124,12 @@ SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,|:)
 }
 {CLASS}            {
     auto it = reservadas.find(toLower(yytext)); 
+
     if (it != reservadas.end()) {
+        if (it->second == ERROR) {
+            cout << "Erro lexico encontrado [" << yytext << "] na linha " << line_number << ". Após a palavra reservada " << yytext << " deve vir ':'.\n";
+            exit(1);
+        }
         return it->second;
     } else {
         if (currentTable->getClassName().empty())
@@ -127,10 +141,14 @@ SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,|:)
         return TAG_CLASS;
     }
 }
-{PROPINVALIDA}     { cout << "Erro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; erro = true; }
+{PROPINVALIDA}     { cout << "Erro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; exit(1); }
 {PROPERTYS}        {
     auto it = reservadas.find(toLower(yytext));
     if (it != reservadas.end()) {
+        if (it->second == ERROR) {
+            cout << "Erro lexico encontrado [" << yytext << "] na linha " << line_number << ". Após a palavra reservada " << yytext << " deve vir ':'.\n";
+            exit(1);
+        }
         return it->second;
     } else {
         yylval.str = strdup(yytext);
@@ -142,16 +160,16 @@ SIMBOLO  (\<=|\>=|<|>|\[|\]|\{|\}|\(|\)|,|:)
     if (it != reservadas.end()) {
         if (it->second == CLASS) {
             // Nova tabela de símbolos
-            SymTable * newScope = new SymTable(currentTable);
+            SymTable * newScope = new SymTable(globalTable);
             currentTable = newScope;
         }
         return it->second; 
     } else {
         cout << "Erro lexico encontrado na linha " << line_number << ": " << yytext << "\n";
-        erro = true;
+        exit(1);
     }
 }
-.                  { cout << "\nErro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; erro = true; }
+.                  { cout << "\nErro lexico encontrado na linha " << line_number << ": " << yytext << "\n"; exit(1); }
 %%
 
 string toLower(string str) {
