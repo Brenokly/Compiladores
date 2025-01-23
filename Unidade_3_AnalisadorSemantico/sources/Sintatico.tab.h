@@ -99,7 +99,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 51 "Sintatico.y"
+#line 59 "Sintatico.y"
 
     double numD;
     int numI;

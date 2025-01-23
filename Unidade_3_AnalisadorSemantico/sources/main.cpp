@@ -22,13 +22,16 @@ struct Classes
 {
   string name;
   set<string> tipos;
+  unordered_map<string, set<string>> propriedades{
+      {"Data Property", {}},
+      {"Object Property", {}}};
 };
 
 extern int yyparse(); // Função gerada pelo Bison
 extern FILE *yyin;    // Arquivo de entrada para o analisador léxico
 extern int yylineno;  // Linha atual do analisador léxico
-void printClasses(const vector<Classes> &classes);
 void printErrors(const vector<Error> &errors);
+void exibirClasses(const vector<Classes> &classes);
 
 // Variáveis globais
 vector<Error> errors;
@@ -63,8 +66,9 @@ int main(int argc, char *argv[])
     cout << "------------------------------------" << endl;
     cout << "Análise concluída com sucesso!" << endl;
     cout << "------------------------------------\n";
+    cout << "\n\tInformações das classes:\n\n";
 
-    // printClasses(classes); // Exibir as classes (Não é necessário para a Unidade 3)
+    exibirClasses(classes); // Exibir as classes (Não é necessário para a Unidade 3)
   }
   else
   {
@@ -84,33 +88,53 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-// Função para exibir as classes e seus tipos
-void printClasses(const vector<Classes> &classes)
+// Função para exibir o vetor de Classes
+void exibirClasses(const vector<Classes> &classes)
 {
-  cout << "Lista de Classes:\n";
-  cout << "=================\n";
-
-  for (const auto &cls : classes)
+  for (const auto &classe : classes)
   {
-    cout << "Classe: " << cls.name << "\n";
-    cout << "Tipos: ";
-    if (cls.tipos.empty())
+    cout << "=============================\n";
+    cout << "| Classe: " << classe.name << "\n";
+    cout << "=============================\n";
+
+    // Exibir tipos da classe
+    cout << "| Tipos\n";
+    cout << "| {\n";
+    if (classe.tipos.empty())
     {
-      cout << "Nenhum tipo registrado.\n";
+      cout << "|   [Nenhum tipo definido]\n";
     }
     else
     {
-      bool first = true;
-      for (const auto &tipo : cls.tipos)
+      for (const auto &tipo : classe.tipos)
       {
-        if (!first)
-          cout << ", ";
-        cout << tipo;
-        first = false;
+        cout << "|   - " << tipo << "\n";
       }
-      cout << "\n";
     }
-    cout << "-----------------\n";
+    cout << "| }\n";
+
+    // Exibir propriedades
+    cout << "| Propriedades\n";
+    cout << "| {\n";
+    for (const auto &[tipoPropriedade, propriedades] : classe.propriedades)
+    {
+      cout << "|   " << tipoPropriedade << "\n";
+      cout << "|   {\n";
+      if (propriedades.empty())
+      {
+        cout << "|     [Nenhuma propriedade encontrada]\n";
+      }
+      else
+      {
+        for (const auto &propriedade : propriedades)
+        {
+          cout << "|     - " << propriedade << "\n";
+        }
+      }
+      cout << "|   }\n";
+    }
+    cout << "| }\n";
+    cout << "=============================\n\n";
   }
 }
 

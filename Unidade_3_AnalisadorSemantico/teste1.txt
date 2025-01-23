@@ -1,5 +1,6 @@
-Class: Activity
-    SubClassOf: 
-        FunctionalComplex,
-        participatedIn some DataExchange
-        participated min 1 Teste
+Class: MargheritaPizza
+SubClassOf:
+    NamedPizza,
+    hasTopping some MozzarellaTopping,
+    hasTopping some TomatoTopping,
+    hasTopping only (MozzarellaTopping)

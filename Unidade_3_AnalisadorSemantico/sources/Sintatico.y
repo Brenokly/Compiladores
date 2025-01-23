@@ -1,16 +1,13 @@
 %{
+// Includes
 #include <iostream>
 #include <set>
 #include <string>
 #include <vector>
 #include <cstring>
-using std::cout;
-using std::cerr;
-using std::endl;
-using std::string;
-using std::vector;
-using std::set;
-using std::strcmp;
+#include <unordered_map>
+#include <stack>
+using namespace std;
 
 // Definição da estrutura Error
 struct Error
@@ -20,23 +17,34 @@ struct Error
     string suggestion;
 };
 
+// Definição da estrutura de Classes
 struct Classes
 {
   string name;
   set<string> tipos;
+  unordered_map<string, set<string>> propriedades;
 };
 
+// Variáveis Externas
 extern int yylineno;
 extern vector<Error> errors;
 extern vector<Classes> classes;
-char * currentClass;
-Classes * c = nullptr;
-set<string> t;
 
+// Variáveis que serão adicionadas no struct Classes ou Auxiliáres
+set<string> t;                          // Tipos de uma class
+set<string> props;                      // Propriedades de um fechamento
+stack<string> properties;               // Propriedades de uma class auxiliar
+stack<string> posproperties;            // Pilha auxiliar para propriedades
+unordered_map<string, set<string>> p    // Tipo de cada propriedade
+{
+    {"Data Property", {}},
+    {"Object Property", {}}
+};
+
+// Funções Obrigatórias do Bison e Flex
 int yylex(void);
 int yyparse(void);
 void yyerror(const char *msg);
-void addClass(const string& className);
 
 // Funções auxiliares de validação
 bool is_valid_xsd_type(const std::string& datatype);
@@ -85,8 +93,29 @@ declarations:
 
 // class_declaration: Defini a estrutura base de uma classe
 class_declaration:
-    CLASS TAG_CLASS class_type class_body { classes.push_back({string($2),t}); t.clear(); }
-    | CLASS error { yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); }
+    CLASS TAG_CLASS class_type class_body { 
+        string theLastTP;
+        while (!properties.empty()) {
+            if (!posproperties.empty()) {
+                theLastTP = posproperties.top();
+                posproperties.pop();
+            }
+            p[theLastTP].insert(properties.top());
+            properties.pop();
+        }
+
+        classes.push_back({string($2),t,p}); 
+
+        t.clear();
+        p["Data Property"].clear();
+        p["Object Property"].clear();
+        while (!posproperties.empty()) {
+            posproperties.pop();
+        }
+    }
+    | CLASS error { 
+        yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); 
+    }
 ;
 
 // class_type: Define como é a estrutura dos dois tipos de classes existentes
@@ -164,6 +193,9 @@ simples_expression_no_parent:
     | separador error { 
         yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); 
     }
+    | expression error {
+        yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões.");
+    }
 ;
 
 // Complex_expression: Define a estrutura de uma expressão complexa
@@ -174,6 +206,9 @@ complex_expression:
     | separador TAG_ABREPARANTESIS element TAG_FECHAPARANTESIS
     | separador TAG_ABREPARANTESIS elements error { 
         yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); 
+    }
+    | TAG_ABREPARANTESIS error {
+        yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões.");
     }
 ;
 
@@ -191,11 +226,17 @@ additional_expressions_parent:
     | separador TAG_ABREPARANTESIS elements error { 
         yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); 
     }
+    | TAG_ABREPARANTESIS error {
+        yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões.");
+    }
 ;
 
 additional_expressions_no_parent:
     separador element additional_expressions
     | separador element
+    | element error {
+        yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões.");
+    }
 ;
 
 element:
@@ -212,30 +253,45 @@ elements:
 
 // Expression: Define a estrutura de uma expressão de como se monta expressões
 expression:
-    TAG_PROPERTY op_quantifier corp_expre1 
-    | TAG_PROPERTY op_cardinality sub_corp
-    | TAG_PROPERTY VALUE pos_value
+    TAG_PROPERTY pos_property { properties.push(std::string($1)); }
     | TAG_PROPERTY error { 
         yyerror("Erro de Sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); 
     }
 ;
 
+pos_property:
+    op_quantifier corp_expre1
+    | ONLY class_op {
+        t.insert("Fechamento");
+        if (!props.empty()) {
+            yyerror("Erro semântico.#Erro ao tentar fechar o axioma, classes faltantes não foram fechadas.");
+        }
+    }
+    | op_cardinality corp_expre2
+    | VALUE pos_value
+;
+
 corp_expre1:
-    TAG_CLASS 
-    | type_expre 
+    TAG_CLASS { props.insert(std::string($1)); }
+    | type_expre { posproperties.push("Data Property"); }
     | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS
     | error { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
 ;
 
-sub_corp:
-    TAG_NUMD corp_expre2
-    | TAG_NUMI corp_expre2
+corp_expre2:
+    TAG_NUMD sub_corp
+    | TAG_NUMI sub_corp
 ;
 
-corp_expre2:
-    TAG_CLASS 
-    | type_expre 
+sub_corp:
+    object_property { posproperties.push("Object Property"); }
+    | type_expre { posproperties.push("Data Property"); }
     | error { yyerror("Erro de Sintaxe#Após uma cardinalidade, esperava-se uma Class ou um Tipo de dado."); }
+;
+
+object_property:
+    TAG_CLASS
+    | class_op
 ;
 
 // Separador: Define a estrutura de um separador que pode ser uma vírgula ou um operador lógico
@@ -252,8 +308,7 @@ pos_value:
 ;
 
 type_expre:
-    class_op
-    | namespace_datatype
+    namespace_datatype
     | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI TAG_FECHACOLCHETE {
         if (!is_int_type(std::string($1))) {
             char error_message[512];
@@ -346,8 +401,24 @@ class_op:
 
 // Class_l: Classes separadas por operadores lógicos
 class_l:
-    TAG_CLASS op_logic class_l
-    | TAG_CLASS
+    TAG_CLASS op_logic class_l {
+         if (props.find(std::string($1)) != props.end()) {
+            props.erase(std::string($1));
+        } else {
+            char error_message[512];
+            snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", $1);
+            yyerror(error_message);
+        }
+    }
+    | TAG_CLASS {
+        if (props.find(std::string($1)) != props.end()) {
+            props.erase(std::string($1));
+        } else {
+            char error_message[512];
+            snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", $1);
+            yyerror(error_message);
+        }   
+    }
     | TAG_CLASS op_logic error { 
         yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico");
     }
@@ -358,7 +429,7 @@ class_l:
 
 // Op_quantifier: Quantificadores
 op_quantifier:
-    ONLY { t.insert("Fechamento"); }
+    ONLY
     | SOME
     | ALL
 ;
@@ -508,9 +579,4 @@ void yyerror(const char * msg) {
     err.suggestion = msg2;
 
     errors.push_back(err);
-}
-
-void addClass(const string& className) {
-    c = &classes.emplace_back();  // Adiciona um novo elemento no vetor e obtém o ponteiro
-    c->name = className;
 }
