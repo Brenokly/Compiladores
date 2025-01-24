@@ -271,7 +271,6 @@ expression:
         } else if (!isFechamento) {
             theLastProp.clear();
             isFechamento = false;
-            cout << "limpou!" << endl;
         }
     }
     | TAG_PROPERTY error { 
@@ -457,8 +456,7 @@ class_l:
 
 // Op_quantifier: Quantificadores
 op_quantifier:
-    ONLY { $$ = "only"; }
-    | SOME { $$ = "some"; }
+    SOME { $$ = "some"; }
     | ALL { $$ = "all"; }
 ;
 

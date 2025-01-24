@@ -2,4 +2,4 @@ Class: MargheritaPizza
     SubClassOf:
         propriedade some ClasseQ,
         propriedade some ClasseW,
-        propriedades only (ClasseQ or ClasseW)
+        propriedade only (ClasseQ or ClasseW)
