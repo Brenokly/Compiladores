@@ -35,16 +35,17 @@ extern vector<Classes> classes;
 // Variáveis que serão adicionadas no struct Classes ou Auxiliáres
 set<string> t;                          // Tipos de uma class
 bool isFechamento = false;              // Serve para identificar se a estrutura é de fechamento
-bool fecho = false;
+bool fecho = false;                     // Auxilia a variável fecho!
 bool isClass = false;                   // Serve para identificar se a estrutura é de classe
-set<string> theLastProp;                      // Serve para guardar a última propriedade do fechamento
+set<string> theLastProp;                // Serve para guardar a última propriedade do fechamento
 set<string> props;                      // Serve para identificar se todas as classes foram fechadas
 stack<string> properties;               // Serve para guardar as propriedades
 stack<string> posproperties;            // Serve para guardar o tipo de propriedade que aparecem em suas ordens
 unordered_map<string, set<string>> p    // Tipo de cada propriedade
 {
     {"Data Property", {}},
-    {"Object Property", {}}
+    {"Object Property", {}},
+    {"Nenhum Tipo", {}}
 };
 
 // Funções Obrigatórias do Bison e Flex
@@ -102,7 +103,7 @@ declarations:
 // class_declaration: Defini a estrutura base de uma classe
 class_declaration:
     CLASS TAG_CLASS class_type class_body { 
-        string theLastTP;
+        string theLastTP = "Nenhum Tipo";
         while (!properties.empty()) {
             if (!posproperties.empty()) {
                 theLastTP = posproperties.top();
@@ -111,15 +112,24 @@ class_declaration:
             p[theLastTP].insert(properties.top());
             properties.pop();
         }
+        classes.push_back({string($2),t,p});
 
-        classes.push_back({string($2),t,p}); 
-        isFechamento = false;
-        t.clear();
-        p["Data Property"].clear();
-        p["Object Property"].clear();
+        // Limpa as variáveis
         while (!posproperties.empty()) {
             posproperties.pop();
         }
+        while (!properties.empty()) {
+            properties.pop();
+        }
+         p["Data Property"].clear();
+        p["Object Property"].clear();
+        p["Nenhum Tipo"].clear();
+        isFechamento = false;
+        fecho = false;
+        isClass = false;
+        theLastProp.clear();
+        t.clear();
+        props.clear();
     }
     | CLASS error { 
         yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); 
@@ -287,7 +297,8 @@ pos_property:
         isClass = false;
     }
     | ONLY class_op {
-        t.insert("Fechamento");
+        if (isFechamento) {t.insert("Fechamento");} 
+        posproperties.push("Object Property");
         if (!props.empty()) {
             yyerror("Erro semântico.#Erro ao tentar fechar o axioma, classes faltantes não foram fechadas.");
         }
@@ -295,7 +306,11 @@ pos_property:
         isFechamento = false;
     }
     | op_cardinality corp_expre2
-    | VALUE pos_value
+    | VALUE pos_value {         
+        while (!properties.empty()) {
+            properties.pop();
+        } 
+    }
 ;
 
 corp_expre1:

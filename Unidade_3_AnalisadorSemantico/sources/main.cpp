@@ -24,7 +24,8 @@ struct Classes
   set<string> tipos;
   unordered_map<string, set<string>> propriedades{
       {"Data Property", {}},
-      {"Object Property", {}}};
+      {"Object Property", {}},
+      {"Nenhum Tipo", {}}};
 };
 
 extern int yyparse(); // Função gerada pelo Bison

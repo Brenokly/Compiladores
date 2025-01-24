@@ -1,5 +1,11 @@
 Class: MargheritaPizza
     SubClassOf:
-        propriedade some ClasseQ,
-        propriedade some ClasseW,
-        propriedade only (ClasseQ or ClasseW)
+        NamedPizza,
+        hasTopping some MozzarellaTopping,
+        hasTopping some TomatoTopping,
+        hasTopping only (MozzarellaTopping or TomatoTopping)
+    DisjointClasses:
+        AmericanaHotPizza, AmericanaPizza, SohoPizza
+    Individuals:
+        MargheritaPizza1,
+        MargheritaPizza2
