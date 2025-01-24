@@ -1,5 +1,5 @@
 Class: MargheritaPizza
     SubClassOf:
-        NamedPizza,
-        hasTopping some MozzarellaTopping,
-        hasTopping some TomatoTopping
+        propriedade some ClasseQ,
+        propriedade some ClasseW,
+        propriedades only (ClasseQ or ClasseW)

@@ -4,7 +4,9 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <cstring>
+#include <cctype>    
 #include <unordered_map>
 #include <stack>
 using namespace std;
@@ -32,6 +34,10 @@ extern vector<Classes> classes;
 
 // Variáveis que serão adicionadas no struct Classes ou Auxiliáres
 set<string> t;                          // Tipos de uma class
+bool isFechamento = false;              // Serve para identificar se a estrutura é de fechamento
+bool fecho = false;
+bool isClass = false;                   // Serve para identificar se a estrutura é de classe
+set<string> theLastProp;                      // Serve para guardar a última propriedade do fechamento
 set<string> props;                      // Serve para identificar se todas as classes foram fechadas
 stack<string> properties;               // Serve para guardar as propriedades
 stack<string> posproperties;            // Serve para guardar o tipo de propriedade que aparecem em suas ordens
@@ -79,6 +85,8 @@ bool is_decimal_type(const std::string& space);
 %type <str> op_cardinality
 %type <str> namespace_datatype
 %type <str> class_op
+%type <str> op_quantifier
+%type <str> corp_expre1
 %%
 // ontology: Dentro de uma ontologia possuí declarações
 ontology:
@@ -105,7 +113,7 @@ class_declaration:
         }
 
         classes.push_back({string($2),t,p}); 
-
+        isFechamento = false;
         t.clear();
         p["Data Property"].clear();
         p["Object Property"].clear();
@@ -253,26 +261,46 @@ elements:
 
 // Expression: Define a estrutura de uma expressão de como se monta expressões
 expression:
-    TAG_PROPERTY pos_property { properties.push(std::string($1)); }
+    TAG_PROPERTY pos_property { 
+        properties.push(std::string($1));  
+        theLastProp.insert(std::string($1)); 
+
+        if (theLastProp.size() > 1 && fecho) {
+            yyerror("Erro Semântico.#Uma das propriedades não se encaixa com as outras.");
+            fecho = false;
+        } else if (!isFechamento) {
+            theLastProp.clear();
+            isFechamento = false;
+            cout << "limpou!" << endl;
+        }
+    }
     | TAG_PROPERTY error { 
         yyerror("Erro de Sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); 
     }
 ;
 
 pos_property:
-    op_quantifier corp_expre1
+    op_quantifier corp_expre1 {
+        if (strcmp($1,"some") == 0) {
+            {props.insert(std::string($2));}
+            isFechamento = true;
+        }   
+        isClass = false;
+    }
     | ONLY class_op {
         t.insert("Fechamento");
         if (!props.empty()) {
             yyerror("Erro semântico.#Erro ao tentar fechar o axioma, classes faltantes não foram fechadas.");
         }
+        fecho = isFechamento;
+        isFechamento = false;
     }
     | op_cardinality corp_expre2
     | VALUE pos_value
 ;
 
 corp_expre1:
-    TAG_CLASS { props.insert(std::string($1)); posproperties.push("Object Property"); }
+    TAG_CLASS { $$ = $1; isClass = true; posproperties.push("Object Property"); }
     | type_expre { posproperties.push("Data Property"); }
     | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS
     | error { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
@@ -402,9 +430,9 @@ class_op:
 // Class_l: Classes separadas por operadores lógicos
 class_l:
     TAG_CLASS op_logic class_l {
-         if (props.find(std::string($1)) != props.end()) {
+        if (props.find(std::string($1)) != props.end()) {
             props.erase(std::string($1));
-        } else {
+        } else if (isFechamento) {
             char error_message[512];
             snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", $1);
             yyerror(error_message);
@@ -413,7 +441,7 @@ class_l:
     | TAG_CLASS {
         if (props.find(std::string($1)) != props.end()) {
             props.erase(std::string($1));
-        } else {
+        } else if (isFechamento) {
             char error_message[512];
             snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", $1);
             yyerror(error_message);
@@ -429,9 +457,9 @@ class_l:
 
 // Op_quantifier: Quantificadores
 op_quantifier:
-    ONLY
-    | SOME
-    | ALL
+    ONLY { $$ = "only"; }
+    | SOME { $$ = "some"; }
+    | ALL { $$ = "all"; }
 ;
 
 // Op_logic: Operadores lógicos
