@@ -32,9 +32,9 @@ extern vector<Classes> classes;
 
 // Variáveis que serão adicionadas no struct Classes ou Auxiliáres
 set<string> t;                          // Tipos de uma class
-set<string> props;                      // Propriedades de um fechamento
-stack<string> properties;               // Propriedades de uma class auxiliar
-stack<string> posproperties;            // Pilha auxiliar para propriedades
+set<string> props;                      // Serve para identificar se todas as classes foram fechadas
+stack<string> properties;               // Serve para guardar as propriedades
+stack<string> posproperties;            // Serve para guardar o tipo de propriedade que aparecem em suas ordens
 unordered_map<string, set<string>> p    // Tipo de cada propriedade
 {
     {"Data Property", {}},
@@ -272,7 +272,7 @@ pos_property:
 ;
 
 corp_expre1:
-    TAG_CLASS { props.insert(std::string($1)); }
+    TAG_CLASS { props.insert(std::string($1)); posproperties.push("Object Property"); }
     | type_expre { posproperties.push("Data Property"); }
     | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS
     | error { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }

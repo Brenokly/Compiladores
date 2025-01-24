@@ -102,9 +102,9 @@ extern vector<Classes> classes;
 
 // Variáveis que serão adicionadas no struct Classes ou Auxiliáres
 set<string> t;                          // Tipos de uma class
-set<string> props;                      // Propriedades de um fechamento
-stack<string> properties;               // Propriedades de uma class auxiliar
-stack<string> posproperties;            // Pilha auxiliar para propriedades
+set<string> props;                      // Serve para identificar se todas as classes foram fechadas
+stack<string> properties;               // Serve para guardar as propriedades
+stack<string> posproperties;            // Serve para guardar o tipo de propriedade que aparecem em suas ordens
 unordered_map<string, set<string>> p    // Tipo de cada propriedade
 {
     {"Data Property", {}},
@@ -635,9 +635,9 @@ static const yytype_int16 yyrline[] =
      293,   294,   299,   300,   305,   306,   307,   311,   312,   319,
      326,   329,   332,   335,   341,   342,   343,   344,   347,   351,
      352,   353,   356,   362,   363,   369,   370,   371,   378,   379,
-     380,   387,   388,   389,   396,   397,   404,   407,   410,   413,
-     420,   421,   422,   427,   428,   433,   434,   435,   436,   441,
-     442,   443,   448
+     380,   387,   388,   389,   396,   397,   404,   413,   422,   425,
+     432,   433,   434,   439,   440,   445,   446,   447,   448,   453,
+     454,   455,   460
 };
 #endif
 
@@ -1514,7 +1514,7 @@ yyreduce:
 
   case 61: /* corp_expre1: TAG_CLASS  */
 #line 275 "Sintatico.y"
-              { props.insert(std::string((yyvsp[0].str))); }
+              { props.insert(std::string((yyvsp[0].str))); posproperties.push("Object Property"); }
 #line 1519 "Sintatico.tab.c"
     break;
 
@@ -1671,61 +1671,73 @@ yyreduce:
   case 106: /* class_l: TAG_CLASS op_logic class_l  */
 #line 404 "Sintatico.y"
                                {
-        props.erase(std::string((yyvsp[-2].str)));
+         if (props.find(std::string((yyvsp[-2].str))) != props.end()) {
+            props.erase(std::string((yyvsp[-2].str)));
+        } else {
+            char error_message[512];
+            snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", (yyvsp[-2].str));
+            yyerror(error_message);
+        }
     }
-#line 1677 "Sintatico.tab.c"
+#line 1683 "Sintatico.tab.c"
     break;
 
   case 107: /* class_l: TAG_CLASS  */
-#line 407 "Sintatico.y"
+#line 413 "Sintatico.y"
                 {
-        props.erase(std::string((yyvsp[0].str)));    
+        if (props.find(std::string((yyvsp[0].str))) != props.end()) {
+            props.erase(std::string((yyvsp[0].str)));
+        } else {
+            char error_message[512];
+            snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", (yyvsp[0].str));
+            yyerror(error_message);
+        }   
     }
-#line 1685 "Sintatico.tab.c"
+#line 1697 "Sintatico.tab.c"
     break;
 
   case 108: /* class_l: TAG_CLASS op_logic error  */
-#line 410 "Sintatico.y"
+#line 422 "Sintatico.y"
                                { 
         yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico");
     }
-#line 1693 "Sintatico.tab.c"
+#line 1705 "Sintatico.tab.c"
     break;
 
   case 109: /* class_l: TAG_CLASS TAG_CLASS error  */
-#line 413 "Sintatico.y"
+#line 425 "Sintatico.y"
                                 { 
         yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");
     }
-#line 1701 "Sintatico.tab.c"
-    break;
-
-  case 115: /* op_rel: TAG_MAIOR  */
-#line 433 "Sintatico.y"
-                        { (yyval.str) = ">"; }
-#line 1707 "Sintatico.tab.c"
-    break;
-
-  case 116: /* op_rel: TAG_MAIORIGUAL  */
-#line 434 "Sintatico.y"
-                        { (yyval.str) = ">="; }
 #line 1713 "Sintatico.tab.c"
     break;
 
-  case 117: /* op_rel: TAG_MENOR  */
-#line 435 "Sintatico.y"
-                        { (yyval.str) = "<"; }
+  case 115: /* op_rel: TAG_MAIOR  */
+#line 445 "Sintatico.y"
+                        { (yyval.str) = ">"; }
 #line 1719 "Sintatico.tab.c"
     break;
 
-  case 118: /* op_rel: TAG_MENORIGUAL  */
-#line 436 "Sintatico.y"
-                        { (yyval.str) = "<="; }
+  case 116: /* op_rel: TAG_MAIORIGUAL  */
+#line 446 "Sintatico.y"
+                        { (yyval.str) = ">="; }
 #line 1725 "Sintatico.tab.c"
     break;
 
+  case 117: /* op_rel: TAG_MENOR  */
+#line 447 "Sintatico.y"
+                        { (yyval.str) = "<"; }
+#line 1731 "Sintatico.tab.c"
+    break;
+
+  case 118: /* op_rel: TAG_MENORIGUAL  */
+#line 448 "Sintatico.y"
+                        { (yyval.str) = "<="; }
+#line 1737 "Sintatico.tab.c"
+    break;
+
   case 122: /* namespace_datatype: TAG_NAMESPACE TAG_DATATYPE  */
-#line 449 "Sintatico.y"
+#line 461 "Sintatico.y"
     { 
         char * result = (char *)malloc(256); 
         if (result == NULL) {
@@ -1763,11 +1775,11 @@ yyreduce:
             (yyval.str) = NULL;
         }
     }
-#line 1767 "Sintatico.tab.c"
+#line 1779 "Sintatico.tab.c"
     break;
 
 
-#line 1771 "Sintatico.tab.c"
+#line 1783 "Sintatico.tab.c"
 
       default: break;
     }
@@ -1960,7 +1972,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 487 "Sintatico.y"
+#line 499 "Sintatico.y"
 
 
 bool is_int_type(const std::string& space) {
