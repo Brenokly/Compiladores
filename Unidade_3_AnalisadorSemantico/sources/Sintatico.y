@@ -63,6 +63,7 @@ bool is_namespace_valid(const std::string& space);
 bool is_int_type(const std::string& space);
 bool is_decimal_type(const std::string& space);
 void class_declaration(const char * name);
+void tag_class_der(const char * name);
 const char * namespace_datatype_der(const char * name, const char * datatype);
 %}
 
@@ -376,25 +377,9 @@ class_op:
 
 // Class_l: Classes separadas por operadores lógicos
 class_l:
-    TAG_CLASS op_logic class_l {
-        if (props.find(std::string($1)) != props.end()) {
-            props.erase(std::string($1));
-        } else if (isFechamento) {
-            char error_message[512];
-            snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", $1);
-            yyerror(error_message);
-        }
-    }
-    | TAG_CLASS {
-        if (props.find(std::string($1)) != props.end()) {
-            props.erase(std::string($1));
-        } else if (isFechamento) {
-            char error_message[512];
-            snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", $1);
-            yyerror(error_message);
-        }   
-    }
-    | TAG_CLASS op_logic error                                  { yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico");}
+    TAG_CLASS op_logic class_l                                  { tag_class_der($1); }
+    | TAG_CLASS                                                 { tag_class_der($1); }
+    | TAG_CLASS op_logic error                                  { yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico"); }
     | TAG_CLASS TAG_CLASS error                                 { yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");}
 ;
 
@@ -486,6 +471,16 @@ bool is_valid_rdfs_type(const std::string& datatype) {
         "Literal"
     };
     return rdfs_types.count(datatype) > 0;
+}
+
+void tag_class_der(const char * name) {
+    if (props.find(std::string(name)) != props.end()) {
+        props.erase(std::string(name));
+    } else if (isFechamento) {
+        char error_message[512];
+        snprintf(error_message, 512, "Erro Semântico.#A class [%s] não foi fechada corretamente nas propriedades.", name);
+        yyerror(error_message);
+    }
 }
 
 void class_declaration(const char * name) {
