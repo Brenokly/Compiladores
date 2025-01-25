@@ -1,4 +1,5 @@
 %{
+//----------------------------------------------
 // Includes
 #include <iostream>
 #include <set>
@@ -10,7 +11,7 @@
 #include <unordered_map>
 #include <stack>
 using namespace std;
-
+//----------------------------------------------
 // Definição da estrutura Error
 struct Error
 {
@@ -32,14 +33,14 @@ extern int yylineno;
 extern vector<Error> errors;
 extern vector<Classes> classes;
 
-// Variáveis que serão adicionadas no struct Classes ou Auxiliáres
-set<string> t;                          // Tipos de uma class
-bool isFechamento = false;              // Serve para identificar se a estrutura é de fechamento
-bool fecho = false;                     // Auxilia a variável fecho!
-bool isClass = false;                   // Serve para identificar se a estrutura é de classe
-set<string> theLastProp;                // Serve para guardar a última propriedade do fechamento
+// Variáveis Globais que auxiliam na análise
+set<string> t;                          // Serve para guarda os possíveis tipos de uma Classe
+set<string> theLastProp;                // Serve para guardar as propriedades de um fechamento
 set<string> props;                      // Serve para identificar se todas as classes foram fechadas
-stack<string> properties;               // Serve para guardar as propriedades
+bool isFechamento = false;              // Serve para identificar se a estrutura é de fechamento
+bool fechada = false;                   // Auxilia a variável isFechamento!
+bool isClass = false;                   // Serve para identificar se a estrutura é de classe
+stack<string> properties;               // Serve para guardar as propriedades de uma classe
 stack<string> posproperties;            // Serve para guardar o tipo de propriedade que aparecem em suas ordens
 unordered_map<string, set<string>> p    // Tipo de cada propriedade
 {
@@ -61,6 +62,8 @@ bool is_valid_rdfs_type(const std::string& datatype);
 bool is_namespace_valid(const std::string& space);
 bool is_int_type(const std::string& space);
 bool is_decimal_type(const std::string& space);
+void class_declaration(const char * name);
+const char * namespace_datatype_der(const char * name, const char * datatype);
 %}
 
 %union {
@@ -88,6 +91,7 @@ bool is_decimal_type(const std::string& space);
 %type <str> class_op
 %type <str> op_quantifier
 %type <str> corp_expre1
+
 %%
 // ontology: Dentro de uma ontologia possuí declarações
 ontology:
@@ -102,50 +106,16 @@ declarations:
 
 // class_declaration: Defini a estrutura base de uma classe
 class_declaration:
-    CLASS TAG_CLASS class_type class_body { 
-        string theLastTP = "Nenhum Tipo";
-        while (!properties.empty()) {
-            if (!posproperties.empty()) {
-                theLastTP = posproperties.top();
-                posproperties.pop();
-            }
-            p[theLastTP].insert(properties.top());
-            properties.pop();
-        }
-        classes.push_back({string($2),t,p});
-
-        // Limpa as variáveis
-        while (!posproperties.empty()) {
-            posproperties.pop();
-        }
-        while (!properties.empty()) {
-            properties.pop();
-        }
-         p["Data Property"].clear();
-        p["Object Property"].clear();
-        p["Nenhum Tipo"].clear();
-        isFechamento = false;
-        fecho = false;
-        isClass = false;
-        theLastProp.clear();
-        t.clear();
-        props.clear();
-    }
-    | CLASS error { 
-        yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); 
-    }
+    CLASS TAG_CLASS class_type class_body   { class_declaration($2); }
+    | CLASS error                           { yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); }
 ;
 
 // class_type: Define como é a estrutura dos dois tipos de classes existentes
 class_type:
-    primitive_class { t.insert("Primitiva"); }
-    | defined_class optional_subclass { t.insert("Definida"); }
-    | error { 
-        yyerror("Erro de Sintaxe.#Esperava uma classe Primitiva ou Definida (SubClassOf ou EquivalentTo)"); 
-    }
-    | primitive_class error {
-        yyerror("Erro semântico.#Uma classe primitiva 'SubClassOf' não pode ser seguida por 'EquivalentTo'"); 
-    }
+    primitive_class                         { t.insert("Primitiva"); }
+    | defined_class optional_subclass       { t.insert("Definida"); }
+    | error                                 { yyerror("Erro de Sintaxe.#Esperava uma classe Primitiva ou Definida (SubClassOf ou EquivalentTo)"); }
+    | primitive_class error                 { yyerror("Erro semântico.#Uma classe primitiva 'SubClassOf' não pode ser seguida por 'EquivalentTo'"); }
 ;
 
 // primitive_class: Define a estrutura obrigatória de uma classe primitiva
@@ -156,9 +126,13 @@ primitive_class:
 
 // primitive_class: Define a estrutura obrigatória de uma classe definida
 defined_class:
-    EQUIVALENTTO expression_list
-    | EQUIVALENTTO TAG_ABRECHAVE individuals_list TAG_FECHACHAVE { t.insert("Enumerada"); }
+    EQUIVALENTTO pos_defined_class
 ;
+
+// pos_defined_class: Define o que pode vir após EQUIVALENTTO:
+pos_defined_class:
+    expression_list
+    | TAG_ABRECHAVE individuals_list TAG_FECHACHAVE { t.insert("Enumerada"); }
 
 // optional_subclass: Define a estrutura opcional de uma classe definida
 optional_subclass:
@@ -172,9 +146,10 @@ expression_list:
     | TAG_CLASS expression_format
     | expression
     | list_expression
-    | pos_class { t.insert("coberta"); }
+    | pos_class { t.insert("Coberta"); }
 ;
 
+// list_expression: Define a estrutura de uma lista de expressões
 list_expression:
     expression simples_expression_no_parent
 ;
@@ -193,27 +168,21 @@ additional_classes:
 // Expression_format: define a estrutura de possíveis
 expression_format:
     simple_expression
-    | complex_expression { t.insert("aninhada"); }
+    | complex_expression
 ;
 
 // Simple_expression: Define a estrutura de uma expressão simples
 simple_expression:
     separador expression simples_expression_no_parent
     | separador expression
-    | separador error { 
-        yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); 
-    }
+    | separador error { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
 ;
 
 simples_expression_no_parent:
     separador expression
     | separador expression simples_expression_no_parent
-    | separador error { 
-        yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); 
-    }
-    | expression error {
-        yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões.");
-    }
+    | separador error  { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
+    | expression error { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
 ;
 
 // Complex_expression: Define a estrutura de uma expressão complexa
@@ -222,14 +191,11 @@ complex_expression:
     | separador TAG_ABREPARANTESIS elements additional_expressions TAG_FECHAPARANTESIS 
     | separador TAG_ABREPARANTESIS element TAG_FECHAPARANTESIS additional_expressions 
     | separador TAG_ABREPARANTESIS element TAG_FECHAPARANTESIS
-    | separador TAG_ABREPARANTESIS elements error { 
-        yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); 
-    }
-    | TAG_ABREPARANTESIS error {
-        yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões.");
-    }
+    | separador TAG_ABREPARANTESIS elements error   { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
+    | TAG_ABREPARANTESIS error                      { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
 ;
 
+// additional_expressions: Define a estrutura de expressões adicionais (Quando precisa de uma estrutura com muitas expressões)
 additional_expressions:
     additional_expressions_parent
     | additional_expressions_no_parent
@@ -238,23 +204,15 @@ additional_expressions:
 additional_expressions_parent:
     separador TAG_ABREPARANTESIS elements TAG_FECHAPARANTESIS additional_expressions
     | separador TAG_ABREPARANTESIS elements TAG_FECHAPARANTESIS
-    | separador error { 
-        yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); 
-    }
-    | separador TAG_ABREPARANTESIS elements error { 
-        yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); 
-    }
-    | TAG_ABREPARANTESIS error {
-        yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões.");
-    }
+    | separador error                               { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
+    | separador TAG_ABREPARANTESIS elements error   { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
+    | TAG_ABREPARANTESIS error                      { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
 ;
 
 additional_expressions_no_parent:
     separador element additional_expressions
     | separador element
-    | element error {
-        yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões.");
-    }
+    | element error                                 { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
 ;
 
 element:
@@ -264,9 +222,7 @@ element:
 elements:
     expression
     | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS
-    | TAG_ABREPARANTESIS expression error { 
-        yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); 
-    }
+    | TAG_ABREPARANTESIS expression error           { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
 ;
 
 // Expression: Define a estrutura de uma expressão de como se monta expressões
@@ -275,17 +231,15 @@ expression:
         properties.push(std::string($1));  
         theLastProp.insert(std::string($1)); 
 
-        if (theLastProp.size() > 1 && fecho) {
+        if (theLastProp.size() > 1 && fechada) {
             yyerror("Erro Semântico.#Uma das propriedades não se encaixa com as outras.");
-            fecho = false;
+            fechada = false;
         } else if (!isFechamento) {
             theLastProp.clear();
             isFechamento = false;
         }
     }
-    | TAG_PROPERTY error { 
-        yyerror("Erro de Sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); 
-    }
+    | TAG_PROPERTY error                            { yyerror("Erro de Sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); }
 ;
 
 pos_property:
@@ -302,7 +256,7 @@ pos_property:
         if (!props.empty()) {
             yyerror("Erro semântico.#Erro ao tentar fechar o axioma, classes faltantes não foram fechadas.");
         }
-        fecho = isFechamento;
+        fechada = isFechamento;
         isFechamento = false;
     }
     | op_cardinality corp_expre2
@@ -313,22 +267,24 @@ pos_property:
     }
 ;
 
+// Corp_expre1: Define o que pode vir após um quantificador
 corp_expre1:
-    TAG_CLASS { $$ = $1; isClass = true; posproperties.push("Object Property"); }
-    | type_expre { posproperties.push("Data Property"); }
-    | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS
-    | error { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
+    TAG_CLASS                                           { $$ = $1; isClass = true; posproperties.push("Object Property"); }
+    | type_expre                                        { posproperties.push("Data Property"); }
+    | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS { t.insert("Aninhada"); }
+    | error                                             { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
 ;
 
+// Corp_expre2: Define o que pode vir após uma cardinalidade
 corp_expre2:
     TAG_NUMD sub_corp
     | TAG_NUMI sub_corp
 ;
 
 sub_corp:
-    object_property { posproperties.push("Object Property"); }
-    | type_expre { posproperties.push("Data Property"); }
-    | error { yyerror("Erro de Sintaxe#Após uma cardinalidade, esperava-se uma Class ou um Tipo de dado."); }
+    object_property                                     { posproperties.push("Object Property"); }
+    | type_expre                                        { posproperties.push("Data Property"); }
+    | error                                             { yyerror("Erro de Sintaxe#Após uma cardinalidade, esperava-se uma Class ou um Tipo de dado."); }
 ;
 
 object_property:
@@ -349,6 +305,7 @@ pos_value:
     | TAG_INDIVIDUOS
 ;
 
+// Type_expre: Define a estrutura de um tipo de expressão que pode ser um namespace e um datatype [restrição de dados]
 type_expre:
     namespace_datatype
     | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI TAG_FECHACOLCHETE {
@@ -365,80 +322,56 @@ type_expre:
             yyerror(error_message);
         } 
     }
-    | namespace_datatype TAG_ABRECOLCHETE error { 
-        yyerror("Erro de Sintaxe.#Esperava um operador de relação após o tipo de dado"); 
-    }
-    | namespace_datatype TAG_ABRECOLCHETE op_rel error { 
-        yyerror("Erro de Sintaxe.#Esperava um número após o operador de relação"); 
-    }
-    | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI error { 
-        yyerror("Erro de Sintaxe.#Esperava um fechamento de colchetes"); 
-    }
-    | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD error { 
-        yyerror("Erro de Sintaxe.#Esperava um fechamento de colchetes"); 
-    }
+    | namespace_datatype TAG_ABRECOLCHETE error                 { yyerror("Erro de Sintaxe.#Esperava um operador de relação após o tipo de dado"); }
+    | namespace_datatype TAG_ABRECOLCHETE op_rel error          { yyerror("Erro de Sintaxe.#Esperava um número após o operador de relação"); }
+    | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI error { yyerror("Erro de Sintaxe.#Esperava um fechamento de colchetes"); }
+    | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD error { yyerror("Erro de Sintaxe.#Esperava um fechamento de colchetes"); }
 ;
 
 class_body:
     disjointclasses_section
     | individuals_section
     | disjointclasses_section individuals_section
-    | individuals_section disjointclasses_section { 
-        yyerror("Erro de semântica.#A seção 'disjointclasses:' deve vir antes da seção 'individuals:'"); 
-    }
+    | individuals_section disjointclasses_section               { yyerror("Erro de semântica.#A seção 'disjointclasses:' deve vir antes da seção 'individuals:'"); }
     |
 ;
 
 disjointclasses_section:
     DISJOINTCLASSES class_list
     | DISJOINTWITH class_list
-    | DISJOINTCLASSES error { 
-        yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointclasses:'");
-    }
-    | DISJOINTWITH error { 
-        yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointwith:'");
-    }
+    | DISJOINTCLASSES error                                     { yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointclasses:'");}
+    | DISJOINTWITH error                                        { yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointwith:'");}
 ;
 
 individuals_section:
     INDIVIDUALS individuals_list
-    | INDIVIDUALS error { 
-        yyerror("Erro de Sintaxe.#Esperava uma lista de indivíduos após a palavra-chave 'individuals:'");
-    }
+    | INDIVIDUALS error                                         { yyerror("Erro de Sintaxe.#Esperava uma lista de indivíduos após a palavra-chave 'individuals:'");}
 ;
 
 individuals_list:
    TAG_INDIVIDUOS TAG_VIRGULA individuals_list
    | TAG_INDIVIDUOS
-   | TAG_INDIVIDUOS TAG_VIRGULA error { 
-        yyerror("Erro de Sintaxe.#Esperava algo após a vírgula");
-    }
+   | TAG_INDIVIDUOS TAG_VIRGULA error                           { yyerror("Erro de Sintaxe.#Esperava algo após a vírgula");}
 ;
 
 // Class_list: Classes separadas por vírgula ou entre parênteses e separadas por vírgula
 class_list:
     class_v
     | TAG_ABREPARANTESIS class_v TAG_FECHAPARANTESIS
-    | TAG_ABREPARANTESIS class_v error { 
-        yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); 
-    }
+    | TAG_ABREPARANTESIS class_v error                          { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
 ;
 
 // Class_v: Classes separadas por vírgula
 class_v:
     TAG_CLASS TAG_VIRGULA class_v
     | TAG_CLASS
-    | TAG_CLASS TAG_VIRGULA error { 
-        yyerror("Erro de Sintaxe.#Esperava algo após a vírgula");
-    }
+    | TAG_CLASS TAG_VIRGULA error                               { yyerror("Erro de Sintaxe.#Esperava algo após a vírgula"); }
 ;
 
 // Class_op: Classes entre parênteses separadas por operadores lógicos
 class_op: 
     TAG_ABREPARANTESIS class_l TAG_FECHAPARANTESIS  
-    | TAG_ABREPARANTESIS class_l error { 
-        yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); 
-    }
+    | TAG_ABREPARANTESIS class_l error                          { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
 ;
 
 // Class_l: Classes separadas por operadores lógicos
@@ -461,12 +394,8 @@ class_l:
             yyerror(error_message);
         }   
     }
-    | TAG_CLASS op_logic error { 
-        yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico");
-    }
-    | TAG_CLASS TAG_CLASS error { 
-        yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");
-    }
+    | TAG_CLASS op_logic error                                  { yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico");}
+    | TAG_CLASS TAG_CLASS error                                 { yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");}
 ;
 
 // Op_quantifier: Quantificadores
@@ -498,44 +427,7 @@ op_cardinality:
 
 // Namespace_datatype: Namespace e datatype cada um correspondendo a um tipo válido
 namespace_datatype:
-    TAG_NAMESPACE TAG_DATATYPE 
-    { 
-        char * result = (char *)malloc(256); 
-        if (result == NULL) {
-            yyerror("Erro de memória ao processar namespace e datatype");
-            YYABORT;
-        }
-
-        if (!is_namespace_valid(std::string($1))) {
-            free(result);
-            char error_message[512];
-            snprintf(error_message, 512, "Namespace inválido.#O namespace %s não é válido", $1);
-            yyerror(error_message);
-            $$ = NULL;
-        } else if (strcmp($1, "xsd:") == 0 && is_valid_xsd_type(std::string($2))) {
-            snprintf(result, 256, "xsd:%s", $2);
-            $$ = result;
-        }
-        else if (strcmp($1, "owl:") == 0 && is_valid_owl_type(std::string($2))) {
-            snprintf(result, 256, "owl:%s", $2);
-            $$ = result;
-        }
-        else if (strcmp($1, "rdf:") == 0 && is_valid_rdf_type(std::string($2))) {
-            snprintf(result, 256, "rdf:%s", $2);
-            $$ = result;
-        }
-        else if (strcmp($1, "rdfs:") == 0 && is_valid_rdfs_type(std::string($2))) {
-            snprintf(result, 256, "rdfs:%s", $2);
-            $$ = result;
-        }
-        else {
-            free(result);
-            char error_message[512];
-            snprintf(error_message, 512, "Tipo incompatível com o namespace.#O namespace %s não é compatível com o tipo %s", $1, $2);
-            yyerror(error_message);
-            $$ = NULL;
-        }
-    }
+    TAG_NAMESPACE TAG_DATATYPE { $$ = namespace_datatype_der($1, $2); }
 ;
 %%
 
@@ -594,6 +486,74 @@ bool is_valid_rdfs_type(const std::string& datatype) {
         "Literal"
     };
     return rdfs_types.count(datatype) > 0;
+}
+
+void class_declaration(const char * name) {
+    string theLastTP = "Nenhum Tipo";           // Por padrão é Nenhum Tipo
+    while (!properties.empty()) {               // Lopping para adicionar as propriedades e seus tipos
+        if (!posproperties.empty()) {
+            theLastTP = posproperties.top();
+            posproperties.pop();
+        }
+        p[theLastTP].insert(properties.top());
+        properties.pop();
+    }
+    classes.push_back({string(name),t,p});
+
+    // Limpa as variáveis globais
+    while (!posproperties.empty()) {
+        posproperties.pop();
+    }
+    while (!properties.empty()) {
+        properties.pop();
+    }
+    p["Data Property"].clear();
+    p["Object Property"].clear();
+    p["Nenhum Tipo"].clear();
+    isFechamento = false;
+    fechada = false;
+    isClass = false;
+    theLastProp.clear();
+    t.clear();
+    props.clear();
+}
+
+const char * namespace_datatype_der(const char * name, const char * datatype) {
+    char * result = (char *)malloc(256); 
+    if (result == NULL) {
+        yyerror("Erro de memória ao processar namespace e datatype");
+    }
+
+    if (!is_namespace_valid(std::string(name))) {
+        free(result);
+        char error_message[512];
+        snprintf(error_message, 512, "Namespace inválido.#O namespace %s não é válido", name);
+        yyerror(error_message);
+    } else if (strcmp(name, "xsd:") == 0 && is_valid_xsd_type(std::string(datatype))) {
+        snprintf(result, 256, "xsd:%s", datatype);
+        return result;
+    }
+    else if (strcmp(name, "owl:") == 0 && is_valid_owl_type(std::string(datatype))) {
+        snprintf(result, 256, "owl:%s", datatype);
+        return result;
+    }
+    else if (strcmp(name, "rdf:") == 0 && is_valid_rdf_type(std::string(datatype))) {
+        snprintf(result, 256, "rdf:%s", datatype);
+        return result;
+    }
+    else if (strcmp(name, "rdfs:") == 0 && is_valid_rdfs_type(std::string(datatype))) {
+        snprintf(result, 256, "rdfs:%s", datatype);
+        return result;
+    }
+    else {
+        free(result);
+        char error_message[512];
+        snprintf(error_message, 512, "Tipo incompatível com o namespace.#O namespace %s não é compatível com o tipo %s", name, datatype);
+        yyerror(error_message);
+        return NULL;
+    }
+
+    return NULL;
 }
 
 void yyerror(const char * msg) {
