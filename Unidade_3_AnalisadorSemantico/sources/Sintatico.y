@@ -10,6 +10,7 @@
 #include <cctype>    
 #include <unordered_map>
 #include <stack>
+#include <functional>
 using namespace std;
 //----------------------------------------------
 // Definição da estrutura Error
@@ -288,14 +289,14 @@ type_expre:
     | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI TAG_FECHACOLCHETE {
         if (!is_int_type(std::string($1))) {
             char error_message[512];
-            snprintf(error_message, 512, "Erro semântico.#O tipo de dado [%s] não é compatível o dado passado.", $1);
+            snprintf(error_message, 512, "Erro semântico.#O tipo de dado [%s] não é compatível com o dado passado.", $1);
             yyerror(error_message);
         } 
     }
     | namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD TAG_FECHACOLCHETE {
         if (!is_decimal_type(std::string($1))) {
             char error_message[512];
-            snprintf(error_message, 512, "Erro semântico.#O tipo de dado [%s] não é compatível o dado passado.", $1);
+            snprintf(error_message, 512, "Erro semântico.#O tipo de dado [%s] não é compatível com o dado passado.", $1);
             yyerror(error_message);
         } 
     }
@@ -528,36 +529,34 @@ const char * namespace_datatype_der(const char * name, const char * datatype) {
         yyerror("Erro de memória ao processar namespace e datatype");
     }
 
-    if (!is_namespace_valid(std::string(name))) {
+    if (!is_namespace_valid(string(name))) {
         free(result);
         char error_message[512];
-        snprintf(error_message, 512, "Namespace inválido.#O namespace %s não é válido", name);
+        snprintf(error_message, sizeof(error_message), "Namespace inválido.#O namespace %s não é válido", name);
         yyerror(error_message);
-    } else if (strcmp(name, "xsd:") == 0 && is_valid_xsd_type(std::string(datatype))) {
-        snprintf(result, 256, "xsd:%s", datatype);
-        return result;
-    }
-    else if (strcmp(name, "owl:") == 0 && is_valid_owl_type(std::string(datatype))) {
-        snprintf(result, 256, "owl:%s", datatype);
-        return result;
-    }
-    else if (strcmp(name, "rdf:") == 0 && is_valid_rdf_type(std::string(datatype))) {
-        snprintf(result, 256, "rdf:%s", datatype);
-        return result;
-    }
-    else if (strcmp(name, "rdfs:") == 0 && is_valid_rdfs_type(std::string(datatype))) {
-        snprintf(result, 256, "rdfs:%s", datatype);
-        return result;
-    }
-    else {
-        free(result);
-        char error_message[512];
-        snprintf(error_message, 512, "Tipo incompatível com o namespace.#O namespace %s não é compatível com o tipo %s", name, datatype);
-        yyerror(error_message);
-        return NULL;
+        return nullptr;
     }
 
-    return NULL;
+    // Mapear namespaces para funções de validação
+    const unordered_map<string, function<bool(const string &)>> namespace_validators = {
+        {"xsd:", is_valid_xsd_type},
+        {"owl:", is_valid_owl_type},
+        {"rdf:", is_valid_rdf_type},
+        {"rdfs:", is_valid_rdfs_type},
+    };
+
+    auto it = namespace_validators.find(name);
+    if (it != namespace_validators.end() && it->second(string(datatype))) {
+        snprintf(result, 256, "%s%s", name, datatype);
+        return result;
+    }
+
+    // Caso nenhum namespace válido tenha sido encontrado
+    char error_message[512];
+    snprintf(error_message, sizeof(error_message),"Tipo incompatível com o namespace.#O namespace %s não é compatível com o tipo %s", name, datatype);
+    yyerror(error_message);
+    // Parar a execução
+    return datatype;
 }
 
 void yyerror(const char * msg) {

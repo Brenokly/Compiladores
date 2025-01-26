@@ -80,6 +80,8 @@
 #include <cctype>    
 #include <unordered_map>
 #include <stack>
+#include <map>
+#include <functional>
 using namespace std;
 //----------------------------------------------
 // Definição da estrutura Error
@@ -137,7 +139,7 @@ void tag_class_der(const char * name);
 void expression_der(const char * name);
 const char * namespace_datatype_der(const char * name, const char * datatype);
 
-#line 141 "Sintatico.tab.c"
+#line 143 "Sintatico.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -640,20 +642,20 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   101,   101,   102,   107,   108,   113,   114,   119,   120,
-     121,   122,   127,   128,   133,   138,   139,   143,   144,   145,
-     150,   151,   152,   153,   154,   159,   164,   169,   170,   175,
-     176,   181,   182,   183,   187,   188,   189,   190,   195,   196,
-     197,   198,   199,   200,   205,   206,   210,   211,   212,   213,
-     214,   218,   219,   220,   224,   228,   229,   230,   235,   236,
-     237,   241,   242,   243,   248,   249,   250,   251,   252,   257,
-     258,   262,   263,   264,   268,   269,   274,   275,   280,   281,
-     282,   287,   288,   295,   302,   303,   304,   305,   309,   310,
-     311,   312,   313,   317,   318,   319,   320,   324,   325,   329,
-     330,   331,   336,   337,   338,   343,   344,   345,   350,   351,
-     356,   357,   358,   359,   364,   365,   370,   371,   372,   373,
-     378,   379,   384,   385,   390,   391,   392,   393,   398,   399,
-     400,   405
+       0,   103,   103,   104,   109,   110,   115,   116,   121,   122,
+     123,   124,   129,   130,   135,   140,   141,   145,   146,   147,
+     152,   153,   154,   155,   156,   161,   166,   171,   172,   177,
+     178,   183,   184,   185,   189,   190,   191,   192,   197,   198,
+     199,   200,   201,   202,   207,   208,   212,   213,   214,   215,
+     216,   220,   221,   222,   226,   230,   231,   232,   237,   238,
+     239,   243,   244,   245,   250,   251,   252,   253,   254,   259,
+     260,   264,   265,   266,   270,   271,   276,   277,   282,   283,
+     284,   289,   290,   297,   304,   305,   306,   307,   311,   312,
+     313,   314,   315,   319,   320,   321,   322,   326,   327,   331,
+     332,   333,   338,   339,   340,   345,   346,   347,   352,   353,
+     358,   359,   360,   361,   366,   367,   372,   373,   374,   375,
+     380,   381,   386,   387,   392,   393,   394,   395,   400,   401,
+     402,   407
 };
 #endif
 
@@ -1355,391 +1357,391 @@ yyreduce:
   switch (yyn)
     {
   case 3: /* ontology: error  */
-#line 102 "Sintatico.y"
+#line 104 "Sintatico.y"
             { yyerror("Erro de Sintaxe.#Esperava uma declaração de classe começando com 'Class:'!"); YYABORT; }
-#line 1361 "Sintatico.tab.c"
+#line 1363 "Sintatico.tab.c"
     break;
 
   case 6: /* class_declaration: CLASS TAG_CLASS class_type class_body  */
-#line 113 "Sintatico.y"
+#line 115 "Sintatico.y"
                                             { class_declaration((yyvsp[-2].str)); }
-#line 1367 "Sintatico.tab.c"
+#line 1369 "Sintatico.tab.c"
     break;
 
   case 7: /* class_declaration: CLASS error  */
-#line 114 "Sintatico.y"
+#line 116 "Sintatico.y"
                                             { yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); YYABORT; }
-#line 1373 "Sintatico.tab.c"
+#line 1375 "Sintatico.tab.c"
     break;
 
   case 8: /* class_type: primitive_class  */
-#line 119 "Sintatico.y"
+#line 121 "Sintatico.y"
                                             { t.insert("Primitiva"); }
-#line 1379 "Sintatico.tab.c"
+#line 1381 "Sintatico.tab.c"
     break;
 
   case 9: /* class_type: defined_class optional_subclass  */
-#line 120 "Sintatico.y"
+#line 122 "Sintatico.y"
                                             { t.insert("Definida"); }
-#line 1385 "Sintatico.tab.c"
+#line 1387 "Sintatico.tab.c"
     break;
 
   case 10: /* class_type: error  */
-#line 121 "Sintatico.y"
+#line 123 "Sintatico.y"
                                             { yyerror("Erro de Sintaxe.#Esperava uma classe Primitiva ou Definida (SubClassOf ou EquivalentTo)"); YYABORT; }
-#line 1391 "Sintatico.tab.c"
+#line 1393 "Sintatico.tab.c"
     break;
 
   case 11: /* class_type: primitive_class error  */
-#line 122 "Sintatico.y"
+#line 124 "Sintatico.y"
                                             { yyerror("Erro semântico.#Uma classe primitiva 'SubClassOf' não pode ser seguida por 'EquivalentTo'"); YYABORT; }
-#line 1397 "Sintatico.tab.c"
+#line 1399 "Sintatico.tab.c"
     break;
 
   case 16: /* pos_defined_class: TAG_ABRECHAVE individuals_list TAG_FECHACHAVE  */
-#line 139 "Sintatico.y"
+#line 141 "Sintatico.y"
                                                     { t.insert("Enumerada"); }
-#line 1403 "Sintatico.tab.c"
+#line 1405 "Sintatico.tab.c"
     break;
 
   case 24: /* expression_list: pos_class  */
-#line 154 "Sintatico.y"
+#line 156 "Sintatico.y"
                 { t.insert("Coberta"); }
-#line 1409 "Sintatico.tab.c"
+#line 1411 "Sintatico.tab.c"
     break;
 
   case 33: /* simple_expression: separador error  */
-#line 183 "Sintatico.y"
+#line 185 "Sintatico.y"
                       { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
-#line 1415 "Sintatico.tab.c"
+#line 1417 "Sintatico.tab.c"
     break;
 
   case 36: /* simples_expression_no_parent: separador error  */
-#line 189 "Sintatico.y"
+#line 191 "Sintatico.y"
                        { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
-#line 1421 "Sintatico.tab.c"
+#line 1423 "Sintatico.tab.c"
     break;
 
   case 37: /* simples_expression_no_parent: expression error  */
-#line 190 "Sintatico.y"
+#line 192 "Sintatico.y"
                        { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
-#line 1427 "Sintatico.tab.c"
+#line 1429 "Sintatico.tab.c"
     break;
 
   case 42: /* complex_expression: separador TAG_ABREPARANTESIS elements error  */
-#line 199 "Sintatico.y"
+#line 201 "Sintatico.y"
                                                     { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
-#line 1433 "Sintatico.tab.c"
+#line 1435 "Sintatico.tab.c"
     break;
 
   case 43: /* complex_expression: TAG_ABREPARANTESIS error  */
-#line 200 "Sintatico.y"
+#line 202 "Sintatico.y"
                                                     { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); YYABORT; }
-#line 1439 "Sintatico.tab.c"
+#line 1441 "Sintatico.tab.c"
     break;
 
   case 48: /* additional_expressions_parent: separador error  */
-#line 212 "Sintatico.y"
+#line 214 "Sintatico.y"
                                                     { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
-#line 1445 "Sintatico.tab.c"
+#line 1447 "Sintatico.tab.c"
     break;
 
   case 49: /* additional_expressions_parent: separador TAG_ABREPARANTESIS elements error  */
-#line 213 "Sintatico.y"
+#line 215 "Sintatico.y"
                                                     { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
-#line 1451 "Sintatico.tab.c"
+#line 1453 "Sintatico.tab.c"
     break;
 
   case 50: /* additional_expressions_parent: TAG_ABREPARANTESIS error  */
-#line 214 "Sintatico.y"
+#line 216 "Sintatico.y"
                                                     { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
-#line 1457 "Sintatico.tab.c"
+#line 1459 "Sintatico.tab.c"
     break;
 
   case 53: /* additional_expressions_no_parent: element error  */
-#line 220 "Sintatico.y"
+#line 222 "Sintatico.y"
                                                     { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
-#line 1463 "Sintatico.tab.c"
+#line 1465 "Sintatico.tab.c"
     break;
 
   case 57: /* elements: TAG_ABREPARANTESIS expression error  */
-#line 230 "Sintatico.y"
+#line 232 "Sintatico.y"
                                                     { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
-#line 1469 "Sintatico.tab.c"
+#line 1471 "Sintatico.tab.c"
     break;
 
   case 58: /* expression: TAG_PROPERTY pos_property  */
-#line 235 "Sintatico.y"
+#line 237 "Sintatico.y"
                                                         { properties.push(std::string((yyvsp[-1].str))); }
-#line 1475 "Sintatico.tab.c"
+#line 1477 "Sintatico.tab.c"
     break;
 
   case 59: /* expression: TAG_PROPERTY ONLY class_op  */
-#line 236 "Sintatico.y"
+#line 238 "Sintatico.y"
                                                         { expression_der((yyvsp[-2].str)); }
-#line 1481 "Sintatico.tab.c"
+#line 1483 "Sintatico.tab.c"
     break;
 
   case 60: /* expression: TAG_PROPERTY error  */
-#line 237 "Sintatico.y"
+#line 239 "Sintatico.y"
                                                         { yyerror("Erro de Sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); }
-#line 1487 "Sintatico.tab.c"
+#line 1489 "Sintatico.tab.c"
     break;
 
   case 61: /* pos_property: op_quantifier corp_expre1  */
-#line 241 "Sintatico.y"
+#line 243 "Sintatico.y"
                                                         { if (strcmp((yyvsp[-1].str),"some") == 0 && isClass) { props.insert(std::string((yyvsp[0].str))); } }
-#line 1493 "Sintatico.tab.c"
+#line 1495 "Sintatico.tab.c"
     break;
 
   case 63: /* pos_property: VALUE pos_value  */
-#line 243 "Sintatico.y"
+#line 245 "Sintatico.y"
                                                         { while (!properties.empty()) { properties.pop();} }
-#line 1499 "Sintatico.tab.c"
+#line 1501 "Sintatico.tab.c"
     break;
 
   case 64: /* corp_expre1: TAG_CLASS  */
-#line 248 "Sintatico.y"
+#line 250 "Sintatico.y"
                                                         { (yyval.str) = (yyvsp[0].str); isClass = true; posproperties.push("Object Property"); }
-#line 1505 "Sintatico.tab.c"
+#line 1507 "Sintatico.tab.c"
     break;
 
   case 65: /* corp_expre1: type_expre  */
-#line 249 "Sintatico.y"
+#line 251 "Sintatico.y"
                                                         { posproperties.push("Data Property"); }
-#line 1511 "Sintatico.tab.c"
+#line 1513 "Sintatico.tab.c"
     break;
 
   case 66: /* corp_expre1: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS  */
-#line 250 "Sintatico.y"
+#line 252 "Sintatico.y"
                                                         { t.insert("Aninhada"); }
-#line 1517 "Sintatico.tab.c"
+#line 1519 "Sintatico.tab.c"
     break;
 
   case 67: /* corp_expre1: list  */
-#line 251 "Sintatico.y"
+#line 253 "Sintatico.y"
                                                         { posproperties.push("Object Property"); }
-#line 1523 "Sintatico.tab.c"
+#line 1525 "Sintatico.tab.c"
     break;
 
   case 68: /* corp_expre1: error  */
-#line 252 "Sintatico.y"
+#line 254 "Sintatico.y"
                                                         { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
-#line 1529 "Sintatico.tab.c"
+#line 1531 "Sintatico.tab.c"
     break;
 
   case 71: /* sub_corp: object_property  */
-#line 262 "Sintatico.y"
+#line 264 "Sintatico.y"
                                                         { posproperties.push("Object Property"); }
-#line 1535 "Sintatico.tab.c"
+#line 1537 "Sintatico.tab.c"
     break;
 
   case 72: /* sub_corp: type_expre  */
-#line 263 "Sintatico.y"
+#line 265 "Sintatico.y"
                                                         { posproperties.push("Data Property"); }
-#line 1541 "Sintatico.tab.c"
+#line 1543 "Sintatico.tab.c"
     break;
 
   case 73: /* sub_corp: error  */
-#line 264 "Sintatico.y"
+#line 266 "Sintatico.y"
                                                         { yyerror("Erro de Sintaxe#Após uma cardinalidade, esperava-se uma Class ou um Tipo de dado."); }
-#line 1547 "Sintatico.tab.c"
+#line 1549 "Sintatico.tab.c"
     break;
 
   case 82: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI TAG_FECHACOLCHETE  */
-#line 288 "Sintatico.y"
+#line 290 "Sintatico.y"
                                                                             {
         if (!is_int_type(std::string((yyvsp[-4].str)))) {
             char error_message[512];
-            snprintf(error_message, 512, "Erro semântico.#O tipo de dado [%s] não é compatível o dado passado.", (yyvsp[-4].str));
+            snprintf(error_message, 512, "Erro semântico.#O tipo de dado [%s] não é compatível com o dado passado.", (yyvsp[-4].str));
             yyerror(error_message);
         } 
     }
-#line 1559 "Sintatico.tab.c"
+#line 1561 "Sintatico.tab.c"
     break;
 
   case 83: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD TAG_FECHACOLCHETE  */
-#line 295 "Sintatico.y"
+#line 297 "Sintatico.y"
                                                                             {
         if (!is_decimal_type(std::string((yyvsp[-4].str)))) {
             char error_message[512];
-            snprintf(error_message, 512, "Erro semântico.#O tipo de dado [%s] não é compatível o dado passado.", (yyvsp[-4].str));
+            snprintf(error_message, 512, "Erro semântico.#O tipo de dado [%s] não é compatível com o dado passado.", (yyvsp[-4].str));
             yyerror(error_message);
         } 
     }
-#line 1571 "Sintatico.tab.c"
+#line 1573 "Sintatico.tab.c"
     break;
 
   case 84: /* type_expre: namespace_datatype TAG_ABRECOLCHETE error  */
-#line 302 "Sintatico.y"
+#line 304 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um operador de relação após o tipo de dado"); }
-#line 1577 "Sintatico.tab.c"
+#line 1579 "Sintatico.tab.c"
     break;
 
   case 85: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel error  */
-#line 303 "Sintatico.y"
+#line 305 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um número após o operador de relação"); }
-#line 1583 "Sintatico.tab.c"
+#line 1585 "Sintatico.tab.c"
     break;
 
   case 86: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI error  */
-#line 304 "Sintatico.y"
+#line 306 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um fechamento de colchetes"); }
-#line 1589 "Sintatico.tab.c"
+#line 1591 "Sintatico.tab.c"
     break;
 
   case 87: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD error  */
-#line 305 "Sintatico.y"
+#line 307 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um fechamento de colchetes"); }
-#line 1595 "Sintatico.tab.c"
+#line 1597 "Sintatico.tab.c"
     break;
 
   case 91: /* class_body: individuals_section disjointclasses_section  */
-#line 312 "Sintatico.y"
+#line 314 "Sintatico.y"
                                                                 { yyerror("Erro de semântica.#A seção 'disjointclasses:' deve vir antes da seção 'individuals:'"); }
-#line 1601 "Sintatico.tab.c"
+#line 1603 "Sintatico.tab.c"
     break;
 
   case 95: /* disjointclasses_section: DISJOINTCLASSES error  */
-#line 319 "Sintatico.y"
+#line 321 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointclasses:'");}
-#line 1607 "Sintatico.tab.c"
+#line 1609 "Sintatico.tab.c"
     break;
 
   case 96: /* disjointclasses_section: DISJOINTWITH error  */
-#line 320 "Sintatico.y"
+#line 322 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointwith:'");}
-#line 1613 "Sintatico.tab.c"
+#line 1615 "Sintatico.tab.c"
     break;
 
   case 98: /* individuals_section: INDIVIDUALS error  */
-#line 325 "Sintatico.y"
+#line 327 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava uma lista de indivíduos após a palavra-chave 'individuals:'");}
-#line 1619 "Sintatico.tab.c"
+#line 1621 "Sintatico.tab.c"
     break;
 
   case 101: /* individuals_list: TAG_INDIVIDUOS TAG_VIRGULA error  */
-#line 331 "Sintatico.y"
+#line 333 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava algo após a vírgula");}
-#line 1625 "Sintatico.tab.c"
+#line 1627 "Sintatico.tab.c"
     break;
 
   case 104: /* class_list: TAG_ABREPARANTESIS class_v error  */
-#line 338 "Sintatico.y"
+#line 340 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
-#line 1631 "Sintatico.tab.c"
+#line 1633 "Sintatico.tab.c"
     break;
 
   case 107: /* class_v: TAG_CLASS TAG_VIRGULA error  */
-#line 345 "Sintatico.y"
+#line 347 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava algo após a vírgula"); }
-#line 1637 "Sintatico.tab.c"
+#line 1639 "Sintatico.tab.c"
     break;
 
   case 109: /* class_op: TAG_ABREPARANTESIS class_l error  */
-#line 351 "Sintatico.y"
+#line 353 "Sintatico.y"
                                                             { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
-#line 1643 "Sintatico.tab.c"
+#line 1645 "Sintatico.tab.c"
     break;
 
   case 110: /* class_l: TAG_CLASS op_logic class_l  */
-#line 356 "Sintatico.y"
+#line 358 "Sintatico.y"
                                                                 { tag_class_der((yyvsp[-2].str)); }
-#line 1649 "Sintatico.tab.c"
+#line 1651 "Sintatico.tab.c"
     break;
 
   case 111: /* class_l: TAG_CLASS  */
-#line 357 "Sintatico.y"
+#line 359 "Sintatico.y"
                                                                 { tag_class_der((yyvsp[0].str)); }
-#line 1655 "Sintatico.tab.c"
+#line 1657 "Sintatico.tab.c"
     break;
 
   case 112: /* class_l: TAG_CLASS op_logic error  */
-#line 358 "Sintatico.y"
+#line 360 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico"); }
-#line 1661 "Sintatico.tab.c"
+#line 1663 "Sintatico.tab.c"
     break;
 
   case 113: /* class_l: TAG_CLASS TAG_CLASS error  */
-#line 359 "Sintatico.y"
+#line 361 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");}
-#line 1667 "Sintatico.tab.c"
+#line 1669 "Sintatico.tab.c"
     break;
 
   case 115: /* list: TAG_ABREPARANTESIS list_class error  */
-#line 365 "Sintatico.y"
+#line 367 "Sintatico.y"
                                                                { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
-#line 1673 "Sintatico.tab.c"
+#line 1675 "Sintatico.tab.c"
     break;
 
   case 116: /* list_class: TAG_CLASS op_logic list_class  */
-#line 370 "Sintatico.y"
+#line 372 "Sintatico.y"
                                                                 { (yyval.str) = (yyvsp[-2].str); }
-#line 1679 "Sintatico.tab.c"
+#line 1681 "Sintatico.tab.c"
     break;
 
   case 117: /* list_class: TAG_CLASS  */
-#line 371 "Sintatico.y"
+#line 373 "Sintatico.y"
                                                                 { (yyval.str) = (yyvsp[0].str); }
-#line 1685 "Sintatico.tab.c"
+#line 1687 "Sintatico.tab.c"
     break;
 
   case 118: /* list_class: TAG_CLASS op_logic error  */
-#line 372 "Sintatico.y"
+#line 374 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico"); }
-#line 1691 "Sintatico.tab.c"
+#line 1693 "Sintatico.tab.c"
     break;
 
   case 119: /* list_class: TAG_CLASS TAG_CLASS error  */
-#line 373 "Sintatico.y"
+#line 375 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");}
-#line 1697 "Sintatico.tab.c"
+#line 1699 "Sintatico.tab.c"
     break;
 
   case 120: /* op_quantifier: SOME  */
-#line 378 "Sintatico.y"
+#line 380 "Sintatico.y"
          { (yyval.str) = "some"; }
-#line 1703 "Sintatico.tab.c"
+#line 1705 "Sintatico.tab.c"
     break;
 
   case 121: /* op_quantifier: ALL  */
-#line 379 "Sintatico.y"
+#line 381 "Sintatico.y"
           { (yyval.str) = "all"; }
-#line 1709 "Sintatico.tab.c"
+#line 1711 "Sintatico.tab.c"
     break;
 
   case 124: /* op_rel: TAG_MAIOR  */
-#line 390 "Sintatico.y"
+#line 392 "Sintatico.y"
                         { (yyval.str) = ">"; }
-#line 1715 "Sintatico.tab.c"
+#line 1717 "Sintatico.tab.c"
     break;
 
   case 125: /* op_rel: TAG_MAIORIGUAL  */
-#line 391 "Sintatico.y"
+#line 393 "Sintatico.y"
                         { (yyval.str) = ">="; }
-#line 1721 "Sintatico.tab.c"
+#line 1723 "Sintatico.tab.c"
     break;
 
   case 126: /* op_rel: TAG_MENOR  */
-#line 392 "Sintatico.y"
+#line 394 "Sintatico.y"
                         { (yyval.str) = "<"; }
-#line 1727 "Sintatico.tab.c"
+#line 1729 "Sintatico.tab.c"
     break;
 
   case 127: /* op_rel: TAG_MENORIGUAL  */
-#line 393 "Sintatico.y"
+#line 395 "Sintatico.y"
                         { (yyval.str) = "<="; }
-#line 1733 "Sintatico.tab.c"
+#line 1735 "Sintatico.tab.c"
     break;
 
   case 131: /* namespace_datatype: TAG_NAMESPACE TAG_DATATYPE  */
-#line 405 "Sintatico.y"
+#line 407 "Sintatico.y"
                                { (yyval.str) = namespace_datatype_der((yyvsp[-1].str), (yyvsp[0].str)); }
-#line 1739 "Sintatico.tab.c"
+#line 1741 "Sintatico.tab.c"
     break;
 
 
-#line 1743 "Sintatico.tab.c"
+#line 1745 "Sintatico.tab.c"
 
       default: break;
     }
@@ -1932,7 +1934,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 407 "Sintatico.y"
+#line 409 "Sintatico.y"
 
 
 bool is_int_type(const std::string& space) {
@@ -2060,33 +2062,31 @@ const char * namespace_datatype_der(const char * name, const char * datatype) {
     if (!is_namespace_valid(std::string(name))) {
         free(result);
         char error_message[512];
-        snprintf(error_message, 512, "Namespace inválido.#O namespace %s não é válido", name);
+        snprintf(error_message, sizeof(error_message), "Namespace inválido.#O namespace %s não é válido", name);
         yyerror(error_message);
-    } else if (strcmp(name, "xsd:") == 0 && is_valid_xsd_type(std::string(datatype))) {
-        snprintf(result, 256, "xsd:%s", datatype);
-        return result;
-    }
-    else if (strcmp(name, "owl:") == 0 && is_valid_owl_type(std::string(datatype))) {
-        snprintf(result, 256, "owl:%s", datatype);
-        return result;
-    }
-    else if (strcmp(name, "rdf:") == 0 && is_valid_rdf_type(std::string(datatype))) {
-        snprintf(result, 256, "rdf:%s", datatype);
-        return result;
-    }
-    else if (strcmp(name, "rdfs:") == 0 && is_valid_rdfs_type(std::string(datatype))) {
-        snprintf(result, 256, "rdfs:%s", datatype);
-        return result;
-    }
-    else {
-        free(result);
-        char error_message[512];
-        snprintf(error_message, 512, "Tipo incompatível com o namespace.#O namespace %s não é compatível com o tipo %s", name, datatype);
-        yyerror(error_message);
-        return NULL;
+        return nullptr;
     }
 
-    return NULL;
+    // Mapear namespaces para funções de validação
+    const unordered_map<std::string, std::function<bool(const std::string &)>> namespace_validators = {
+        {"xsd:", is_valid_xsd_type},
+        {"owl:", is_valid_owl_type},
+        {"rdf:", is_valid_rdf_type},
+        {"rdfs:", is_valid_rdfs_type},
+    };
+
+    auto it = namespace_validators.find(name);
+    if (it != namespace_validators.end() && it->second(std::string(datatype))) {
+        snprintf(result, 256, "%s%s", name, datatype);
+        return result;
+    }
+
+    // Caso nenhum namespace válido tenha sido encontrado
+    char error_message[512];
+    snprintf(error_message, sizeof(error_message),"Tipo incompatível com o namespace.#O namespace %s não é compatível com o tipo %s", name, datatype);
+    yyerror(error_message);
+    // Parar a execução
+    return datatype;
 }
 
 void yyerror(const char * msg) {

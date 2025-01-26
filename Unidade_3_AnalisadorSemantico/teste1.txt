@@ -1,4 +1,14 @@
-Class: VegetarianPizza
-    EquivalentTo:
-        Pizza
-        and (hasTopping some (CheeseTopping or VegetableTopping))
+Class: MargheritaPizza 
+
+SubClassOf: 
+          NamedPizza, 
+   hasTopping only (MozzarellaTopping or TomatoTopping), 
+          hasTopping some MozzarellaTopping, 
+          hasTopping some TomatoTopping 
+     
+      DisjointClasses: 
+          AmericanaHotPizza, AmericanaPizza, SohoPizza 
+     
+      Individuals:  
+          MargheritaPizza1, 
+          MargheritaPizza2 
