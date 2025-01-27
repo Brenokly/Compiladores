@@ -1,0 +1,4 @@
+Class: MargheritaPizza
+  SubClassOf: NamedPizza
+  Individuals: MargheritaPizza1
+  DisjointClasses: AmericanaHotPizza

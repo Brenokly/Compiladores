@@ -95,7 +95,7 @@ const char * namespace_datatype_der(const char * name, const char * datatype);
 %type <str> list_class
 %type <str> op_quantifier
 %type <str> corp_expre1
-
+%type <str> corp_expre3
 %%
 // ontology: Dentro de uma ontologia possuí declarações
 ontology:
@@ -111,16 +111,16 @@ declarations:
 
 // class_declaration: Defini a estrutura base de uma classe
 class_declaration:
-    CLASS TAG_CLASS class_type class_body   { class_declaration($2); }
-    | CLASS error                           { yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); }                      
+    CLASS TAG_CLASS class_type class_body       { class_declaration($2); }
+    | CLASS error                               { yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); }                      
 ;
 
 // class_type: Define como é a estrutura dos dois tipos de classes existentes
 class_type:
-    primitive_class                         { t.insert("Primitiva"); }
-    | defined_class optional_subclass       { t.insert("Definida"); }
-    | error                                 { yyerror("Erro de Sintaxe.#Esperava uma classe Primitiva ou Definida (SubClassOf ou EquivalentTo)"); }
-    | primitive_class error                 { yyerror("Erro semântico.#Uma classe primitiva 'SubClassOf' não pode ser seguida por 'EquivalentTo'"); }
+    primitive_class                             { t.insert("Primitiva"); }
+    | defined_class optional_subclass           { t.insert("Definida"); }
+    | error                                     { yyerror("Erro de Sintaxe.#Esperava uma classe Primitiva ou Definida (SubClassOf ou EquivalentTo)"); }
+    | primitive_class error                     { yyerror("Erro semântico.#Uma classe primitiva 'SubClassOf' não pode ser seguida por 'EquivalentTo'"); }
 ;
 
 // primitive_class: Define a estrutura obrigatória de uma classe primitiva
@@ -174,31 +174,31 @@ additional_classes:
 // Expression_format: define a estrutura de possíveis
 expression_format:
     simple_expression
-    | complex_expression
+    | complex_expression 
 ;
 
 // Simple_expression: Define a estrutura de uma expressão simples
 simple_expression:
     separador expression simples_expression_no_parent
     | separador expression
-    | separador error { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
+    | separador error                                  { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
 ;
 
 simples_expression_no_parent:
-    separador expression
+    separador expression  
     | separador expression simples_expression_no_parent
-    | separador error  { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
-    | expression error { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
+    | separador error                                  { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
+    | expression error                                 { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
 ;
 
 // Complex_expression: Define a estrutura de uma expressão complexa
 complex_expression:
-    separador TAG_ABREPARANTESIS elements additional_expressions TAG_FECHAPARANTESIS additional_expressions 
-    | separador TAG_ABREPARANTESIS elements additional_expressions TAG_FECHAPARANTESIS 
-    | separador TAG_ABREPARANTESIS element TAG_FECHAPARANTESIS additional_expressions 
-    | separador TAG_ABREPARANTESIS element TAG_FECHAPARANTESIS
-    | separador TAG_ABREPARANTESIS elements error   { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
-    | TAG_ABREPARANTESIS error                      { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); YYABORT; }
+    separador TAG_ABREPARANTESIS elements additional_expressions TAG_FECHAPARANTESIS additional_expressions
+    | separador TAG_ABREPARANTESIS elements additional_expressions TAG_FECHAPARANTESIS
+    | separador TAG_ABREPARANTESIS elements TAG_FECHAPARANTESIS additional_expressions
+    | separador TAG_ABREPARANTESIS elements TAG_FECHAPARANTESIS
+    | separador TAG_ABREPARANTESIS elements error       { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
+    | TAG_ABREPARANTESIS error                          { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
 ;
 
 // additional_expressions: Define a estrutura de expressões adicionais (Quando precisa de uma estrutura com muitas expressões)
@@ -210,15 +210,15 @@ additional_expressions:
 additional_expressions_parent:
     separador TAG_ABREPARANTESIS elements TAG_FECHAPARANTESIS additional_expressions
     | separador TAG_ABREPARANTESIS elements TAG_FECHAPARANTESIS
-    | separador error                               { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
-    | separador TAG_ABREPARANTESIS elements error   { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
-    | TAG_ABREPARANTESIS error                      { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
+    | separador error                                   { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
+    | separador TAG_ABREPARANTESIS elements error       { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
+    | TAG_ABREPARANTESIS error                          { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
 ;
 
 additional_expressions_no_parent:
     separador element additional_expressions
     | separador element
-    | element error                                 { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
+    | element error                                     { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
 ;
 
 element:
@@ -234,6 +234,7 @@ elements:
 // Expression: Define a estrutura de uma expressão de como se monta expressões
 expression:
     TAG_PROPERTY pos_property                           { properties.push(std::string($1)); }
+    | TAG_PROPERTY ONLY corp_expre3                     { properties.push(std::string($1)); }
     | TAG_PROPERTY ONLY class_op                        { expression_der($1); }
     | TAG_PROPERTY error                                { yyerror("Erro de Sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); }
 ;
@@ -257,6 +258,14 @@ corp_expre1:
 corp_expre2:
     TAG_NUMD sub_corp
     | TAG_NUMI sub_corp
+;
+
+// Corp_expre1: Define o que pode vir após um quantificador
+corp_expre3:
+    TAG_CLASS                                           { $$ = $1; isClass = true; posproperties.push("Object Property"); }
+    | type_expre                                        { posproperties.push("Data Property"); }
+    | TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS { t.insert("Aninhada"); }
+    | error                                             { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
 ;
 
 sub_corp:
@@ -349,7 +358,7 @@ class_v:
 // Class_op: Classes entre parênteses separadas por operadores lógicos (fechamento)
 class_op: 
     TAG_ABREPARANTESIS class_l TAG_FECHAPARANTESIS  
-    | TAG_ABREPARANTESIS class_l error                      { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
+    | TAG_ABREPARANTESIS class_l error                          { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
 ;
 
 // Class_l: Classes separadas por operadores lógicos (fechamento)
@@ -378,7 +387,6 @@ list_class:
 op_quantifier:
     SOME { $$ = "some"; }
     | ALL { $$ = "all"; }
-    | ONLY { $$ = "only"; }
 ;
 
 // Op_logic: Operadores lógicos

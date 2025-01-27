@@ -1,0 +1,5 @@
+Class: Costumer
+  EquivalentTo:
+    Person
+    and (purchasedPizza some Pizza)
+    and (hasPhone some xsd:string)

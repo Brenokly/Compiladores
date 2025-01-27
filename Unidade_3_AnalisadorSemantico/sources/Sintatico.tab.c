@@ -232,26 +232,27 @@ enum yysymbol_kind_t
   YYSYMBOL_pos_property = 63,              /* pos_property  */
   YYSYMBOL_corp_expre1 = 64,               /* corp_expre1  */
   YYSYMBOL_corp_expre2 = 65,               /* corp_expre2  */
-  YYSYMBOL_sub_corp = 66,                  /* sub_corp  */
-  YYSYMBOL_object_property = 67,           /* object_property  */
-  YYSYMBOL_separador = 68,                 /* separador  */
-  YYSYMBOL_pos_value = 69,                 /* pos_value  */
-  YYSYMBOL_type_expre = 70,                /* type_expre  */
-  YYSYMBOL_class_body = 71,                /* class_body  */
-  YYSYMBOL_disjointclasses_section = 72,   /* disjointclasses_section  */
-  YYSYMBOL_individuals_section = 73,       /* individuals_section  */
-  YYSYMBOL_individuals_list = 74,          /* individuals_list  */
-  YYSYMBOL_class_list = 75,                /* class_list  */
-  YYSYMBOL_class_v = 76,                   /* class_v  */
-  YYSYMBOL_class_op = 77,                  /* class_op  */
-  YYSYMBOL_class_l = 78,                   /* class_l  */
-  YYSYMBOL_list = 79,                      /* list  */
-  YYSYMBOL_list_class = 80,                /* list_class  */
-  YYSYMBOL_op_quantifier = 81,             /* op_quantifier  */
-  YYSYMBOL_op_logic = 82,                  /* op_logic  */
-  YYSYMBOL_op_rel = 83,                    /* op_rel  */
-  YYSYMBOL_op_cardinality = 84,            /* op_cardinality  */
-  YYSYMBOL_namespace_datatype = 85         /* namespace_datatype  */
+  YYSYMBOL_corp_expre3 = 66,               /* corp_expre3  */
+  YYSYMBOL_sub_corp = 67,                  /* sub_corp  */
+  YYSYMBOL_object_property = 68,           /* object_property  */
+  YYSYMBOL_separador = 69,                 /* separador  */
+  YYSYMBOL_pos_value = 70,                 /* pos_value  */
+  YYSYMBOL_type_expre = 71,                /* type_expre  */
+  YYSYMBOL_class_body = 72,                /* class_body  */
+  YYSYMBOL_disjointclasses_section = 73,   /* disjointclasses_section  */
+  YYSYMBOL_individuals_section = 74,       /* individuals_section  */
+  YYSYMBOL_individuals_list = 75,          /* individuals_list  */
+  YYSYMBOL_class_list = 76,                /* class_list  */
+  YYSYMBOL_class_v = 77,                   /* class_v  */
+  YYSYMBOL_class_op = 78,                  /* class_op  */
+  YYSYMBOL_class_l = 79,                   /* class_l  */
+  YYSYMBOL_list = 80,                      /* list  */
+  YYSYMBOL_list_class = 81,                /* list_class  */
+  YYSYMBOL_op_quantifier = 82,             /* op_quantifier  */
+  YYSYMBOL_op_logic = 83,                  /* op_logic  */
+  YYSYMBOL_op_rel = 84,                    /* op_rel  */
+  YYSYMBOL_op_cardinality = 85,            /* op_cardinality  */
+  YYSYMBOL_namespace_datatype = 86         /* namespace_datatype  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -579,16 +580,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  8
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   193
+#define YYLAST   212
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  40
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  46
+#define YYNNTS  47
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  132
+#define YYNRULES  139
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  186
+#define YYNSTATES  193
 
 /* YYMAXUTOK -- Last valid token kind.  */
 #define YYMAXUTOK   294
@@ -646,15 +647,15 @@ static const yytype_int16 yyrline[] =
      151,   152,   153,   154,   155,   160,   165,   170,   171,   176,
      177,   182,   183,   184,   188,   189,   190,   191,   196,   197,
      198,   199,   200,   201,   206,   207,   211,   212,   213,   214,
-     215,   219,   220,   221,   225,   229,   230,   231,   236,   237,
-     238,   242,   243,   244,   249,   250,   251,   252,   253,   258,
-     259,   263,   264,   265,   269,   270,   275,   276,   281,   282,
-     283,   288,   289,   296,   303,   304,   305,   306,   310,   311,
-     312,   313,   314,   318,   319,   320,   321,   325,   326,   330,
-     331,   332,   337,   338,   339,   344,   345,   346,   351,   352,
-     357,   358,   359,   360,   365,   366,   371,   372,   373,   374,
-     379,   380,   381,   386,   387,   392,   393,   394,   395,   400,
-     401,   402,   407
+     215,   216,   217,   218,   222,   223,   224,   228,   232,   233,
+     234,   239,   240,   241,   242,   246,   247,   248,   253,   254,
+     255,   256,   257,   262,   263,   268,   269,   270,   271,   275,
+     276,   277,   281,   282,   287,   288,   293,   294,   295,   300,
+     301,   308,   315,   316,   317,   318,   322,   323,   324,   325,
+     326,   330,   331,   332,   333,   337,   338,   342,   343,   344,
+     349,   350,   351,   356,   357,   358,   363,   364,   369,   370,
+     371,   372,   377,   378,   383,   384,   385,   386,   391,   392,
+     397,   398,   403,   404,   405,   406,   411,   412,   413,   418
 };
 #endif
 
@@ -686,8 +687,8 @@ static const char *const yytname[] =
   "complex_expression", "additional_expressions",
   "additional_expressions_parent", "additional_expressions_no_parent",
   "element", "elements", "expression", "pos_property", "corp_expre1",
-  "corp_expre2", "sub_corp", "object_property", "separador", "pos_value",
-  "type_expre", "class_body", "disjointclasses_section",
+  "corp_expre2", "corp_expre3", "sub_corp", "object_property", "separador",
+  "pos_value", "type_expre", "class_body", "disjointclasses_section",
   "individuals_section", "individuals_list", "class_list", "class_v",
   "class_op", "class_l", "list", "list_class", "op_quantifier", "op_logic",
   "op_rel", "op_cardinality", "namespace_datatype", YY_NULLPTR
@@ -700,12 +701,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-127)
+#define YYPACT_NINF (-134)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-55)
+#define YYTABLE_NINF (-9)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -714,25 +715,26 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      88,  -127,    18,   102,  -127,    40,  -127,    83,  -127,  -127,
-    -127,    78,    66,   128,    95,    24,    94,   123,   111,  -127,
-    -127,  -127,  -127,    72,  -127,   139,    19,    31,  -127,    96,
-     135,  -127,    66,  -127,  -127,  -127,   127,  -127,  -127,  -127,
-    -127,    21,   126,  -127,   108,  -127,  -127,   152,  -127,  -127,
-    -127,  -127,    30,   160,   109,   114,  -127,   156,    98,  -127,
-    -127,  -127,  -127,   129,   163,  -127,  -127,  -127,  -127,  -127,
-    -127,  -127,  -127,  -127,     3,    72,   146,   164,  -127,  -127,
-    -127,  -127,  -127,  -127,  -127,   161,   154,  -127,  -127,  -127,
-     140,    49,    49,  -127,   142,  -127,  -127,  -127,    72,   110,
-       8,   165,   134,     6,   137,  -127,  -127,   170,   103,     9,
-    -127,   122,   141,    14,    48,  -127,  -127,   171,  -127,  -127,
-    -127,  -127,  -127,  -127,  -127,  -127,  -127,  -127,  -127,  -127,
-      15,    62,  -127,   176,   143,  -127,  -127,   178,  -127,    32,
-     146,   180,   124,  -127,  -127,   181,   145,  -127,  -127,  -127,
-    -127,  -127,  -127,  -127,  -127,   100,  -127,  -127,  -127,  -127,
-      62,  -127,  -127,     3,    62,  -127,  -127,  -127,  -127,  -127,
-    -127,  -127,  -127,    26,    27,  -127,    16,  -127,  -127,  -127,
-    -127,  -127,  -127,  -127,    62,  -127
+       6,  -134,   134,    37,  -134,    69,  -134,    98,  -134,  -134,
+    -134,    81,    21,    62,   124,    88,   108,   150,   127,  -134,
+    -134,  -134,  -134,    99,  -134,    13,    77,    78,  -134,   113,
+     151,  -134,    21,  -134,  -134,  -134,   142,  -134,  -134,  -134,
+    -134,    48,   154,  -134,    34,  -134,  -134,   164,  -134,  -134,
+    -134,  -134,    67,   169,   131,   140,  -134,   179,    15,  -134,
+    -134,  -134,  -134,   143,   177,  -134,  -134,  -134,  -134,  -134,
+    -134,  -134,  -134,  -134,    59,    99,   159,  -134,  -134,   174,
+      92,  -134,  -134,  -134,   155,  -134,  -134,  -134,  -134,  -134,
+    -134,   166,  -134,  -134,  -134,    70,    70,  -134,   128,  -134,
+    -134,  -134,    99,   137,     8,   176,    14,  -134,  -134,  -134,
+     180,  -134,   112,   149,     9,    80,   121,   156,    16,  -134,
+    -134,   183,  -134,  -134,  -134,  -134,  -134,  -134,  -134,  -134,
+    -134,  -134,  -134,  -134,    17,  -134,   188,    85,   157,  -134,
+    -134,   189,  -134,    65,   159,   190,   147,  -134,  -134,  -134,
+    -134,  -134,  -134,  -134,  -134,   152,   191,   153,  -134,  -134,
+    -134,  -134,  -134,  -134,  -134,    85,  -134,  -134,    59,    85,
+    -134,  -134,  -134,  -134,  -134,     7,    24,  -134,  -134,  -134,
+    -134,    23,  -134,  -134,  -134,  -134,  -134,  -134,    85,   158,
+    -134,    85,  -134
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -741,44 +743,45 @@ static const yytype_int16 yypact[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     3,     0,     0,     2,     4,     7,     0,     1,     5,
-      10,     0,    13,    92,     0,    19,    20,     0,     0,    14,
-      15,    23,    24,    22,    12,     0,     0,     0,     6,    88,
-      89,    11,    18,     9,   123,   124,     0,    76,    21,    29,
-      30,     0,    77,    60,   122,   120,   121,     0,   129,   130,
-     131,    58,     0,     0,   100,     0,    25,     0,     0,    77,
-      98,    97,    95,   106,     0,    93,   102,    96,    94,    90,
-      91,    17,    43,    33,     0,    32,    28,     0,    59,    79,
-      78,    80,    63,    68,    64,     0,     0,    61,    65,    67,
-      81,     0,     0,    62,     0,    16,    37,    36,    34,     0,
-       0,     0,     0,     0,    55,    31,    26,     0,   111,     0,
-     132,   117,     0,     0,     0,    73,    74,     0,    69,    71,
-      72,    75,    70,   101,    99,    35,   107,   105,   104,   103,
-       0,    41,    42,     0,     0,    44,    45,     0,    54,     0,
-      28,     0,     0,   109,   108,     0,     0,    66,   115,   114,
-      84,   128,   126,   127,   125,     0,    57,    56,    40,    50,
-      39,    53,    48,     0,    52,    27,   113,   112,   110,   119,
-     118,   116,    85,     0,     0,    38,     0,    55,    51,    87,
-      83,    86,    82,    49,    47,    46
+      10,     0,    13,   100,     0,    19,    20,     0,     0,    14,
+      15,    23,    24,    22,    12,     0,     0,     0,     6,    96,
+      97,    11,    18,     9,   130,   131,     0,    84,    21,    29,
+      30,     0,    85,    64,     0,   128,   129,     0,   136,   137,
+     138,    61,     0,     0,   108,     0,    25,     0,     0,    85,
+     106,   105,   103,   114,     0,   101,   110,   104,   102,    98,
+      99,    17,    43,    33,     0,    32,    28,    78,    75,     0,
+       0,    62,    76,    63,    89,    87,    86,    88,    67,    72,
+      68,     0,    65,    69,    71,     0,     0,    66,     0,    16,
+      37,    36,    34,     0,     0,     0,     0,    58,    31,    26,
+       0,   139,   119,     0,     0,     0,   125,     0,     0,    81,
+      82,     0,    73,    79,    80,    83,    74,   109,   107,    35,
+     115,   113,   112,   111,     0,    42,     0,    41,     0,    44,
+      45,     0,    57,     0,    28,     0,     0,    77,   117,   116,
+      92,   135,   133,   134,   132,     0,     0,     0,    70,   123,
+     122,    60,    59,    53,    40,    39,    56,    51,     0,    55,
+      27,   121,   120,   118,    93,     0,     0,   127,   126,   124,
+      38,     0,    54,    95,    91,    94,    90,    52,    49,     0,
+      47,    48,    46
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-    -127,  -127,   179,  -127,  -127,  -127,  -127,  -127,  -127,    61,
-    -127,  -127,    43,  -127,  -127,   -57,  -127,  -126,  -127,  -127,
-     -70,    22,   -11,  -127,  -127,  -127,    97,  -127,   -10,  -127,
-     136,  -127,   157,   162,   -22,   159,   -56,  -127,    50,   138,
-      47,  -127,   -14,  -127,  -127,  -127
+    -134,  -134,   192,  -134,  -134,  -134,  -134,  -134,  -134,    84,
+    -134,  -134,    52,  -134,  -134,   -64,  -134,  -133,  -134,  -134,
+      55,    31,   -11,  -134,  -134,  -134,  -134,   104,  -134,   -10,
+    -134,   -24,  -134,   171,   173,   -22,   178,   -59,  -134,    57,
+     160,    47,  -134,   -14,  -134,  -134,  -134
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_uint8 yydefgoto[] =
 {
        0,     3,     4,     5,    13,    14,    15,    19,    33,    20,
-      21,    22,   106,    38,    39,    56,    40,   134,   135,   136,
-     137,   103,   138,    51,    87,    93,   118,   119,   139,    82,
-     120,    28,    29,    30,    55,    65,    66,    78,   109,   121,
-     113,    52,    59,   155,    53,    90
+      21,    22,   109,    38,    39,    56,    40,   138,   139,   140,
+     141,   106,   142,    51,    92,    97,    81,   122,   123,   143,
+      88,   124,    28,    29,    30,    55,    65,    66,    83,   114,
+     125,   118,    52,    59,   155,    53,    84
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -786,50 +789,54 @@ static const yytype_uint8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int16 yytable[] =
 {
-      23,    23,    42,    61,   102,   158,    41,   132,   100,   128,
-     143,    17,    57,    58,    17,   148,   156,   183,   105,     6,
-      62,    23,    73,     7,    63,    34,    35,   179,   181,    17,
-      75,    83,    67,   162,   175,    84,    63,    85,   178,   101,
-      17,   125,   133,   127,    37,   129,   144,    98,    32,   150,
-     115,   149,   157,   184,   116,    64,    85,    74,   185,   180,
-     182,     2,   107,   104,    57,    58,    86,    64,   163,   164,
-      17,    16,   124,    24,    17,   112,   151,   152,   153,   154,
-      17,    34,    35,    16,    10,   117,    17,    57,    58,     1,
-     130,    34,    35,    71,   142,    -8,    31,   146,   133,    97,
-      37,   172,     8,   173,   174,    11,    17,    12,   141,     2,
-      37,   126,    18,    34,    35,    63,    -8,    54,    -8,    25,
-      -8,    -8,    34,    35,    43,   167,   107,   145,    72,   108,
-      36,    76,    37,    44,    45,    46,    47,    48,    49,    50,
-      60,    34,    35,   123,    77,    54,   170,    94,    54,    95,
-     111,    25,   177,    26,    27,    79,    80,    96,    81,   111,
-      26,    27,    17,    91,    92,    34,    35,    99,    63,   108,
-     110,   131,   114,    17,   -54,   140,   111,   159,   147,   161,
-     160,   166,   169,   165,     9,   176,    68,    70,    88,   122,
-      89,    69,   168,   171
+      23,    23,    42,    61,   164,   104,    41,     1,   183,   132,
+     148,   108,    57,    58,    60,   135,   101,   159,   161,    54,
+      82,    23,    17,    17,   187,   185,    16,     2,    93,    17,
+      75,    17,   180,    34,    35,    77,   182,     8,   129,    78,
+     184,    79,    34,    35,   131,   133,   149,   102,   189,    73,
+     136,   137,    37,   160,   162,   190,    17,   186,   192,   136,
+     188,    37,   110,   107,    57,    58,   167,    17,    89,   113,
+      80,   119,    90,    17,    79,   120,   128,    79,    62,    67,
+     117,   150,    63,    63,    74,    25,    16,    26,    27,    17,
+       2,    57,    58,    17,   134,   105,    24,   112,   146,    10,
+      17,   168,   157,    91,    34,    35,   121,    17,   151,   152,
+     153,   154,    32,    64,    64,    18,    71,   145,    34,    35,
+      11,   136,    12,    37,    -8,    31,   156,    34,    35,   127,
+     110,    34,    35,    54,    54,     6,    25,    37,   130,     7,
+      34,    35,    63,    72,    36,    -8,    37,    -8,   172,    -8,
+      -8,    43,   112,   174,   178,   175,   176,   107,   116,    76,
+      44,    45,    46,    47,    48,    49,    50,    85,    86,    98,
+      87,   116,    95,    96,    17,    99,    26,    27,    34,    35,
+     100,   103,    63,   111,    17,   144,   147,   115,   116,   163,
+     166,   171,   177,   158,   165,   191,   170,     9,   169,   181,
+     126,    70,    69,   173,   179,    68,     0,     0,     0,     0,
+       0,     0,    94
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int16 yycheck[] =
 {
-      11,    12,    16,    25,    74,   131,    16,     1,    64,     1,
-       1,     8,    23,    23,     8,     1,     1,     1,    75,     1,
-       1,    32,     1,     5,     5,    19,    20,     1,     1,     8,
-      41,     1,     1,     1,   160,     5,     5,     7,   164,    36,
-       8,    98,    36,    99,    38,    37,    37,    58,    24,     1,
-       1,    37,    37,    37,     5,    36,     7,    36,   184,    33,
-      33,    21,    76,    74,    75,    75,    36,    36,    36,   139,
-       8,     5,    94,    12,     8,    86,    28,    29,    30,    31,
-       8,    19,    20,     5,     1,    36,     8,    98,    98,     1,
-     101,    19,    20,    32,   108,     0,     1,   111,    36,     1,
-      38,     1,     0,     3,     4,    22,     8,    24,     5,    21,
-      38,     1,    34,    19,    20,     5,    21,     6,    23,    23,
-      25,    26,    19,    20,     1,     1,   140,     5,     1,     5,
-      36,     5,    38,    10,    11,    12,    13,    14,    15,    16,
-       1,    19,    20,     1,    36,     6,     1,    38,     6,    35,
-       5,    23,   163,    25,    26,     3,     4,     1,     6,     5,
-      25,    26,     8,     3,     4,    19,    20,    38,     5,     5,
-       9,    37,    32,     8,    37,     5,     5,     1,    37,     1,
-      37,     1,     1,   140,     5,   163,    27,    30,    52,    92,
-      52,    29,   142,   146
+      11,    12,    16,    25,   137,    64,    16,     1,     1,     1,
+       1,    75,    23,    23,     1,     1,     1,     1,     1,     6,
+      44,    32,     8,     8,     1,     1,     5,    21,    52,     8,
+      41,     8,   165,    19,    20,     1,   169,     0,   102,     5,
+      33,     7,    19,    20,   103,    37,    37,    58,   181,     1,
+      36,    37,    38,    37,    37,   188,     8,    33,   191,    36,
+      37,    38,    76,    74,    75,    75,     1,     8,     1,    80,
+      36,     1,     5,     8,     7,     5,    98,     7,     1,     1,
+      91,     1,     5,     5,    36,    23,     5,    25,    26,     8,
+      21,   102,   102,     8,   105,    36,    12,     5,   112,     1,
+       8,    36,   116,    36,    19,    20,    36,     8,    28,    29,
+      30,    31,    24,    36,    36,    34,    32,     5,    19,    20,
+      22,    36,    24,    38,     0,     1,     5,    19,    20,     1,
+     144,    19,    20,     6,     6,     1,    23,    38,     1,     5,
+      19,    20,     5,     1,    36,    21,    38,    23,     1,    25,
+      26,     1,     5,     1,     1,     3,     4,   168,     5,     5,
+      10,    11,    12,    13,    14,    15,    16,     3,     4,    38,
+       6,     5,     3,     4,     8,    35,    25,    26,    19,    20,
+       1,    38,     5,     9,     8,     5,    37,    32,     5,     1,
+       1,     1,     1,    37,    37,    37,   144,     5,   143,   168,
+      96,    30,    29,   146,   157,    27,    -1,    -1,    -1,    -1,
+      -1,    -1,    52
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
@@ -838,23 +845,24 @@ static const yytype_int8 yystos[] =
 {
        0,     1,    21,    41,    42,    43,     1,     5,     0,    42,
        1,    22,    24,    44,    45,    46,     5,     8,    34,    47,
-      49,    50,    51,    62,    49,    23,    25,    26,    71,    72,
-      73,     1,    24,    48,    19,    20,    36,    38,    53,    54,
-      56,    68,    82,     1,    10,    11,    12,    13,    14,    15,
-      16,    63,    81,    84,     6,    74,    55,    62,    68,    82,
-       1,    74,     1,     5,    36,    75,    76,     1,    75,    73,
-      72,    49,     1,     1,    36,    62,     5,    36,    77,     3,
-       4,     6,    69,     1,     5,     7,    36,    64,    70,    79,
-      85,     3,     4,    65,    38,    35,     1,     1,    62,    38,
-      76,    36,    60,    61,    62,    55,    52,    82,     5,    78,
-       9,     5,    62,    80,    32,     1,     5,    36,    66,    67,
-      70,    79,    66,     1,    74,    55,     1,    76,     1,    37,
-      62,    37,     1,    36,    57,    58,    59,    60,    62,    68,
-       5,     5,    82,     1,    37,     5,    82,    37,     1,    37,
-       1,    28,    29,    30,    31,    83,     1,    37,    57,     1,
-      37,     1,     1,    36,    60,    52,     1,     1,    78,     1,
-       1,    80,     1,     3,     4,    57,    61,    62,    57,     1,
-      33,     1,    33,     1,    37,    57
+      49,    50,    51,    62,    49,    23,    25,    26,    72,    73,
+      74,     1,    24,    48,    19,    20,    36,    38,    53,    54,
+      56,    69,    83,     1,    10,    11,    12,    13,    14,    15,
+      16,    63,    82,    85,     6,    75,    55,    62,    69,    83,
+       1,    75,     1,     5,    36,    76,    77,     1,    76,    74,
+      73,    49,     1,     1,    36,    62,     5,     1,     5,     7,
+      36,    66,    71,    78,    86,     3,     4,     6,    70,     1,
+       5,    36,    64,    71,    80,     3,     4,    65,    38,    35,
+       1,     1,    62,    38,    77,    36,    61,    62,    55,    52,
+      83,     9,     5,    62,    79,    32,     5,    62,    81,     1,
+       5,    36,    67,    68,    71,    80,    67,     1,    75,    55,
+       1,    77,     1,    37,    62,     1,    36,    37,    57,    58,
+      59,    60,    62,    69,     5,     5,    83,    37,     1,    37,
+       1,    28,    29,    30,    31,    84,     5,    83,    37,     1,
+      37,     1,    37,     1,    57,    37,     1,     1,    36,    60,
+      52,     1,     1,    79,     1,     3,     4,     1,     1,    81,
+      57,    61,    57,     1,    33,     1,    33,     1,    37,    57,
+      57,    37,    57
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
@@ -865,15 +873,15 @@ static const yytype_int8 yyr1[] =
       49,    49,    49,    49,    49,    50,    51,    52,    52,    53,
       53,    54,    54,    54,    55,    55,    55,    55,    56,    56,
       56,    56,    56,    56,    57,    57,    58,    58,    58,    58,
-      58,    59,    59,    59,    60,    61,    61,    61,    62,    62,
-      62,    63,    63,    63,    64,    64,    64,    64,    64,    65,
-      65,    66,    66,    66,    67,    67,    68,    68,    69,    69,
-      69,    70,    70,    70,    70,    70,    70,    70,    71,    71,
-      71,    71,    71,    72,    72,    72,    72,    73,    73,    74,
-      74,    74,    75,    75,    75,    76,    76,    76,    77,    77,
-      78,    78,    78,    78,    79,    79,    80,    80,    80,    80,
-      81,    81,    81,    82,    82,    83,    83,    83,    83,    84,
-      84,    84,    85
+      58,    58,    58,    58,    59,    59,    59,    60,    61,    61,
+      61,    62,    62,    62,    62,    63,    63,    63,    64,    64,
+      64,    64,    64,    65,    65,    66,    66,    66,    66,    67,
+      67,    67,    68,    68,    69,    69,    70,    70,    70,    71,
+      71,    71,    71,    71,    71,    71,    72,    72,    72,    72,
+      72,    73,    73,    73,    73,    74,    74,    75,    75,    75,
+      76,    76,    76,    77,    77,    77,    78,    78,    79,    79,
+      79,    79,    80,    80,    81,    81,    81,    81,    82,    82,
+      83,    83,    84,    84,    84,    84,    85,    85,    85,    86
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
@@ -883,16 +891,16 @@ static const yytype_int8 yyr2[] =
        1,     2,     2,     1,     2,     1,     3,     2,     1,     0,
        1,     2,     1,     1,     1,     2,     4,     3,     0,     1,
        1,     3,     2,     2,     2,     3,     2,     2,     6,     5,
-       5,     4,     4,     2,     1,     1,     5,     4,     2,     4,
-       2,     3,     2,     2,     1,     1,     3,     3,     2,     3,
-       2,     2,     2,     2,     1,     1,     3,     1,     1,     2,
-       2,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     5,     5,     3,     4,     5,     5,     1,     1,
-       2,     2,     0,     2,     2,     2,     2,     2,     2,     3,
-       1,     3,     1,     3,     3,     3,     1,     3,     3,     3,
-       3,     1,     3,     3,     3,     3,     3,     1,     3,     3,
+       5,     4,     4,     2,     1,     1,     6,     5,     5,     4,
+       4,     2,     4,     2,     3,     2,     2,     1,     1,     3,
+       3,     2,     3,     3,     2,     2,     2,     2,     1,     1,
+       3,     1,     1,     2,     2,     1,     1,     3,     1,     1,
        1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     2
+       5,     5,     3,     4,     5,     5,     1,     1,     2,     2,
+       0,     2,     2,     2,     2,     2,     2,     3,     1,     3,
+       1,     3,     3,     3,     1,     3,     3,     3,     3,     1,
+       3,     3,     3,     3,     3,     1,     3,     3,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     2
 };
 
 
@@ -1358,197 +1366,227 @@ yyreduce:
   case 3: /* ontology: error  */
 #line 103 "Sintatico.y"
             { yyerror("Erro de Sintaxe.#Esperava uma declaração de classe começando com 'Class:'!"); YYABORT; }
-#line 1362 "Sintatico.tab.c"
+#line 1370 "Sintatico.tab.c"
     break;
 
   case 6: /* class_declaration: CLASS TAG_CLASS class_type class_body  */
 #line 114 "Sintatico.y"
-                                            { class_declaration((yyvsp[-2].str)); }
-#line 1368 "Sintatico.tab.c"
+                                                { class_declaration((yyvsp[-2].str)); }
+#line 1376 "Sintatico.tab.c"
     break;
 
   case 7: /* class_declaration: CLASS error  */
 #line 115 "Sintatico.y"
-                                            { yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); }
-#line 1374 "Sintatico.tab.c"
+                                                { yyerror("Erro de Sintaxe.#Esperava um nome de classe após a palavra-chave 'class:'"); }
+#line 1382 "Sintatico.tab.c"
     break;
 
   case 8: /* class_type: primitive_class  */
 #line 120 "Sintatico.y"
-                                            { t.insert("Primitiva"); }
-#line 1380 "Sintatico.tab.c"
+                                                { t.insert("Primitiva"); }
+#line 1388 "Sintatico.tab.c"
     break;
 
   case 9: /* class_type: defined_class optional_subclass  */
 #line 121 "Sintatico.y"
-                                            { t.insert("Definida"); }
-#line 1386 "Sintatico.tab.c"
+                                                { t.insert("Definida"); }
+#line 1394 "Sintatico.tab.c"
     break;
 
   case 10: /* class_type: error  */
 #line 122 "Sintatico.y"
-                                            { yyerror("Erro de Sintaxe.#Esperava uma classe Primitiva ou Definida (SubClassOf ou EquivalentTo)"); }
-#line 1392 "Sintatico.tab.c"
+                                                { yyerror("Erro de Sintaxe.#Esperava uma classe Primitiva ou Definida (SubClassOf ou EquivalentTo)"); }
+#line 1400 "Sintatico.tab.c"
     break;
 
   case 11: /* class_type: primitive_class error  */
 #line 123 "Sintatico.y"
-                                            { yyerror("Erro semântico.#Uma classe primitiva 'SubClassOf' não pode ser seguida por 'EquivalentTo'"); }
-#line 1398 "Sintatico.tab.c"
+                                                { yyerror("Erro semântico.#Uma classe primitiva 'SubClassOf' não pode ser seguida por 'EquivalentTo'"); }
+#line 1406 "Sintatico.tab.c"
     break;
 
   case 16: /* pos_defined_class: TAG_ABRECHAVE individuals_list TAG_FECHACHAVE  */
 #line 140 "Sintatico.y"
                                                     { t.insert("Enumerada"); }
-#line 1404 "Sintatico.tab.c"
+#line 1412 "Sintatico.tab.c"
     break;
 
   case 24: /* expression_list: pos_class  */
 #line 155 "Sintatico.y"
                 { t.insert("Coberta"); }
-#line 1410 "Sintatico.tab.c"
+#line 1418 "Sintatico.tab.c"
     break;
 
   case 33: /* simple_expression: separador error  */
 #line 184 "Sintatico.y"
-                      { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
-#line 1416 "Sintatico.tab.c"
+                                                       { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
+#line 1424 "Sintatico.tab.c"
     break;
 
   case 36: /* simples_expression_no_parent: separador error  */
 #line 190 "Sintatico.y"
-                       { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
-#line 1422 "Sintatico.tab.c"
+                                                       { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
+#line 1430 "Sintatico.tab.c"
     break;
 
   case 37: /* simples_expression_no_parent: expression error  */
 #line 191 "Sintatico.y"
-                       { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
-#line 1428 "Sintatico.tab.c"
+                                                       { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
+#line 1436 "Sintatico.tab.c"
     break;
 
   case 42: /* complex_expression: separador TAG_ABREPARANTESIS elements error  */
 #line 200 "Sintatico.y"
-                                                    { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
-#line 1434 "Sintatico.tab.c"
+                                                        { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
+#line 1442 "Sintatico.tab.c"
     break;
 
   case 43: /* complex_expression: TAG_ABREPARANTESIS error  */
 #line 201 "Sintatico.y"
-                                                    { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); YYABORT; }
-#line 1440 "Sintatico.tab.c"
+                                                        { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
+#line 1448 "Sintatico.tab.c"
     break;
 
-  case 48: /* additional_expressions_parent: separador error  */
-#line 213 "Sintatico.y"
-                                                    { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
-#line 1446 "Sintatico.tab.c"
+  case 51: /* additional_expressions_parent: separador error  */
+#line 216 "Sintatico.y"
+                                                        { yyerror("Erro de Sintaxe.#Esperava algo após uma vírgula ou operador lógico!"); }
+#line 1454 "Sintatico.tab.c"
     break;
 
-  case 49: /* additional_expressions_parent: separador TAG_ABREPARANTESIS elements error  */
-#line 214 "Sintatico.y"
-                                                    { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
-#line 1452 "Sintatico.tab.c"
-    break;
-
-  case 50: /* additional_expressions_parent: TAG_ABREPARANTESIS error  */
-#line 215 "Sintatico.y"
-                                                    { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
-#line 1458 "Sintatico.tab.c"
-    break;
-
-  case 53: /* additional_expressions_no_parent: element error  */
-#line 221 "Sintatico.y"
-                                                    { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
-#line 1464 "Sintatico.tab.c"
-    break;
-
-  case 57: /* elements: TAG_ABREPARANTESIS expression error  */
-#line 231 "Sintatico.y"
+  case 52: /* additional_expressions_parent: separador TAG_ABREPARANTESIS elements error  */
+#line 217 "Sintatico.y"
                                                         { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
-#line 1470 "Sintatico.tab.c"
+#line 1460 "Sintatico.tab.c"
     break;
 
-  case 58: /* expression: TAG_PROPERTY pos_property  */
-#line 236 "Sintatico.y"
+  case 53: /* additional_expressions_parent: TAG_ABREPARANTESIS error  */
+#line 218 "Sintatico.y"
+                                                        { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
+#line 1466 "Sintatico.tab.c"
+    break;
+
+  case 56: /* additional_expressions_no_parent: element error  */
+#line 224 "Sintatico.y"
+                                                        { yyerror("Erro de Sintaxe.#Esperava um separador [',' ou 'and' ou 'or'] entre as expressões."); }
+#line 1472 "Sintatico.tab.c"
+    break;
+
+  case 60: /* elements: TAG_ABREPARANTESIS expression error  */
+#line 234 "Sintatico.y"
+                                                        { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses!"); }
+#line 1478 "Sintatico.tab.c"
+    break;
+
+  case 61: /* expression: TAG_PROPERTY pos_property  */
+#line 239 "Sintatico.y"
                                                         { properties.push(std::string((yyvsp[-1].str))); }
-#line 1476 "Sintatico.tab.c"
+#line 1484 "Sintatico.tab.c"
     break;
 
-  case 59: /* expression: TAG_PROPERTY ONLY class_op  */
-#line 237 "Sintatico.y"
+  case 62: /* expression: TAG_PROPERTY ONLY corp_expre3  */
+#line 240 "Sintatico.y"
+                                                        { properties.push(std::string((yyvsp[-2].str))); }
+#line 1490 "Sintatico.tab.c"
+    break;
+
+  case 63: /* expression: TAG_PROPERTY ONLY class_op  */
+#line 241 "Sintatico.y"
                                                         { expression_der((yyvsp[-2].str)); }
-#line 1482 "Sintatico.tab.c"
+#line 1496 "Sintatico.tab.c"
     break;
 
-  case 60: /* expression: TAG_PROPERTY error  */
-#line 238 "Sintatico.y"
-                                                        { yyerror("Erro de Sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); }
-#line 1488 "Sintatico.tab.c"
-    break;
-
-  case 61: /* pos_property: op_quantifier corp_expre1  */
+  case 64: /* expression: TAG_PROPERTY error  */
 #line 242 "Sintatico.y"
+                                                        { yyerror("Erro de Sintaxe.#Esperava um quantificador, cardinalidade ou 'Value' após uma propriedade!"); }
+#line 1502 "Sintatico.tab.c"
+    break;
+
+  case 65: /* pos_property: op_quantifier corp_expre1  */
+#line 246 "Sintatico.y"
                                                         { if (strcmp((yyvsp[-1].str),"some") == 0 && isClass) { props.insert(std::string((yyvsp[0].str))); } }
-#line 1494 "Sintatico.tab.c"
+#line 1508 "Sintatico.tab.c"
     break;
 
-  case 63: /* pos_property: VALUE pos_value  */
-#line 244 "Sintatico.y"
+  case 67: /* pos_property: VALUE pos_value  */
+#line 248 "Sintatico.y"
                                                         { while (!properties.empty()) { properties.pop();} }
-#line 1500 "Sintatico.tab.c"
+#line 1514 "Sintatico.tab.c"
     break;
 
-  case 64: /* corp_expre1: TAG_CLASS  */
-#line 249 "Sintatico.y"
-                                                        { (yyval.str) = (yyvsp[0].str); isClass = true; posproperties.push("Object Property"); }
-#line 1506 "Sintatico.tab.c"
-    break;
-
-  case 65: /* corp_expre1: type_expre  */
-#line 250 "Sintatico.y"
-                                                        { posproperties.push("Data Property"); }
-#line 1512 "Sintatico.tab.c"
-    break;
-
-  case 66: /* corp_expre1: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS  */
-#line 251 "Sintatico.y"
-                                                        { t.insert("Aninhada"); }
-#line 1518 "Sintatico.tab.c"
-    break;
-
-  case 67: /* corp_expre1: list  */
-#line 252 "Sintatico.y"
-                                                        { posproperties.push("Object Property"); }
-#line 1524 "Sintatico.tab.c"
-    break;
-
-  case 68: /* corp_expre1: error  */
+  case 68: /* corp_expre1: TAG_CLASS  */
 #line 253 "Sintatico.y"
-                                                        { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
-#line 1530 "Sintatico.tab.c"
+                                                        { (yyval.str) = (yyvsp[0].str); isClass = true; posproperties.push("Object Property"); }
+#line 1520 "Sintatico.tab.c"
     break;
 
-  case 71: /* sub_corp: object_property  */
-#line 263 "Sintatico.y"
-                                                        { posproperties.push("Object Property"); }
-#line 1536 "Sintatico.tab.c"
-    break;
-
-  case 72: /* sub_corp: type_expre  */
-#line 264 "Sintatico.y"
+  case 69: /* corp_expre1: type_expre  */
+#line 254 "Sintatico.y"
                                                         { posproperties.push("Data Property"); }
-#line 1542 "Sintatico.tab.c"
+#line 1526 "Sintatico.tab.c"
     break;
 
-  case 73: /* sub_corp: error  */
-#line 265 "Sintatico.y"
+  case 70: /* corp_expre1: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS  */
+#line 255 "Sintatico.y"
+                                                        { t.insert("Aninhada"); }
+#line 1532 "Sintatico.tab.c"
+    break;
+
+  case 71: /* corp_expre1: list  */
+#line 256 "Sintatico.y"
+                                                        { posproperties.push("Object Property"); }
+#line 1538 "Sintatico.tab.c"
+    break;
+
+  case 72: /* corp_expre1: error  */
+#line 257 "Sintatico.y"
+                                                        { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
+#line 1544 "Sintatico.tab.c"
+    break;
+
+  case 75: /* corp_expre3: TAG_CLASS  */
+#line 268 "Sintatico.y"
+                                                        { (yyval.str) = (yyvsp[0].str); isClass = true; posproperties.push("Object Property"); }
+#line 1550 "Sintatico.tab.c"
+    break;
+
+  case 76: /* corp_expre3: type_expre  */
+#line 269 "Sintatico.y"
+                                                        { posproperties.push("Data Property"); }
+#line 1556 "Sintatico.tab.c"
+    break;
+
+  case 77: /* corp_expre3: TAG_ABREPARANTESIS expression TAG_FECHAPARANTESIS  */
+#line 270 "Sintatico.y"
+                                                        { t.insert("Aninhada"); }
+#line 1562 "Sintatico.tab.c"
+    break;
+
+  case 78: /* corp_expre3: error  */
+#line 271 "Sintatico.y"
+                                                        { yyerror("Erro de Sintaxe#Após um quantificador, esperava-se uma classe, um tipo de dado ou mais expressões."); }
+#line 1568 "Sintatico.tab.c"
+    break;
+
+  case 79: /* sub_corp: object_property  */
+#line 275 "Sintatico.y"
+                                                        { posproperties.push("Object Property"); }
+#line 1574 "Sintatico.tab.c"
+    break;
+
+  case 80: /* sub_corp: type_expre  */
+#line 276 "Sintatico.y"
+                                                        { posproperties.push("Data Property"); }
+#line 1580 "Sintatico.tab.c"
+    break;
+
+  case 81: /* sub_corp: error  */
+#line 277 "Sintatico.y"
                                                         { yyerror("Erro de Sintaxe#Após uma cardinalidade, esperava-se uma Class ou um Tipo de dado."); }
-#line 1548 "Sintatico.tab.c"
+#line 1586 "Sintatico.tab.c"
     break;
 
-  case 82: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI TAG_FECHACOLCHETE  */
-#line 289 "Sintatico.y"
+  case 90: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI TAG_FECHACOLCHETE  */
+#line 301 "Sintatico.y"
                                                                             {
         if (!is_int_type(std::string((yyvsp[-4].str)))) {
             char error_message[512];
@@ -1556,11 +1594,11 @@ yyreduce:
             yyerror(error_message);
         } 
     }
-#line 1560 "Sintatico.tab.c"
+#line 1598 "Sintatico.tab.c"
     break;
 
-  case 83: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD TAG_FECHACOLCHETE  */
-#line 296 "Sintatico.y"
+  case 91: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD TAG_FECHACOLCHETE  */
+#line 308 "Sintatico.y"
                                                                             {
         if (!is_decimal_type(std::string((yyvsp[-4].str)))) {
             char error_message[512];
@@ -1568,185 +1606,179 @@ yyreduce:
             yyerror(error_message);
         } 
     }
-#line 1572 "Sintatico.tab.c"
+#line 1610 "Sintatico.tab.c"
     break;
 
-  case 84: /* type_expre: namespace_datatype TAG_ABRECOLCHETE error  */
-#line 303 "Sintatico.y"
+  case 92: /* type_expre: namespace_datatype TAG_ABRECOLCHETE error  */
+#line 315 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um operador de relação após o tipo de dado"); }
-#line 1578 "Sintatico.tab.c"
+#line 1616 "Sintatico.tab.c"
     break;
 
-  case 85: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel error  */
-#line 304 "Sintatico.y"
+  case 93: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel error  */
+#line 316 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um número após o operador de relação"); }
-#line 1584 "Sintatico.tab.c"
+#line 1622 "Sintatico.tab.c"
     break;
 
-  case 86: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI error  */
-#line 305 "Sintatico.y"
+  case 94: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMI error  */
+#line 317 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um fechamento de colchetes"); }
-#line 1590 "Sintatico.tab.c"
+#line 1628 "Sintatico.tab.c"
     break;
 
-  case 87: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD error  */
-#line 306 "Sintatico.y"
+  case 95: /* type_expre: namespace_datatype TAG_ABRECOLCHETE op_rel TAG_NUMD error  */
+#line 318 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um fechamento de colchetes"); }
-#line 1596 "Sintatico.tab.c"
+#line 1634 "Sintatico.tab.c"
     break;
 
-  case 91: /* class_body: individuals_section disjointclasses_section  */
-#line 313 "Sintatico.y"
+  case 99: /* class_body: individuals_section disjointclasses_section  */
+#line 325 "Sintatico.y"
                                                                 { yyerror("Erro de semântica.#A seção 'disjointclasses:' deve vir antes da seção 'individuals:'"); }
-#line 1602 "Sintatico.tab.c"
+#line 1640 "Sintatico.tab.c"
     break;
 
-  case 95: /* disjointclasses_section: DISJOINTCLASSES error  */
-#line 320 "Sintatico.y"
-                                                                { yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointclasses:'");}
-#line 1608 "Sintatico.tab.c"
-    break;
-
-  case 96: /* disjointclasses_section: DISJOINTWITH error  */
-#line 321 "Sintatico.y"
-                                                                { yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointwith:'");}
-#line 1614 "Sintatico.tab.c"
-    break;
-
-  case 98: /* individuals_section: INDIVIDUALS error  */
-#line 326 "Sintatico.y"
-                                                                { yyerror("Erro de Sintaxe.#Esperava uma lista de indivíduos após a palavra-chave 'individuals:'");}
-#line 1620 "Sintatico.tab.c"
-    break;
-
-  case 101: /* individuals_list: TAG_INDIVIDUOS TAG_VIRGULA error  */
+  case 103: /* disjointclasses_section: DISJOINTCLASSES error  */
 #line 332 "Sintatico.y"
+                                                                { yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointclasses:'");}
+#line 1646 "Sintatico.tab.c"
+    break;
+
+  case 104: /* disjointclasses_section: DISJOINTWITH error  */
+#line 333 "Sintatico.y"
+                                                                { yyerror("Erro de Sintaxe.#Esperava uma lista de classes após a palavra-chave 'disjointwith:'");}
+#line 1652 "Sintatico.tab.c"
+    break;
+
+  case 106: /* individuals_section: INDIVIDUALS error  */
+#line 338 "Sintatico.y"
+                                                                { yyerror("Erro de Sintaxe.#Esperava uma lista de indivíduos após a palavra-chave 'individuals:'");}
+#line 1658 "Sintatico.tab.c"
+    break;
+
+  case 109: /* individuals_list: TAG_INDIVIDUOS TAG_VIRGULA error  */
+#line 344 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava algo após a vírgula");}
-#line 1626 "Sintatico.tab.c"
+#line 1664 "Sintatico.tab.c"
     break;
 
-  case 104: /* class_list: TAG_ABREPARANTESIS class_v error  */
-#line 339 "Sintatico.y"
+  case 112: /* class_list: TAG_ABREPARANTESIS class_v error  */
+#line 351 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
-#line 1632 "Sintatico.tab.c"
+#line 1670 "Sintatico.tab.c"
     break;
 
-  case 107: /* class_v: TAG_CLASS TAG_VIRGULA error  */
-#line 346 "Sintatico.y"
-                                                                { yyerror("Erro de Sintaxe.#Esperava algo após a vírgula"); }
-#line 1638 "Sintatico.tab.c"
-    break;
-
-  case 109: /* class_op: TAG_ABREPARANTESIS class_l error  */
-#line 352 "Sintatico.y"
-                                                            { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
-#line 1644 "Sintatico.tab.c"
-    break;
-
-  case 110: /* class_l: TAG_CLASS op_logic class_l  */
-#line 357 "Sintatico.y"
-                                                                { tag_class_der((yyvsp[-2].str)); }
-#line 1650 "Sintatico.tab.c"
-    break;
-
-  case 111: /* class_l: TAG_CLASS  */
+  case 115: /* class_v: TAG_CLASS TAG_VIRGULA error  */
 #line 358 "Sintatico.y"
+                                                                { yyerror("Erro de Sintaxe.#Esperava algo após a vírgula"); }
+#line 1676 "Sintatico.tab.c"
+    break;
+
+  case 117: /* class_op: TAG_ABREPARANTESIS class_l error  */
+#line 364 "Sintatico.y"
+                                                                { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
+#line 1682 "Sintatico.tab.c"
+    break;
+
+  case 118: /* class_l: TAG_CLASS op_logic class_l  */
+#line 369 "Sintatico.y"
+                                                                { tag_class_der((yyvsp[-2].str)); }
+#line 1688 "Sintatico.tab.c"
+    break;
+
+  case 119: /* class_l: TAG_CLASS  */
+#line 370 "Sintatico.y"
                                                                 { tag_class_der((yyvsp[0].str)); }
-#line 1656 "Sintatico.tab.c"
+#line 1694 "Sintatico.tab.c"
     break;
 
-  case 112: /* class_l: TAG_CLASS op_logic error  */
-#line 359 "Sintatico.y"
-                                                                { yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico"); }
-#line 1662 "Sintatico.tab.c"
-    break;
-
-  case 113: /* class_l: TAG_CLASS TAG_CLASS error  */
-#line 360 "Sintatico.y"
-                                                                { yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");}
-#line 1668 "Sintatico.tab.c"
-    break;
-
-  case 115: /* list: TAG_ABREPARANTESIS list_class error  */
-#line 366 "Sintatico.y"
-                                                               { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
-#line 1674 "Sintatico.tab.c"
-    break;
-
-  case 116: /* list_class: TAG_CLASS op_logic list_class  */
+  case 120: /* class_l: TAG_CLASS op_logic error  */
 #line 371 "Sintatico.y"
-                                                                { (yyval.str) = (yyvsp[-2].str); }
-#line 1680 "Sintatico.tab.c"
-    break;
-
-  case 117: /* list_class: TAG_CLASS  */
-#line 372 "Sintatico.y"
-                                                                { (yyval.str) = (yyvsp[0].str); }
-#line 1686 "Sintatico.tab.c"
-    break;
-
-  case 118: /* list_class: TAG_CLASS op_logic error  */
-#line 373 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico"); }
-#line 1692 "Sintatico.tab.c"
+#line 1700 "Sintatico.tab.c"
     break;
 
-  case 119: /* list_class: TAG_CLASS TAG_CLASS error  */
-#line 374 "Sintatico.y"
+  case 121: /* class_l: TAG_CLASS TAG_CLASS error  */
+#line 372 "Sintatico.y"
                                                                 { yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");}
-#line 1698 "Sintatico.tab.c"
+#line 1706 "Sintatico.tab.c"
     break;
 
-  case 120: /* op_quantifier: SOME  */
-#line 379 "Sintatico.y"
+  case 123: /* list: TAG_ABREPARANTESIS list_class error  */
+#line 378 "Sintatico.y"
+                                                               { yyerror("Erro de Sintaxe.#Esperava um fechamento de parênteses"); }
+#line 1712 "Sintatico.tab.c"
+    break;
+
+  case 124: /* list_class: TAG_CLASS op_logic list_class  */
+#line 383 "Sintatico.y"
+                                                                { (yyval.str) = (yyvsp[-2].str); }
+#line 1718 "Sintatico.tab.c"
+    break;
+
+  case 125: /* list_class: TAG_CLASS  */
+#line 384 "Sintatico.y"
+                                                                { (yyval.str) = (yyvsp[0].str); }
+#line 1724 "Sintatico.tab.c"
+    break;
+
+  case 126: /* list_class: TAG_CLASS op_logic error  */
+#line 385 "Sintatico.y"
+                                                                { yyerror("Erro de Sintaxe.#Esperava algo após o operador lógico"); }
+#line 1730 "Sintatico.tab.c"
+    break;
+
+  case 127: /* list_class: TAG_CLASS TAG_CLASS error  */
+#line 386 "Sintatico.y"
+                                                                { yyerror("Erro de Sintaxe.#Esperava um operador lógico entre as classes");}
+#line 1736 "Sintatico.tab.c"
+    break;
+
+  case 128: /* op_quantifier: SOME  */
+#line 391 "Sintatico.y"
          { (yyval.str) = "some"; }
-#line 1704 "Sintatico.tab.c"
+#line 1742 "Sintatico.tab.c"
     break;
 
-  case 121: /* op_quantifier: ALL  */
-#line 380 "Sintatico.y"
-          { (yyval.str) = "all"; }
-#line 1710 "Sintatico.tab.c"
-    break;
-
-  case 122: /* op_quantifier: ONLY  */
-#line 381 "Sintatico.y"
-           { (yyval.str) = "only"; }
-#line 1716 "Sintatico.tab.c"
-    break;
-
-  case 125: /* op_rel: TAG_MAIOR  */
+  case 129: /* op_quantifier: ALL  */
 #line 392 "Sintatico.y"
+          { (yyval.str) = "all"; }
+#line 1748 "Sintatico.tab.c"
+    break;
+
+  case 132: /* op_rel: TAG_MAIOR  */
+#line 403 "Sintatico.y"
                         { (yyval.str) = ">"; }
-#line 1722 "Sintatico.tab.c"
+#line 1754 "Sintatico.tab.c"
     break;
 
-  case 126: /* op_rel: TAG_MAIORIGUAL  */
-#line 393 "Sintatico.y"
+  case 133: /* op_rel: TAG_MAIORIGUAL  */
+#line 404 "Sintatico.y"
                         { (yyval.str) = ">="; }
-#line 1728 "Sintatico.tab.c"
+#line 1760 "Sintatico.tab.c"
     break;
 
-  case 127: /* op_rel: TAG_MENOR  */
-#line 394 "Sintatico.y"
+  case 134: /* op_rel: TAG_MENOR  */
+#line 405 "Sintatico.y"
                         { (yyval.str) = "<"; }
-#line 1734 "Sintatico.tab.c"
+#line 1766 "Sintatico.tab.c"
     break;
 
-  case 128: /* op_rel: TAG_MENORIGUAL  */
-#line 395 "Sintatico.y"
+  case 135: /* op_rel: TAG_MENORIGUAL  */
+#line 406 "Sintatico.y"
                         { (yyval.str) = "<="; }
-#line 1740 "Sintatico.tab.c"
+#line 1772 "Sintatico.tab.c"
     break;
 
-  case 132: /* namespace_datatype: TAG_NAMESPACE TAG_DATATYPE  */
-#line 407 "Sintatico.y"
+  case 139: /* namespace_datatype: TAG_NAMESPACE TAG_DATATYPE  */
+#line 418 "Sintatico.y"
                                { (yyval.str) = namespace_datatype_der((yyvsp[-1].str), (yyvsp[0].str)); }
-#line 1746 "Sintatico.tab.c"
+#line 1778 "Sintatico.tab.c"
     break;
 
 
-#line 1750 "Sintatico.tab.c"
+#line 1782 "Sintatico.tab.c"
 
       default: break;
     }
@@ -1939,7 +1971,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 409 "Sintatico.y"
+#line 420 "Sintatico.y"
 
 
 bool is_int_type(const std::string& space) {

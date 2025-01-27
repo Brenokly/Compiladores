@@ -30,6 +30,7 @@ Class: Certificate
     
 Class: Certification
 
+        
     SubClassOf: 
         Activity,
         historicallyDependsOn only CertificationAct,
@@ -42,7 +43,7 @@ Class: CertificationAct
     EquivalentTo: 
         Relator
          and (historicallyDependsOn only EvaluationReport)
-         and (mediates only (Certificate or CertificationBody or Evaluated))
+         and (mediates some (Certificate or CertificationBody or Evaluated))
          and (mediates min 1 Certificate)
          and (mediates min 1 CertificationBody)
          and (mediates min 1 Evaluated)
@@ -128,9 +129,9 @@ Class: Data
     SubClassOf: 
         Resource,
         inheresIn some Metadata,
-        inverse some DataSovereigntyAct,
-        inverse some InvokeDataOperation,
-        inverse exactly 1 Ownership
+        mediates some DataSovereigntyAct,
+        mediates some InvokeDataOperation,
+        mediates exactly 1 Ownership
     
     
 Class: DataCustomer
@@ -233,7 +234,7 @@ Class: EconomicAgreement
          and ((composedBy some OffereeUnconditionalAgreement)
          and (composedBy some OfferorUnconditionalAgreement))
          and (historicallyDependsOn only EconomicOffering)
-         and (composedBy only (OffereeUnconditionalAgreement or OfferorUnconditionalAgreement))
+         and (composedBy some (OffereeUnconditionalAgreement or OfferorUnconditionalAgreement))
          and (historicallyDependsOn min 1 EconomicOffering)
     
     
@@ -244,9 +245,9 @@ Class: EconomicOffering
         Relator
          and ((composedBy some ConditionalClaim)
          and (composedBy some ConditionalCommitment))
-         and (mediates only (DataCustomer or DataSupplier))
+         and (mediates some (DataCustomer or DataSupplier))
          and (wasCreatedIn only Offer)
-         and (composedBy only (ConditionalClaim or ConditionalCommitment))
+         and (composedBy some (ConditionalClaim or ConditionalCommitment))
          and (mediates min 1 DataCustomer)
          and (mediates min 1 DataSupplier)
          and (wasCreatedIn exactly 1 Offer)
@@ -275,7 +276,7 @@ Class: EvaluationAct
         
     EquivalentTo: 
         Relator
-         and (mediates only (Evaluated or EvaluationFacility or EvaluationReport))
+         and (mediates some (Evaluated or EvaluationFacility or EvaluationReport))
          and (mediates min 1 Evaluated)
          and (mediates min 1 EvaluationFacility)
          and (mediates min 1 EvaluationReport)
@@ -356,7 +357,7 @@ Class: Offer
         
     EquivalentTo: 
         Event
-         and participatedIn only (DataCustomer or DataSupplier)
+         and participatedIn some (DataCustomer or DataSupplier)
          and wasCreatedIn only EconomicOffering
          and participatedIn min 1 DataCustomer
          and participatedIn min 1 DataSupplier
