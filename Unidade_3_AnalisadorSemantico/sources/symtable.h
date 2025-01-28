@@ -17,6 +17,7 @@ private:
 
 public:
   SymTable();
+  SymTable(const string & name);
   SymTable(SymTable *t);
 
   bool Insert(string &name, Symblo &symbol);

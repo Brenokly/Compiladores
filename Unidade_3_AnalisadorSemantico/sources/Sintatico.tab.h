@@ -54,41 +54,43 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    TAG_CLASS = 258,               /* TAG_CLASS  */
-    TAG_INDIVIDUOS = 259,          /* TAG_INDIVIDUOS  */
-    TAG_NAMESPACE = 260,           /* TAG_NAMESPACE  */
-    TAG_PROPERTY = 261,            /* TAG_PROPERTY  */
-    TAG_DATATYPE = 262,            /* TAG_DATATYPE  */
-    TAG_NUM = 263,                 /* TAG_NUM  */
-    ONLY = 264,                    /* ONLY  */
-    SOME = 265,                    /* SOME  */
-    ALL = 266,                     /* ALL  */
-    VALUE = 267,                   /* VALUE  */
-    MIN = 268,                     /* MIN  */
-    MAX = 269,                     /* MAX  */
-    EXACTLY = 270,                 /* EXACTLY  */
-    THAT = 271,                    /* THAT  */
-    NOT = 272,                     /* NOT  */
-    AND = 273,                     /* AND  */
-    OR = 274,                      /* OR  */
-    CLASS = 275,                   /* CLASS  */
-    EQUIVALENTTO = 276,            /* EQUIVALENTTO  */
-    INDIVIDUALS = 277,             /* INDIVIDUALS  */
-    SUBCLASSOF = 278,              /* SUBCLASSOF  */
-    DISJOINTCLASSES = 279,         /* DISJOINTCLASSES  */
-    DISJOINTWITH = 280,            /* DISJOINTWITH  */
-    TAG_MENORIGUAL = 281,          /* TAG_MENORIGUAL  */
-    TAG_MAIORIGUAL = 282,          /* TAG_MAIORIGUAL  */
-    TAG_MENOR = 283,               /* TAG_MENOR  */
-    TAG_MAIOR = 284,               /* TAG_MAIOR  */
-    TAG_ABRECOLCHETE = 285,        /* TAG_ABRECOLCHETE  */
-    TAG_FECHACOLCHETE = 286,       /* TAG_FECHACOLCHETE  */
-    TAG_ABRECHAVE = 287,           /* TAG_ABRECHAVE  */
-    TAG_FECHACHAVE = 288,          /* TAG_FECHACHAVE  */
-    TAG_ABREPARANTESIS = 289,      /* TAG_ABREPARANTESIS  */
-    TAG_FECHAPARANTESIS = 290,     /* TAG_FECHAPARANTESIS  */
-    TAG_VIRGULA = 291,             /* TAG_VIRGULA  */
-    TAG_DOISPONTOS = 292           /* TAG_DOISPONTOS  */
+    TAG_NUMD = 258,                /* TAG_NUMD  */
+    TAG_NUMI = 259,                /* TAG_NUMI  */
+    TAG_CLASS = 260,               /* TAG_CLASS  */
+    TAG_INDIVIDUOS = 261,          /* TAG_INDIVIDUOS  */
+    TAG_NAMESPACE = 262,           /* TAG_NAMESPACE  */
+    TAG_PROPERTY = 263,            /* TAG_PROPERTY  */
+    TAG_DATATYPE = 264,            /* TAG_DATATYPE  */
+    ONLY = 265,                    /* ONLY  */
+    SOME = 266,                    /* SOME  */
+    ALL = 267,                     /* ALL  */
+    VALUE = 268,                   /* VALUE  */
+    MIN = 269,                     /* MIN  */
+    MAX = 270,                     /* MAX  */
+    EXACTLY = 271,                 /* EXACTLY  */
+    THAT = 272,                    /* THAT  */
+    NOT = 273,                     /* NOT  */
+    AND = 274,                     /* AND  */
+    OR = 275,                      /* OR  */
+    CLASS = 276,                   /* CLASS  */
+    EQUIVALENTTO = 277,            /* EQUIVALENTTO  */
+    INDIVIDUALS = 278,             /* INDIVIDUALS  */
+    SUBCLASSOF = 279,              /* SUBCLASSOF  */
+    DISJOINTCLASSES = 280,         /* DISJOINTCLASSES  */
+    DISJOINTWITH = 281,            /* DISJOINTWITH  */
+    ERROR = 282,                   /* ERROR  */
+    TAG_MENORIGUAL = 283,          /* TAG_MENORIGUAL  */
+    TAG_MAIORIGUAL = 284,          /* TAG_MAIORIGUAL  */
+    TAG_MENOR = 285,               /* TAG_MENOR  */
+    TAG_MAIOR = 286,               /* TAG_MAIOR  */
+    TAG_ABRECOLCHETE = 287,        /* TAG_ABRECOLCHETE  */
+    TAG_FECHACOLCHETE = 288,       /* TAG_FECHACOLCHETE  */
+    TAG_ABRECHAVE = 289,           /* TAG_ABRECHAVE  */
+    TAG_FECHACHAVE = 290,          /* TAG_FECHACHAVE  */
+    TAG_ABREPARANTESIS = 291,      /* TAG_ABREPARANTESIS  */
+    TAG_FECHAPARANTESIS = 292,     /* TAG_FECHAPARANTESIS  */
+    TAG_VIRGULA = 293,             /* TAG_VIRGULA  */
+    TAG_DOISPONTOS = 294           /* TAG_DOISPONTOS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -97,12 +99,13 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 47 "Sintatico.y"
+#line 72 "Sintatico.y"
 
-    double num;
+    double numD;
+    int numI;
     const char * str;
 
-#line 106 "Sintatico.tab.h"
+#line 109 "Sintatico.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

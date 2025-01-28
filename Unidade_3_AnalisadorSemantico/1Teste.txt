@@ -1,137 +1,119 @@
 Class: Customer
-    EquivalentTo:
+    EquivalentTo: 
         Person
         and (purchasedPizza some Pizza)
         and (hasPhone some xsd:string)
-    Individuals:
-        Customer1,
-        Customer10,
-        Customer2,
-        Customer3,
-        Customer4,
-        Customer5,
-        Customer6,
-        Customer7,
-        Customer8,
-        Customer9
+    Individuals: 
+        Customer1, Customer10, Customer2, Customer3, Customer4,
+        Customer5, Customer6, Customer7, Customer8, Customer9
 
 Class: Employee
-    SubClassOf:
+    SubClassOf: 
         Person
         and (ssn min 1 xsd:string)
-    Individuals:
-        Chef1,
-        Manager1,
-        Waiter1,
-        Waiter2
+    Individuals: 
+        Chef1, Manager1, Waiter1, Waiter2
 
 Class: Pizza
-    SubClassOf:
+    SubClassOf: 
         hasBase some PizzaBase,
         hasCaloricContent some xsd:integer
-    DisjointClasses:
+    DisjointClasses: 
         Pizza, PizzaBase, PizzaTopping
-    Individuals:
-        CustomPizza1,
-        CustomPizza2
+    Individuals: 
+        CustomPizza1, CustomPizza2
 
 Class: CheesyPizza
-    EquivalentTo:
+    EquivalentTo: 
         Pizza
         and (hasTopping some CheeseTopping)
-    Individuals:
+    Individuals: 
         CheesyPizza1
 
 Class: HighCaloriePizza
-    EquivalentTo:
+    EquivalentTo: 
         Pizza
         and (hasCaloricContent some xsd:integer [>= 400])
 
 Class: InterestingPizza
-    EquivalentTo:
+    EquivalentTo: 
         Pizza
         and (hasTopping min 3 PizzaTopping)
 
 Class: LowCaloriePizza
-    EquivalentTo:
+    EquivalentTo: 
         Pizza
         and (hasCaloricContent some xsd:integer [< 400])
 
 Class: NamedPizza
-    SubClassOf:
+    SubClassOf: 
         Pizza
 
 Class: AmericanaHotPizza
-    SubClassOf:
+    SubClassOf: 
         NamedPizza,
         hasTopping some JalapenoPepperTopping,
         hasTopping some MozzarellaTopping,
         hasTopping some PepperoniTopping,
         hasTopping some TomatoTopping
-    DisjointClasses:
+    DisjointClasses: 
         AmericanaPizza, MargheritaPizza, SohoPizza
-    Individuals:
-        AmericanaHotPizza1,
-        AmericanaHotPizza2,
-        AmericanaHotPizza3,
-        ChicagoAmericanaHotPizza1
+    Individuals: 
+        AmericanaHotPizza1, AmericanaHotPizza2, AmericanaHotPizza3, ChicagoAmericanaHotPizza1
 
 Class: AmericanaPizza
-    SubClassOf:
+    SubClassOf: 
         NamedPizza,
         hasTopping some MozzarellaTopping,
         hasTopping some PepperoniTopping,
         hasTopping some TomatoTopping
-    DisjointClasses:
+    DisjointClasses: 
         AmericanaHotPizza, MargheritaPizza, SohoPizza
-    Individuals:
-        AmericanaPizza1,
-        AmericanaPizza2
+    Individuals: 
+        AmericanaPizza1, AmericanaPizza2
 
 Class: MargheritaPizza
-    SubClassOf:
+    SubClassOf: 
         NamedPizza,
         hasTopping some MozzarellaTopping,
         hasTopping some TomatoTopping,
         hasTopping only (MozzarellaTopping or TomatoTopping)
-    DisjointClasses:
+    DisjointClasses: 
         AmericanaHotPizza, AmericanaPizza, SohoPizza
-    Individuals:
-        MargheritaPizza1,
-        MargheritaPizza2
+    Individuals: 
+        MargheritaPizza1, MargheritaPizza2
 
 Class: SohoPizza
-    SubClassOf:
+    SubClassOf: 
         NamedPizza,
         hasTopping some MozzarellaTopping,
         hasTopping some OliveTopping,
         hasTopping some ParmesanTopping,
         hasTopping some TomatoTopping,
         hasTopping only (MozzarellaTopping or OliveTopping or ParmesanTopping or TomatoTopping)
-    DisjointClasses:
+    DisjointClasses: 
         AmericanaHotPizza, AmericanaPizza, MargheritaPizza
-    Individuals:
-        SohoPizza1,
-        SohoPizza2
+    Individuals: 
+        SohoPizza1, SohoPizza2
 
 Class: SpicyPizza
-    EquivalentTo:
+    EquivalentTo: 
         Pizza
         and (hasTopping some (hasSpiciness value Hot1))
 
 Class: VegetarianPizza
-    EquivalentTo:
+    EquivalentTo: 
         Pizza
-        and (hasTopping only (CheeseTopping or VegetableTopping))
+        and (hasTopping some (CheeseTopping or VegetableTopping))
 
 Class: PizzaBase
-    DisjointClasses:
+    DisjointClasses: 
         Pizza, PizzaBase, PizzaTopping
 
 Class: PizzaTopping
-    DisjointClasses:
+    DisjointClasses: 
         Pizza, PizzaBase, PizzaTopping
 
 Class: Spiciness
-    EquivalentTo:
+    EquivalentTo: 
         {Hot1, Medium1, Mild1}

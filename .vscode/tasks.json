@@ -12,25 +12,25 @@
             ],
             "group": "build",
             "options": {
-                "cwd": "${workspaceFolder}/Build",
+                "cwd": "${workspaceFolder}/Unidade_3_AnalisadorSemantico/sources",
             },
             "problemMatcher": [],
         },
         {
             "label": "make",
             "type": "shell",
-            "command": "make",
+            "command": "make clean && make",
             "args": [],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "options": {
-                "cwd": "${workspaceFolder}/Build",
+                "cwd": "${workspaceFolder}/Unidade_3_AnalisadorSemantico/sources"
             },
             "problemMatcher": [
                 "$gcc"
-            ],
+            ]
         }
     ],
     "presentation": {
