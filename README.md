@@ -18,7 +18,7 @@ Este projeto foca no desenvolvimento de um analisador léxico para reconhecer to
 - [Conteúdo Programático](#conteúdo-programático)
   - [Unidade I: Fundamentos da Compilação](#unidade-i-fundamentos-da-compilação)
   - [Unidade II: Análise Léxica e Sintática](#unidade-ii-análise-léxica-e-sintática)
-  - [Unidade III: Análise Sintática e Geração de Código](#unidade-iii-análise-sintática-e-geração-de-código)
+  - [Unidade III: Análise Sintática e Geração de Código](#unidade-iii-análise-Semântica)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Referências Bibliográficas](#referências-bibliográficas)
   - [Obrigatórias](#obrigatórias)
@@ -146,7 +146,7 @@ Para executar a análise sintática, siga os seguintes passos após clonar o rep
 
 ---
 
-### Unidade III: Análise Sintática e Geração de Código  
+### Unidade III: Análise Semântica  
 
 Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise semântica**, onde são feitas algumas validações e verificações que vão além do sintático. Verificações como: Verificação e Validação de tipos, Validação do Axioma de Fechamento, Verificação de Coerção e Verificação por Sobrecarregamento. 
 
