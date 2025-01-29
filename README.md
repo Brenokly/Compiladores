@@ -16,8 +16,8 @@ Este projeto foca no desenvolvimento de um analisador léxico para reconhecer to
 - [Sobre o Projeto](#sobre-o-projeto)
 - [Objetivos](#objetivos)
 - [Conteúdo Programático](#conteúdo-programático)
-  - [Unidade I: Fundamentos da Compilação](#unidade-i-fundamentos-da-compilação)
-  - [Unidade II: Análise Léxica e Sintática](#unidade-ii-análise-léxica-e-sintática)
+  - [Unidade I: Fundamentos da Compilação](#unidade-i-Análise-Léxica)
+  - [Unidade II: Análise Léxica e Sintática](#unidade-ii-Análise-Sintática)
   - [Unidade III: Análise Sintática e Geração de Código](#unidade-iii-análise-Semântica)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Referências Bibliográficas](#referências-bibliográficas)
@@ -35,7 +35,7 @@ Este projeto foca no desenvolvimento de um analisador léxico para reconhecer to
 
 ## Conteúdo Programático  
 
-### Unidade I: Fundamentos da Compilação  
+### Unidade I: Análise Léxica 
 
 Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise léxica**, onde o código fonte é transformado em uma sequência de tokens.
 
@@ -90,7 +90,7 @@ Para executar a análise léxica, siga os seguintes passos após clonar o reposi
 
 ---
 
-### Unidade II: Análise Léxica e Sintática  
+### Unidade II: Análise Sintática  
 
 Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise sintática**, onde os tokens passados pelo léxico são estruturados de forma a construir a sintax da linguagem.
 
