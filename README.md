@@ -148,7 +148,7 @@ Para executar a análise sintática, siga os seguintes passos após clonar o rep
 
 ### Unidade III: Análise Sintática e Geração de Código  
 
-Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise semântica**, onde são feitas algumas validações e verificações que vão além do sintático.
+Esta unidade abrange os conceitos iniciais relacionados à construção de compiladores, focando na **análise semântica**, onde são feitas algumas validações e verificações que vão além do sintático. Verificações como: Verificação e Validação de tipos, Validação do Axioma de Fechamento, Verificação de Coerção e Verificação por Sobrecarregamento. 
 
 - **Arquivos envolvidos**:
   - `Sintatico.y`: Definição do análisador sintático com notação do Bison.
