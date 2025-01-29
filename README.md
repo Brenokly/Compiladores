@@ -155,7 +155,7 @@ Esta unidade abrange os conceitos iniciais relacionados à construção de compi
   - `main.cpp`: Arquivo principal que define o inicio do programa.
   - Arquivo `Teste1` & `Teste2`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
 
-**Como usar a Unidade II**:
+**Como usar a Unidade III**:
 
 Para executar a análise sintática, siga os seguintes passos após clonar o repositório:
 
