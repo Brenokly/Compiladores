@@ -153,7 +153,7 @@ Esta unidade abrange os conceitos iniciais relacionados à construção de compi
 - **Arquivos envolvidos**:
   - `Sintatico.y`: Definição do análisador sintático com notação do Bison.
   - `main.cpp`: Arquivo principal que define o inicio do programa.
-  - Arquivo `Teste1` & `Teste2`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
+  - Arquivo `1Teste` & `2Teste`: Contém um arquivo de entrada para testar o funcionamento do analisador léxico.
 
 **Como usar a Unidade III**:
 
@@ -166,12 +166,12 @@ Para executar a análise sintática, siga os seguintes passos após clonar o rep
 
 2. Abra o projeto na sua IDE de preferência na pasta do projeto que surgiu ("Compiladores") quando você clonou.
 
-3. Abra o **Terminal** da IDE e navegue até a pasta `Unidade_2_AnalisadorSemantico`, conforme o sistema operacional:
+3. Abra o **Terminal** da IDE e navegue até a pasta `Unidade_3_AnalisadorSemantico`, conforme o sistema operacional:
 
 ### Windows:
 1. No **Terminal**, dentro da pasta do projeto "Compiladores", navegue até a pasta:
    ```bash
-   cd Unidade_2_AnalisadorSemantico
+   cd Unidade_3_AnalisadorSemantico
    ```
 2. Agora, entre dentro da pasta **Windows**:
    ```bash
@@ -179,7 +179,7 @@ Para executar a análise sintática, siga os seguintes passos após clonar o rep
    ```
 3. Execute o analisador sintático, via terminal, passando um dos arquivos teste [teste1.txt ou teste2.txt] como argumento, por exemplo:
    ```bash
-   owl_compiler.exe teste1.txt
+   owl_compiler.exe 1Teste.txt
    ```
 
 4. O resultado será mostrado no terminal, exibindo informações sobre as classes reconhecidas e os tipos de cada uma e/ou os erros encontrados acompanhandos de uma sugestão de correção.
@@ -187,15 +187,15 @@ Para executar a análise sintática, siga os seguintes passos após clonar o rep
 ### Linux:
 1. No **Terminal**, navegue até a pasta:
    ```bash
-   cd Unidade_2_AnalisadorSemantico/
+   cd Unidade_3_AnalisadorSemantico/
    ```
 2. Agora, entre dentro da pasta **Linux**:
    ```bash
    cd Linux/
    ```
-3. Execute o analisador sintático, via terminal, passando um dos arquivos teste [teste1.txt ou teste2.txt] como argumento, por exemplo:
+3. Execute o analisador sintático, via terminal, passando um dos arquivos teste [1Teste.txt ou 2Teste.txt] como argumento, por exemplo:
    ```bash
-   ./owl_compiler teste1.txt
+   ./owl_compiler 1Teste.txt
    ```
 4. O resultado será mostrado no terminal, exibindo informações sobre as classes reconhecidas e os tipos de cada uma e/ou os erros encontrados acompanhandos de uma sugestão de correção.
 
